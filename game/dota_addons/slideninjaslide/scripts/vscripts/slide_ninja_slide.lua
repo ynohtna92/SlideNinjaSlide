@@ -1162,7 +1162,7 @@ function GameMode:SetupGuards()
 		self.guardboxes[i].test = function(self, unit)
 			return IsPhysicsUnit(unit)
 		end
-		self.guardboxes[i].filter = function() return self.ninjas end
+		self.guardboxes[i].filter = self.ninjas
 		if DEBUG then
 			self.guardboxes[i].draw = true
 		end
