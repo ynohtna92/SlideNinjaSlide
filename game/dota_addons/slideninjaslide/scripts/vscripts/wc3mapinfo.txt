@@ -1,0 +1,83 @@
+Information from 'Slide Ninja Slide - NumbEncore~1.w3x'
+
+Starting gold = 100
+Number of Rounds = 5
+
+Hero Dies:
+	Hero - Remove 1 Score
+
+Hero Revive:
+	Triggering Hero (dead) - Remove 15 gold, remove 20 exp
+	Hero (alive) - Add 30 gold, add 50 exp, add 1 score
+
+Round Win:
+	Hero - Add 300 exp, add 200 gold, add 5 score
+	Add 100 gold to all players
+	Revive all
+	Add 11 new wolves to Wolf Area 1, 3, 5, 7
+	Add 3 new wolves to Wolf Area 9, 11, 13, 15, 2
+	Add 2 new wolves to Wolf Area 4, 6, 8, 10, 12
+
+XP Rewards (enter zone):
+	Add exp 150 x 1.08^(hero score)
+
+Hero:
+	Speed - 350
+	Turn Rate - 0.5
+	HP - 550
+	Mana - 225
+	Exp of lvl - 100 + (100 x lvl)
+
+Grunt:
+	Collision Size - 32
+	Speed - 350
+	Turn Rate - 0.6
+	HP - 550
+	HP Regen - 0.5
+
+Items:
+	Tome of Experience:
+		xp gain = 150
+
+Spells:
+	Leap of Faith:
+		mana cost = 75
+
+		lvl 1:
+			min = 0
+			max = 400
+			cd = 10 seconds
+		lvl 2:
+			min = 100
+			max = 600
+			cd = 20 seconds
+		lvl 3:
+			min = 300
+			max = 900
+			cd = 30 seconds
+		delay 1 second
+	Thaw:
+		mana cost:
+			75
+		cast range:
+			1000
+		delay 1 second to enable and disable
+		lvl 1: 
+			6 seconds
+			cd = 22 seconds
+		lvl 2:
+			14 seconds
+			cd = 30 seconds
+		lvl 3:
+			29 seconds
+			cd = 45 seconds
+
+TODO:
+	LeapOfFaith:
+		Fix animation after spawn
+	Slide:
+		Fix animation
+
+	Prepare for publish:
+		Disable DEBUG
+		Make sure end game works

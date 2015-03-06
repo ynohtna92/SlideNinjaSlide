@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"addonSteamAppID"		"816"
+	"addontitle"		"Slide Ninja Slide"
+	"addonversion"		"0.100000"
+	"addontagline"		"Slide Ninja Slide"
+	"addonauthor"		"A_Dizzle"
+	"addonContent_Campaign"		"0"
+	"addonURL0"		""
+	"addonDescription"		"Slide Ninja Slide"
+}

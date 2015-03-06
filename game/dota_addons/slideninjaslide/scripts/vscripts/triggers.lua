@@ -1,0 +1,80 @@
+require('physics')
+
+function OnStartTouchIce (trigger)
+	print("Start Ice")
+	if trigger.activator.slide or trigger.activator:HasModifier("thaw_aura") then
+		return
+	end
+	-- Turn on Slide
+	trigger.activator:Hibernate(false)
+	trigger.activator:PreventDI(true)
+
+	trigger.activator.slideNumber = 0
+	trigger.activator.thaw = false
+
+	trigger.activator:OnPhysicsFrame(function(unit)
+		-- check for modifiers
+		if trigger.activator:HasModifier("modifier_leap_of_faith_datadriven") then
+			trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
+			trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
+		elseif trigger.activator:HasModifier("thaw_aura") then
+			if not trigger.activator.thaw then
+				trigger.activator:StopPhysicsSimulation()
+				trigger.activator.thaw = true
+				trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
+				trigger.activator:PreventDI(false)
+				print("thawed")
+			end
+		else  -- if no modifiers 
+			if trigger.activator.thaw then
+				trigger.activator:StartPhysicsSimulation()
+				trigger.activator:PreventDI(true)
+				trigger.activator.thaw = false
+				print("unthawed")
+			end
+
+			local direction = trigger.activator:GetForwardVector()
+			trigger.activator:SetPhysicsVelocity(direction * trigger.activator:GetIdealSpeed() * 1.2)
+
+			if trigger.activator.slideNumber == 3 then
+				trigger.activator:Stop()
+				trigger.activator.slideNumber = 0
+			else
+				trigger.activator.slideNumber = trigger.activator.slideNumber + 1
+			end
+		end
+	end)
+
+	trigger.activator:Stop()
+	trigger.activator.slide = true
+	print("Slide on")
+end
+
+function OnEndTouchIce (trigger)
+	print("End Ice")
+	if not trigger.activator.slide or trigger.activator:HasModifier("thaw_aura") then
+		return
+	end
+	-- Turn off Slide
+	trigger.activator:OnPhysicsFrame(nil)
+	trigger.activator:PreventDI(false)
+	trigger.activator:Stop()
+
+	trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
+	trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
+
+	trigger.activator.slide = false
+	if SLIDE_VERSION == 2 then
+		FindClearSpaceForUnit(trigger.activator, trigger.activator:GetAbsOrigin(), true)
+	end
+	print("Slide off")
+end
+
+function OnStartTouchWin( trigger )
+	print("Win Trigger")
+	GameMode:LevelCompleted(trigger.activator)
+end
+
+function OnStartTouchSafe( trigger )
+	GameMode:SafetyReached(trigger)
+end

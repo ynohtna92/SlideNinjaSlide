@@ -1,0 +1,8 @@
+slide_ninja_slide
+{
+	material materials/overviews/slide_ninja_slide.vmat
+	pos_x -3712
+	pos_y 3712
+	scale 7.250
+}
+
