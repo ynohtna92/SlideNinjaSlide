@@ -1,5 +1,16 @@
 -- GREAT UTILITY FUNCTIONS
 
+function HasFullInventory( unit )
+	local count = 0
+	for i=0,5 do
+		local item = unit:GetItemInSlot(i)
+		if item ~= nil then
+			count = count + 1
+		end
+	end
+	return count == 6
+end
+
 -- Returns a shallow copy of the passed table.
 function shallowcopy(orig)
 	local orig_type = type(orig)

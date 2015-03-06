@@ -61,6 +61,7 @@ MAX_LEVEL = 12                          -- What level should we let heroes get t
 USE_CUSTOM_XP_VALUES = true             -- Should we use custom XP values to level up heroes, or the default Dota numbers?
 
 SLIDE_VERSION = 1						-- Version 1 uses aaboxes, 2 uses PHYSICS_NAV_SLIDE
+DROPPED_ITEM_RADIUS = 20
 
 --[[ Set up the GetDotaStats stats for this mod.
 if not DEBUG then
@@ -348,7 +349,7 @@ end
 
 -- An NPC has spawned somewhere in game.  This includes heroes
 function GameMode:OnNPCSpawned(keys)
-	print("[SNS] NPC Spawned")
+	--print("[SNS] NPC Spawned")
 	--PrintTable(keys)
 	local npc = EntIndexToHScript(keys.entindex)
 
@@ -380,7 +381,10 @@ function GameMode:OnItemPickedUp( keys )
 	--PrintTable(keys)
 
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
-	local itemEntity = EntIndexToHScript(keys.ItemEntityIndex)
+	local itemEntity = keys.itemEnt
+	if itemEntity == nil then
+		itemEntity = EntIndexToHScript(keys.ItemEntityIndex)
+	end
 	local player = PlayerResource:GetPlayer(keys.PlayerID)
 	local itemname = keys.itemname
 
@@ -638,6 +642,38 @@ function GameMode:OnThink()
 					end
 				end
 			end
+
+			-- check for surrounding items
+			local ents = Entities:FindAllInSphere(hero:GetAbsOrigin(), 300)
+			for i,v in ipairs(ents) do
+				if not v.pickedUp and v.isDroppedItem then
+					local item = v
+					if circleCircleCollision(hero:GetAbsOrigin(), item:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), DROPPED_ITEM_RADIUS) then
+						-- use this method to pickup dropped item to prevent a forced movement order.
+						if not HasFullInventory(hero) then
+							v.pickedUp = true
+							local newItem = CreateItem(item.itemName, hero, hero)
+							hero:AddItem(newItem)
+							newItem.itemName = item.itemName
+
+							-- manually call item pickup event
+							local keys =
+							{
+								PlayerID = hero:GetPlayerID(),
+								itemname = newItem.itemName,
+								itemEnt = newItem
+							}
+							self:OnItemPickedUp(keys)
+
+							-- destroy item on ground
+							item:RemoveSelf()
+						end
+						-- this func will force a movement:
+						--hero:PickupDroppedItem(v)
+					end
+				end
+			end
+
 		end
 	end
 
@@ -914,7 +950,9 @@ function GameMode:SpawnItems()
 	end
 	self.items[self.itemindex] = newItem
 	self.itemindex = self.itemindex + 1
-	CreateItemOnPositionSync(Vector(x, y, 256), newItem)
+	local droppedItem = CreateItemOnPositionSync(Vector(x, y, 256), newItem)
+	droppedItem.isDroppedItem = true
+	droppedItem.itemName = itemToSpawn
 end
 
 -- Called when all heros haved died, providing additional chances to try again
