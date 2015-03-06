@@ -64,9 +64,7 @@ function OnEndTouchIce (trigger)
 	trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
 
 	trigger.activator.slide = false
-	if SLIDE_VERSION == 2 then
-		FindClearSpaceForUnit(trigger.activator, trigger.activator:GetAbsOrigin(), true)
-	end
+	FindClearSpaceForUnit(trigger.activator, trigger.activator:GetAbsOrigin(), false)
 	print("Slide off")
 end
 

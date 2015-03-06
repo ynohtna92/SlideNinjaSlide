@@ -197,25 +197,25 @@ function GameMode:InitGameMode()
 	self.guardboxes = {}
 
 	self.guardsxyz = {}
-	self.guardsxyz[1] = {2560, 2275, 512, -2900, 2590, 128} -- 1 bottom / GOOD
-	self.guardsxyz[2] = {2900, 3502, 512, -2900, 3300, 256} -- 1 top / GOOD
-	self.guardsxyz[3] = {2585, 2597, 512, 2280, -2580, 128} -- 2 left / GOOD
-	self.guardsxyz[4] = {3478, 2900, 512, 3300, -2900, 256} -- 2 right / GOOD
-	self.guardsxyz[5] = {2900, -3300, 512, -2900, -3476, 256} -- 3 bottom / GOOD
-	self.guardsxyz[6] = {2554, -2280, 512, -2580, -2580, 128} -- 3 top / GOOD
-	self.guardsxyz[7] = {-3300, 1876, 512, -3476, -2900, 256} -- 4 left / GOOD
-	self.guardsxyz[8] = {-2280, 1710, 512, -2580, -2304, 128} -- 4 right / GOOD
-	self.guardsxyz[9] = {1792, 1710, 384, -2580, 1380, 128} -- 5 bottom
-	self.guardsxyz[10] = {1792, 1700, 384, 1510, -1700, 128} -- 6 left
-	self.guardsxyz[11] = {1792, -1800, 384, -1792, -1505, 128} -- 7 top
-	self.guardsxyz[12] = {-1800, 1040, 384, -1510, -1792, 128} -- 8 right
-	self.guardsxyz[13] = {1152, 1040, 384, -1792, 735, 128} -- 9 bottom
-	self.guardsxyz[14] = {1152, 1040, 384, 870, -1152, 128} -- 10 left
-	self.guardsxyz[15] = {1152, -870, 384, -1152, -1170, 128} -- 11 top
-	self.guardsxyz[16] = {-896, 400, 384, -1170, -1152, 128} -- 12 right
-	self.guardsxyz[17] = {530, 400, 384, -1170, 200, 128} -- 13 bottom
-	self.guardsxyz[18] = {530, 400, 384, 300, -550, 128} -- 14 left
-	self.guardsxyz[19] = {530, -300, 384, -500, -550, 128} -- 15 top
+	self.guardsxyz[1] = {2560, 2275, 512, -2900, 2590, 0} -- 1 bottom / GOOD
+	self.guardsxyz[2] = {2900, 3502, 512, -2900, 3300, 0} -- 1 top / GOOD
+	self.guardsxyz[3] = {2585, 2597, 512, 2280, -2580, 0} -- 2 left / GOOD
+	self.guardsxyz[4] = {3478, 2900, 512, 3300, -2900, 0} -- 2 right / GOOD
+	self.guardsxyz[5] = {2900, -3300, 512, -2900, -3476, 0} -- 3 bottom / GOOD
+	self.guardsxyz[6] = {2554, -2280, 512, -2580, -2580, 0} -- 3 top / GOOD
+	self.guardsxyz[7] = {-3300, 1876, 512, -3476, -2900, 0} -- 4 left / GOOD
+	self.guardsxyz[8] = {-2280, 1710, 512, -2580, -2304, 0} -- 4 right / GOOD
+	self.guardsxyz[9] = {1792, 1710, 384, -2580, 1380, 0} -- 5 bottom
+	self.guardsxyz[10] = {1792, 1700, 384, 1510, -1700, 0} -- 6 left
+	self.guardsxyz[11] = {1792, -1800, 384, -1792, -1505, 0} -- 7 top
+	self.guardsxyz[12] = {-1800, 1040, 384, -1510, -1792, 0} -- 8 right
+	self.guardsxyz[13] = {1152, 1040, 384, -1792, 735, 0} -- 9 bottom
+	self.guardsxyz[14] = {1152, 1040, 384, 870, -1152, 0} -- 10 left
+	self.guardsxyz[15] = {1152, -870, 384, -1152, -1170, 0} -- 11 top
+	self.guardsxyz[16] = {-896, 400, 384, -1170, -1152, 0} -- 12 right
+	self.guardsxyz[17] = {530, 400, 384, -1170, 200, 0} -- 13 bottom
+	self.guardsxyz[18] = {530, 400, 384, 300, -550, 0} -- 14 left
+	self.guardsxyz[19] = {530, -300, 384, -500, -550, 0} -- 15 top
 
 	self.wolves = {}
 	self.wolfHP = 550
@@ -1054,14 +1054,10 @@ function GameMode:InitialiseNinja(hero)
 
 	if not hero.firstTime then
 		Physics:Unit(hero)
-		if SLIDE_VERSION == 2 then
-			hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
-			hero:SetGroundBehavior (PHYSICS_GROUND_LOCK)
-			hero:AdaptiveNavGridLookahead (true)
-			hero:SetPhysicsBoundingRadius(0)
-		else -- SLIDE_VERSION 1
-			hero:SetNavCollisionType (PHYSICS_NAV_NOTHING)
-		end
+		hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
+		hero:SetGroundBehavior (PHYSICS_GROUND_LOCK)
+		hero:AdaptiveNavGridLookahead (true)
+		hero:SetPhysicsBoundingRadius(0)
 
 		hero:Hibernate(false)
 
@@ -1166,6 +1162,7 @@ function GameMode:SetupGuards()
 		self.guardboxes[i].test = function(self, unit)
 			return IsPhysicsUnit(unit)
 		end
+		self.guardboxes[i].filter = function() return self.ninjas end
 		if DEBUG then
 			self.guardboxes[i].draw = true
 		end
