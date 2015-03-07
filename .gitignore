@@ -215,8 +215,8 @@ pip-log.txt
 .mr.developer.cfg
 
 *.vpk
+*.vpcf_c
 *.vsndevts_c
 *.vmat_c
 *.vtex_c
 *.bin
-*.vpcf_c
