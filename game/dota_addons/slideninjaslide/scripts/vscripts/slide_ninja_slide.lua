@@ -1,6 +1,7 @@
 --[[
-Last modified: 17/02/2015
+Last modified: 06/03/2015
 Author: A_Dizzle
+Co-Author: Myll
 ]]
 
 print('[SNS] slide_ninja_slide.lua')
@@ -514,8 +515,8 @@ function GameMode:OnHeroInGame(hero)
 end
 
 function GameMode:PlayerSay(keys)
-	print ('[SNS] PlayerSay')
-	PrintTable(keys)
+	--print ('[SNS] PlayerSay')
+	--PrintTable(keys)
 
 	local ply = keys.ply
 	local plyID = ply:GetPlayerID()
@@ -528,7 +529,7 @@ function GameMode:PlayerSay(keys)
 		-- This text was team-only
 	end
 
-	if txt == nill or txt == "" then
+	if txt == nil or txt == "" then
 		return
 	end
 
@@ -606,15 +607,18 @@ function GameMode:OnThink()
 		if hero:IsAlive() then
 			hero.nearbyWolves = {}
 			hero.nearbyDeadNinjas = {}
+			hero.nearbyDroppedItems = {}
 			for i,v in ipairs(Entities:FindAllInSphere(hero:GetAbsOrigin(), 120)) do
 				if v.isWolf and v:IsAlive() then
 					table.insert(hero.nearbyWolves, v)
 				elseif v.isNinja and not v:IsAlive() then
 					table.insert(hero.nearbyDeadNinjas, v)
+				elseif v.isDroppedItem and not v.pickedUp then
+					table.insert(hero.nearbyDroppedItems, v)
 				end
 			end
 
-			if hero.nearbyWolves ~= nil and #hero.nearbyWolves ~= 0 then
+			if hero.nearbyWolves ~= {} then
 				for i,wolf in ipairs(hero.nearbyWolves) do
 					if not hero:IsInvulnerable() and not hero.isInvuln and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						GameMode:HeroKilled(hero)
@@ -622,7 +626,7 @@ function GameMode:OnThink()
 				end
 			end
 
-			if hero.nearbyDeadNinjas ~= nil and #hero.nearbyDeadNinjas ~= 0 then
+			if hero.nearbyDeadNinjas ~= {} then
 				for i,deadninja in ipairs(hero.nearbyDeadNinjas) do
 					if circleCircleCollision(hero:GetAbsOrigin(), deadninja.deadPos, hero:GetPaddedCollisionRadius()+25, deadninja:GetPaddedCollisionRadius()+25) then
 						GameMode:HeroRevivied(deadninja, hero)
@@ -630,15 +634,12 @@ function GameMode:OnThink()
 				end
 			end
 
-			-- check for surrounding items
-			local ents = Entities:FindAllInSphere(hero:GetAbsOrigin(), 300)
-			for i,v in ipairs(ents) do
-				if not v.pickedUp and v.isDroppedItem then
-					local item = v
+			if hero.nearbyDroppedItems ~= {} then
+				for i, item in pairs(hero.nearbyDroppedItems) do
 					if circleCircleCollision(hero:GetAbsOrigin(), item:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), DROPPED_ITEM_RADIUS) then
 						-- use this method to pickup dropped item to prevent a forced movement order.
 						if not HasFullInventory(hero) then
-							v.pickedUp = true
+							item.pickedUp = true
 							local newItem = CreateItem(item.itemName, hero, hero)
 							hero:AddItem(newItem)
 							newItem.itemName = item.itemName
@@ -656,11 +657,10 @@ function GameMode:OnThink()
 							item:RemoveSelf()
 						end
 						-- this func will force a movement:
-						--hero:PickupDroppedItem(v)
+						--hero:PickupDroppedItem(item)
 					end
 				end
 			end
-
 		end
 	end
 
@@ -1078,8 +1078,8 @@ function GameMode:InitialiseNinja(hero)
 		
 		Timers:CreateTimer(4, function()
 			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide!", 0, 0)
-			GameRules:SendCustomMessage("Developer: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
-			GameRules:SendCustomMessage("Credits: <font color='#FF1493'>Myll</font> for his work on D2 Slide Ninja Slide & <font color='#FF1493'>StrikerFred</font> for the original WC3 map ", 0, 0)
+			GameRules:SendCustomMessage("Main Developer & Mapper: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
+			GameRules:SendCustomMessage("Co-Developers: <font color='#FF1493'>Myll</font> (Coder) & <font color='#FF1493'>StrikerFred</font> (WC3 Developer)", 0, 0)
 			GameRules:SendCustomMessage("Special Thanks: <font color='#FF1493'>BMD & Noya</font> and everyone on IRC", 0, 0)
 			GameRules:SendCustomMessage("Support this project on Github at https://github.com/ynohtna92/SlideNinjaSlide", 0, 0)
 		end)
