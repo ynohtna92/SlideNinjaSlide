@@ -64,13 +64,12 @@ USE_CUSTOM_XP_VALUES = true             -- Should we use custom XP values to lev
 SLIDE_VERSION = 1						-- Version 1 uses aaboxes, 2 uses PHYSICS_NAV_SLIDE
 DROPPED_ITEM_RADIUS = 20
 
---[[ Set up the GetDotaStats stats for this mod.
+-- Set up the GetDotaStats stats for this mod.
 if not DEBUG then
   statcollection.addStats({
-	modID = 'XXXXXXXXXXXXXXXXXXX' --GET THIS FROM http://getdotastats.com/#d2mods__my_mods
+	modID = '708fc3881df6e26b45fa78ba2529af01' --GET THIS FROM http://getdotastats.com/#d2mods__my_mods
   })
 end
-]]
 
 XP_PER_LEVEL_TABLE = {}
 for i=1,MAX_LEVEL do
