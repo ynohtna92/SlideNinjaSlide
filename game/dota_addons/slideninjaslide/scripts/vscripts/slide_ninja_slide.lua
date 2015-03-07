@@ -494,19 +494,6 @@ function GameMode:OnHeroInGame(hero)
 	print("[SNS] Hero spawned in the game for the first time -- " .. hero:GetUnitName())
 	local className = hero:GetClassname()
 
-	Timers:CreateTimer(4, function()
-		GameRules:SendCustomMessage("Welcome to Slide Ninja Slide!", 0, 0)
-		GameRules:SendCustomMessage("Developer: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
-		GameRules:SendCustomMessage("Credits: <font color='#FF1493'>Myll</font> for his work on D2 Slide Ninja Slide & <font color='#FF1493'>StrikerFred</font> for the original WC3 map ", 0, 0)
-		GameRules:SendCustomMessage("Special Thanks: <font color='#FF1493'>BMD & Noya</font> and everyone on IRC", 0, 0)
-		GameRules:SendCustomMessage("Support this project on Github at https://github.com/ynohtna92/SlideNinjaSlide", 0, 0)
-	end)
-
-	Timers:CreateTimer(20, function()
-		GameRules:SendCustomMessage(" ", 0, 0)
-		GameRules:SendCustomMessage("Use the -unstuck command if you are unable to move.", 0, 0)
-	end)
-
 	ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", "#slideninjaslide_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
 
 	-- Display new round message
@@ -1087,6 +1074,19 @@ function GameMode:InitialiseNinja(hero)
 			if not DEBUG then
 				self:PlaySongs()
 			end
+		end)
+		
+		Timers:CreateTimer(4, function()
+			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide!", 0, 0)
+			GameRules:SendCustomMessage("Developer: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
+			GameRules:SendCustomMessage("Credits: <font color='#FF1493'>Myll</font> for his work on D2 Slide Ninja Slide & <font color='#FF1493'>StrikerFred</font> for the original WC3 map ", 0, 0)
+			GameRules:SendCustomMessage("Special Thanks: <font color='#FF1493'>BMD & Noya</font> and everyone on IRC", 0, 0)
+			GameRules:SendCustomMessage("Support this project on Github at https://github.com/ynohtna92/SlideNinjaSlide", 0, 0)
+		end)
+
+		Timers:CreateTimer(20, function()
+			GameRules:SendCustomMessage(" ", 0, 0)
+			GameRules:SendCustomMessage("Use the -unstuck command if you are unable to move.", 0, 0)
 		end)
 	end
 
