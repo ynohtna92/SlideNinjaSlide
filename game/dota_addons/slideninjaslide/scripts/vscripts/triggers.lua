@@ -11,6 +11,8 @@ function OnStartTouchIce (trigger)
 
 	trigger.activator.slideNumber = 0
 	trigger.activator.thaw = false
+	--local hscript = EntIndexToHScript( trigger.activator )
+	GiveUnitDataDrivenModifier(trigger.activator, trigger.activator, trigger.activator.skateAnimation, -1)
 
 	trigger.activator:OnPhysicsFrame(function(unit)
 		-- check for modifiers
@@ -23,14 +25,16 @@ function OnStartTouchIce (trigger)
 				trigger.activator.thaw = true
 				trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
 				trigger.activator:PreventDI(false)
-				print("thawed")
+				trigger.activator:RemoveModifierByName(trigger.activator.skateAnimation)
+				print("Thawed")
 			end
 		else  -- if no modifiers 
 			if trigger.activator.thaw then
 				trigger.activator:StartPhysicsSimulation()
 				trigger.activator:PreventDI(true)
 				trigger.activator.thaw = false
-				print("unthawed")
+				GiveUnitDataDrivenModifier(trigger.activator, trigger.activator, trigger.activator.skateAnimation, -1)
+				print("Unthawed")
 			end
 
 			local direction = trigger.activator:GetForwardVector()
@@ -60,10 +64,13 @@ function OnEndTouchIce (trigger)
 	trigger.activator:PreventDI(false)
 	trigger.activator:Stop()
 
+	trigger.activator:RemoveModifierByName(trigger.activator.skateAnimation)
+
 	trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
 	trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
 
 	trigger.activator.slide = false
+
 	FindClearSpaceForUnit(trigger.activator, trigger.activator:GetAbsOrigin(), false)
 	print("Slide off")
 end

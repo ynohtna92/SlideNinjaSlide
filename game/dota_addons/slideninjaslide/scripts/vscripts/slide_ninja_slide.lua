@@ -596,6 +596,14 @@ function GameMode:PlayerSay(keys)
 	if string.find(keys.text, "^-playmusic") and plyID == 0 then
 		GameMode:PlaySongs()
 	end
+
+	if string.find(keys.text, "^-toggleanimation") and not hero.slide then
+		if hero.skateAnimation == "modifier_skatimation_datadriven" then
+			hero.skateAnimation = "modifier_skatimation2_datadriven"
+		else
+			hero.skateAnimation = "modifier_skatimation_datadriven"
+		end
+	end
 end
 
 
@@ -1102,6 +1110,7 @@ function GameMode:InitialiseNinja(hero)
 		hero.zonesVisited = {}
 		hero.lastZone = 0
 		hero.isNinja = true
+		hero.skateAnimation = "modifier_skatimation_datadriven"
 
 		for i=1,14 do
 			hero.zonesVisited[i] = false

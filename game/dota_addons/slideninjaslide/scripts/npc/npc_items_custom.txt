@@ -469,4 +469,36 @@
 		"ItemInitialCharges"			"1"
 		"ItemPurchasable"				"0"
 	}
+
+	//=================================================================================================================
+	// Apply Modifiers (not really an item)
+	//=================================================================================================================
+	"item_apply_modifiers"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"ID"                            "1020"  // unique ID number for this item.  Do not change this once 
+		"BaseClass"                     "item_datadriven"
+		"ItemBaseLevel"                 "1"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"              "9999"
+		"AbilityCastPoint"              "0.0"
+
+		"Modifiers"
+		{
+			"modifier_skatimation_datadriven"
+			{
+				"IsHidden"					"1"
+				"OverrideAnimation"			"ACT_DOTA_IDLE"
+			}
+
+			"modifier_skatimation2_datadriven"
+			{
+				"IsHidden"					"1"
+				"OverrideAnimation"			"ACT_DOTA_FLAIL"
+			}
+		}  
+	}
 }
