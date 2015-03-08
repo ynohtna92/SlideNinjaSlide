@@ -52,6 +52,18 @@ function Precache( context )
 	PrecacheResource("particle", "particles/units/heroes/hero_silencer/silencer_last_word.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_silencer/silencer_last_word_status.vpcf", context)
 
+	PrecacheResource("particle", "particles/silencer_last_word_status_blue/silencer_last_word_status_blue.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_teal/silencer_last_word_status_teal.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_purple/silencer_last_word_status_purple.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_yellow/silencer_last_word_status_yellow.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_orange/silencer_last_word_status_orange.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_pink/silencer_last_word_status_pink.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_lightgreen/silencer_last_word_status_lightgreen.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_lightblue/silencer_last_word_status_lightblue.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_green/silencer_last_word_status_green.vpcf", context)
+	PrecacheResource("particle", "particles/silencer_last_word_status_brown/silencer_last_word_status_brown.vpcf", context)
+
+	--[[
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_blue", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_teal", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_purple", context)
@@ -62,6 +74,7 @@ function Precache( context )
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_lightblue", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_green", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_brown", context)
+	]]
 
 	-- Entire Heros
 	PrecacheUnitByNameSync("npc_dota_hero_antimage", context)

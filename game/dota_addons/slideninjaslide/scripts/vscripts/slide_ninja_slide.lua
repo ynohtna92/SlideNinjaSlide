@@ -697,6 +697,7 @@ function GameMode:HeroKilled( hero )
 	Timers:CreateTimer(function()
 		-- particles just run once
 		if hero.halo == nil then
+			print("Creating Particles: "..self.haloParticles[hero:GetPlayerID()+1])
 			--hero.halo = ParticleManager:CreateParticle(self.haloParticles[hero:GetPlayerID()+1], PATTACH_ABSORIGIN, hero)
 			hero.halo = ParticleManager:CreateParticle(self.haloParticles[hero:GetPlayerID()+1], PATTACH_ABSORIGIN, hero)
 			--hero.halo = ParticleManager:CreateParticle("particles/units/heroes/hero_silencer/silencer_last_word.vpcf", PATTACH_ABSORIGIN, hero)
