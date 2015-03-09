@@ -73,11 +73,10 @@ Spells:
 			cd = 45 seconds
 
 TODO:
-	LeapOfFaith:
-		Fix animation after spawn
-	Slide:
-		Fix animation
+	Fix camera after respawn so it follow the player correctly.
 
-	Prepare for publish:
-		Disable DEBUG
-		Make sure end game works
+	SPONGEBOB MODE:
+		Detects the phrase 'who lives in a pineapple under the sea' from any player
+		On detection will print 'SPONGEBOB SQUAREPANTS' in chat. 
+
+		All abilities will then change to the spongebob ones, models, music, ect.

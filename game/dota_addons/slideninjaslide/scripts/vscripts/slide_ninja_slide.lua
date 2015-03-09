@@ -1,5 +1,5 @@
 --[[
-Last modified: 06/03/2015
+Last modified: 10/03/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "0.1"
+VERSION = "1.0"
 
 ROUNDS = 4
 LIVES = 3
@@ -452,35 +452,39 @@ function GameMode:OnAbilityUsed(keys)
 end
 
 function GameMode:PlaySongs()
-  if self.playSongs then
-  	return
-  end
+	if self.playSongs then
+		return
+	end
 
-  self.playSongs = true
+	SendToConsole('stopsound')
+	self.playSongs = true
 
-  self.songsTimer = Timers:CreateTimer({
-    useGameTime = false,
-    callback = function()
-      if not self.playSongs then
-        return nil
-      end
+	if self.songsTimer ~= nil then
+		Timers:RemoveTimer(self.songsTimer)
+	end
+	self.songsTimer = Timers:CreateTimer({
+		useGameTime = false,
+		callback = function()
+		if not self.playSongs then
+			return nil
+		end
 
-      if self.unplayedSongs == nil or #self.unplayedSongs == 0 then
-        self.unplayedSongs = shallowcopy(self.songs)
-      end
+		if self.unplayedSongs == nil or #self.unplayedSongs == 0 then
+			self.unplayedSongs = shallowcopy(self.songs)
+		end
 
-      local songIndex = math.random(#self.unplayedSongs)
-      --print("Playing song " .. songIndex)
-	  EmitGlobalSound(self.unplayedSongs[songIndex][1])
-      --EmitSoundOnClient(self.unplayedSongs[songIndex][1], PlayerResource:GetPlayer(0))
-      print("Playing song: " .. self.unplayedSongs[songIndex][1])
-      self.currentSong = self.unplayedSongs[songIndex][1]
-      --EmitGlobalSound(hero.unplayedSongs[songIndex][1])
-      -- play until the length of the song is up.
-      local timeTillOver = self.unplayedSongs[songIndex][2]
-      table.remove(self.unplayedSongs, songIndex)
-      return timeTillOver+4
-    end})
+		local songIndex = math.random(#self.unplayedSongs)
+		--print("Playing song " .. songIndex)
+		EmitGlobalSound(self.unplayedSongs[songIndex][1])
+		--EmitSoundOnClient(self.unplayedSongs[songIndex][1], PlayerResource:GetPlayer(0))
+		print("Playing song: " .. self.unplayedSongs[songIndex][1])
+		self.currentSong = self.unplayedSongs[songIndex][1]
+		--EmitGlobalSound(hero.unplayedSongs[songIndex][1])
+		-- play until the length of the song is up.
+		local timeTillOver = self.unplayedSongs[songIndex][2]
+		table.remove(self.unplayedSongs, songIndex)
+		return timeTillOver+4
+	end})
 end
 
 --[[
@@ -588,8 +592,11 @@ function GameMode:PlayerSay(keys)
 	end
 
 	if string.find(keys.text, "^-stopmusic") and plyID == 0 then
-		StopSoundEvent(self.currentSong, ply)
+		SendToConsole('stopsound')
 		self.playSongs = false
+		if self.songsTimer ~= nil then
+			Timers:RemoveTimer(self.songsTimer)
+		end
 		print("Music Stopped: " .. self.currentSong)
 	end
 
@@ -1093,8 +1100,11 @@ function GameMode:InitialiseNinja(hero)
 		end)
 
 		Timers:CreateTimer(20, function()
-			GameRules:SendCustomMessage(" ", 0, 0)
-			GameRules:SendCustomMessage("Use the -unstuck command if you are unable to move.", 0, 0)
+			GameRules:SendCustomMessage("Commands:", 0, 0)
+			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
+			GameRules:SendCustomMessage("-toggleanimation : Toggle between sliding animation", 0, 0)
+			GameRules:SendCustomMessage("-stopmusic : Stops Music (Player 0 'Blue' Only)", 0, 0)
+			GameRules:SendCustomMessage("-playmusic : Starts Music (Player 0 'Blue' Only)", 0, 0)
 		end)
 	end
 
