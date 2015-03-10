@@ -1,4 +1,4 @@
-"SlideNinjaSlide.NumbEncore" //
+"SlideNinjaSlide.NumbEncore"
 {
         "operator_stacks"
         {
@@ -7,7 +7,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_3d"
+                                "reference_stack"               "src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -19,35 +19,272 @@
                                         }
                                         "volume_min"
                                         {
-                                                "value"         "1.500000"
+                                                "value"         "1.000000"
                                         }
                                         "volume_max"
                                         {
-                                                "value"         "1.500000"
+                                                "value"         "1.000000"
                                         }
                                         "pitch_min"
                                         {
-                                                "value"         "1"
+                                                "value"         "1.000000"
                                         }
                                         "pitch_max"
                                         {
-                                                "value"         "1"
+                                                "value"         "1.000000"
                                         }
                                         "chan_type"
                                         {
-                                                "value"         "6"
+                                                "value"         "0"
                                         }
                                         "memory_type"
                                         {
                                                 "value"         "0"
                                         }
-                                        "soundlevel_min"
+                                }
+                        }
+                }
+        }
+}
+
+"SlideNinjaSlide.Faint"
+{
+        "operator_stacks"
+        {
+                "update_stack"
+                {
+                        "reference_operator"
+                        {
+                                "operator"              "sos_reference_stack"
+                                "reference_stack"               "src1_2d"
+                                "operator_variables"
+                                {
+                                        "vsnd_files"
                                         {
-                                                "value"         "100.000000"
+                                                "value"
+                                                {
+                                                        "value0"                "sounds/faint.vsnd"
+                                                }
                                         }
-                                        "soundlevel_max"
+                                        "volume_min"
                                         {
-                                                "value"         "100.000000"
+                                                "value"         "1.200000"
+                                        }
+                                        "volume_max"
+                                        {
+                                                "value"         "1.200000"
+                                        }
+                                        "pitch_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "chan_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                        "memory_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+"SlideNinjaSlide.TheHellSong"
+{
+        "operator_stacks"
+        {
+                "update_stack"
+                {
+                        "reference_operator"
+                        {
+                                "operator"              "sos_reference_stack"
+                                "reference_stack"               "src1_2d"
+                                "operator_variables"
+                                {
+                                        "vsnd_files"
+                                        {
+                                                "value"
+                                                {
+                                                        "value0"                "sounds/the_hell_song.vsnd"
+                                                }
+                                        }
+                                        "volume_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "volume_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "chan_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                        "memory_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+"SlideNinjaSlide.Numb"
+{
+        "operator_stacks"
+        {
+                "update_stack"
+                {
+                        "reference_operator"
+                        {
+                                "operator"              "sos_reference_stack"
+                                "reference_stack"               "src1_2d"
+                                "operator_variables"
+                                {
+                                        "vsnd_files"
+                                        {
+                                                "value"
+                                                {
+                                                        "value0"                "sounds/numb.vsnd"
+                                                }
+                                        }
+                                        "volume_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "volume_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "chan_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                        "memory_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+"SlideNinjaSlide.InTheEnd"
+{
+        "operator_stacks"
+        {
+                "update_stack"
+                {
+                        "reference_operator"
+                        {
+                                "operator"              "sos_reference_stack"
+                                "reference_stack"               "src1_2d"
+                                "operator_variables"
+                                {
+                                        "vsnd_files"
+                                        {
+                                                "value"
+                                                {
+                                                        "value0"                "sounds/in_the_end.vsnd"
+                                                }
+                                        }
+                                        "volume_min"
+                                        {
+                                                "value"         "1.200000"
+                                        }
+                                        "volume_max"
+                                        {
+                                                "value"         "1.200000"
+                                        }
+                                        "pitch_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "chan_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                        "memory_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+"SlideNinjaSlide.EverytimeWeTouch"
+{
+        "operator_stacks"
+        {
+                "update_stack"
+                {
+                        "reference_operator"
+                        {
+                                "operator"              "sos_reference_stack"
+                                "reference_stack"               "src1_2d"
+                                "operator_variables"
+                                {
+                                        "vsnd_files"
+                                        {
+                                                "value"
+                                                {
+                                                        "value0"                "sounds/everytime_we_touch.vsnd"
+                                                }
+                                        }
+                                        "volume_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "volume_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_min"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "pitch_max"
+                                        {
+                                                "value"         "1.000000"
+                                        }
+                                        "chan_type"
+                                        {
+                                                "value"         "0"
+                                        }
+                                        "memory_type"
+                                        {
+                                                "value"         "0"
                                         }
                                 }
                         }

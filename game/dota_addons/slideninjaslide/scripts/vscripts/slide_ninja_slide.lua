@@ -263,15 +263,11 @@ function GameMode:InitGameMode()
 		table.insert(SpawnPoints, v:GetAbsOrigin())
 	end
 
-	self.songs = {
-		[1] = {"SlideNinjaSlide.NumbEncore", 2*60+17 },
-	}
-
 	self.Thinker = Timers:CreateTimer(function()
 		return self:OnThink()
 	end)
 
-
+	MusicPlayer:Init("scripts/music.kv") 
 
 	print('[SNS] Loading complete!')
 end
@@ -300,8 +296,15 @@ function GameMode:CaptureGameMode()
 		print("[SNS] CaptureGameMode")
 		mode = GameRules:GetGameModeEntity()
 	--	mode:SetFogOfWarDisabled( true ) BROKEN-not working on particles -> using ent_fov_revealer in hammer
+
+		-- Hide some HUD elements
+		--mode:SetHUDVisible(DOTA_HUD_VISIBILITY_TOP_HEROES, false)
+		mode:SetHUDVisible(DOTA_HUD_VISIBILITY_TOP_SCOREBOARD, false)
+		--mode:SetHUDVisible(DOTA_HUD_VISIBILITY_INVENTORY_COURIER, false) -- no courier
 	--	mode:SetRecommendedItemsDisabled( RECOMMENDED_BUILDS_DISABLED ) BROKEN use entry below
 		mode:SetHUDVisible( DOTA_HUD_VISIBILITY_SHOP_SUGGESTEDITEMS, false ) 
+		--mode:SetHUDVisible(8, false)
+
 		mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
 		mode:SetBuybackEnabled( BUYBACK_ENABLED )
 		mode:SetUseCustomHeroLevels( USE_CUSTOM_HERO_LEVELS )
@@ -451,42 +454,6 @@ function GameMode:OnAbilityUsed(keys)
 	end
 end
 
-function GameMode:PlaySongs()
-	if self.playSongs then
-		return
-	end
-
-	SendToConsole('stopsound')
-	self.playSongs = true
-
-	if self.songsTimer ~= nil then
-		Timers:RemoveTimer(self.songsTimer)
-	end
-	self.songsTimer = Timers:CreateTimer({
-		useGameTime = false,
-		callback = function()
-		if not self.playSongs then
-			return nil
-		end
-
-		if self.unplayedSongs == nil or #self.unplayedSongs == 0 then
-			self.unplayedSongs = shallowcopy(self.songs)
-		end
-
-		local songIndex = math.random(#self.unplayedSongs)
-		--print("Playing song " .. songIndex)
-		EmitGlobalSound(self.unplayedSongs[songIndex][1])
-		--EmitSoundOnClient(self.unplayedSongs[songIndex][1], PlayerResource:GetPlayer(0))
-		print("Playing song: " .. self.unplayedSongs[songIndex][1])
-		self.currentSong = self.unplayedSongs[songIndex][1]
-		--EmitGlobalSound(hero.unplayedSongs[songIndex][1])
-		-- play until the length of the song is up.
-		local timeTillOver = self.unplayedSongs[songIndex][2]
-		table.remove(self.unplayedSongs, songIndex)
-		return timeTillOver+4
-	end})
-end
-
 --[[
   This function is called once and only once for every player when they spawn into the game for the first time.  It is also called
   if the player's hero is replaced with a new hero for any reason.  This function is useful for initializing heroes, such as adding
@@ -589,19 +556,6 @@ function GameMode:PlayerSay(keys)
 
 	if string.find(keys.text, "^-unstuck") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
-	end
-
-	if string.find(keys.text, "^-stopmusic") and plyID == 0 then
-		SendToConsole('stopsound')
-		self.playSongs = false
-		if self.songsTimer ~= nil then
-			Timers:RemoveTimer(self.songsTimer)
-		end
-		print("Music Stopped: " .. self.currentSong)
-	end
-
-	if string.find(keys.text, "^-playmusic") and plyID == 0 then
-		GameMode:PlaySongs()
 	end
 
 	if string.find(keys.text, "^-toggleanimation") and not hero.slide then
@@ -1087,10 +1041,12 @@ function GameMode:InitialiseNinja(hero)
 		self.firstTime = true
 		Timers:CreateTimer(5, function()
 			if not DEBUG then
-				self:PlaySongs()
+				--MusicPlayer:AttachMusicPlayer( hero.player )
 			end
 		end)
-		
+
+		MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
+
 		Timers:CreateTimer(4, function()
 			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide!", 0, 0)
 			GameRules:SendCustomMessage("Main Developer & Mapper: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
@@ -1103,8 +1059,6 @@ function GameMode:InitialiseNinja(hero)
 			GameRules:SendCustomMessage("Commands:", 0, 0)
 			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
 			GameRules:SendCustomMessage("-toggleanimation : Toggle between sliding animation", 0, 0)
-			GameRules:SendCustomMessage("-stopmusic : Stops Music (Player 0 'Blue' Only)", 0, 0)
-			GameRules:SendCustomMessage("-playmusic : Starts Music (Player 0 'Blue' Only)", 0, 0)
 		end)
 	end
 
@@ -1137,7 +1091,7 @@ function GameMode:InitialiseNinja(hero)
 		hero.id = hero:GetPlayerID()
 		hero.player = PlayerResource:GetPlayer(hero:GetPlayerID())
 		hero.playerName = PlayerResource:GetPlayerName(hero:GetPlayerID())
-
+		
 		-- Whitespace for scoreboard alignment.
 		local whitespace = ""
 		for i=1, 24-string.len(hero.playerName) do

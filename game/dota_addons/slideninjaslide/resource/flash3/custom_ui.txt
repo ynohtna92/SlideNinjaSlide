@@ -2,8 +2,8 @@
 {
     "1"
     {
-        "File"      "CustomUI" //YOUR MAIN UI ELEMENT(s) AS REQUIRED
-        "Depth"     "51"
+        "File"      "CustomUI"
+        "Depth"     "50"
     }
     "2"
     {

@@ -1,11 +1,10 @@
--- Generated from template
--- module_loader by Adynathos.
 BASE_MODULES = {
 	'util',
 	'timers',
 	'physics',
 	--colliders_test,
 	'lib.statcollection',
+	'music_player',
 	'slide_ninja_slide',
 	'wolves',
 }
@@ -27,15 +26,6 @@ end
 for i, mod_name in pairs(BASE_MODULES) do
 	load_module(mod_name)
 end
-
---require('util')
---require('physics')
---require('slide_ninja_slide')
---require('wolves')
-
---[[if CAddonTemplateGameMode == nil then
-	CAddonTemplateGameMode = class({})
-end]]
 
 function Precache( context )
 	--[[
