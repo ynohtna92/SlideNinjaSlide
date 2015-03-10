@@ -27,7 +27,9 @@ function MusicPlayer:Init(musicKV)
 		--get the player that sent the command
 		local cmdPlayer = Convars:GetCommandClient()
 		if cmdPlayer and cmdPlayer.musicPlayer ~= nil then
-			--print("btnName: " .. btnName)
+			if MusicPlayer.DEBUG then
+				print("btnName: " .. btnName)
+			end
 			if btnName == "loop" then
 				cmdPlayer:LoopSong()
 			elseif btnName == "play" then
@@ -168,7 +170,9 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 
 		if mp.loopSong then
 			-- simply play the same song again.
-			print("Loop detected. Playing " .. mp.currentSong .. " again.")
+			if MusicPlayer.DEBUG then
+				print("Loop detected. Playing " .. mp.currentSong .. " again.")
+			end
 			setCurrentSong(mp.currentSong)
 			EmitSoundOnClient(mp.currentSong, hPlayer)
 			return
@@ -216,7 +220,9 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 				-- could this be a song that hasn't been played yet?
 				mp.songIndex = mp.songIndex + 1
 				songToPlay = mp.unplayedSongs[mp.songIndex]
-				--print("Song index: " .. mp.songIndex)
+				if MusicPlayer.DEBUG then
+					print("Song index: " .. mp.songIndex)
+				end
 				-- We also may have went over the end of the unplayedSongs table.
 				if songToPlay == nil then
 					-- Get a new list of shuffled unplayed songs.
@@ -267,6 +273,8 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 
 	hPlayer:PlayMusic()
 end
+
+-- ******************* UTILITY FUNCTIONS *******************
 
 -- shuffle function from: https://github.com/xfbs/PiL3/blob/master/18MathLibrary/shuffle.lua
 -- doesn't use a while loop
