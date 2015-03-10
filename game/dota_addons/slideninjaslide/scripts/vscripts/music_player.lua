@@ -27,7 +27,7 @@ function MusicPlayer:Init(musicKV)
 		--get the player that sent the command
 		local cmdPlayer = Convars:GetCommandClient()
 		if cmdPlayer and cmdPlayer.musicPlayer ~= nil then
-			print("btnName: " .. btnName)
+			--print("btnName: " .. btnName)
 			if btnName == "loop" then
 				cmdPlayer:LoopSong()
 			elseif btnName == "play" then
@@ -216,7 +216,7 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 				-- could this be a song that hasn't been played yet?
 				mp.songIndex = mp.songIndex + 1
 				songToPlay = mp.unplayedSongs[mp.songIndex]
-				print("Song index: " .. mp.songIndex)
+				--print("Song index: " .. mp.songIndex)
 				-- We also may have went over the end of the unplayedSongs table.
 				if songToPlay == nil then
 					-- Get a new list of shuffled unplayed songs.
