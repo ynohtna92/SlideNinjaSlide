@@ -151,6 +151,7 @@ function GameMode:InitGameMode()
 	self.nCurrentRound = 1
 	self.nMaxRounds = ROUNDS
 	self.livesUsed = 0
+	self.infinite = false
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -198,14 +199,14 @@ function GameMode:InitGameMode()
 	self.guardboxes = {}
 
 	self.guardsxyz = {}
-	self.guardsxyz[1] = {2560, 2275, 512, -2900, 2590, 0} -- 1 bottom / GOOD
-	self.guardsxyz[2] = {2900, 3502, 512, -2900, 3300, 0} -- 1 top / GOOD
-	self.guardsxyz[3] = {2585, 2597, 512, 2280, -2580, 0} -- 2 left / GOOD
-	self.guardsxyz[4] = {3478, 2900, 512, 3300, -2900, 0} -- 2 right / GOOD
-	self.guardsxyz[5] = {2900, -3300, 512, -2900, -3476, 0} -- 3 bottom / GOOD
-	self.guardsxyz[6] = {2554, -2280, 512, -2580, -2580, 0} -- 3 top / GOOD
-	self.guardsxyz[7] = {-3300, 1876, 512, -3476, -2900, 0} -- 4 left / GOOD
-	self.guardsxyz[8] = {-2280, 1710, 512, -2580, -2304, 0} -- 4 right / GOOD
+	self.guardsxyz[1] = {2560, 2275, 512, -2900, 2590, 0} -- 1 bottom
+	self.guardsxyz[2] = {2900, 3502, 512, -2900, 3300, 0} -- 1 top
+	self.guardsxyz[3] = {2585, 2597, 512, 2280, -2580, 0} -- 2 left
+	self.guardsxyz[4] = {3478, 2900, 512, 3300, -2900, 0} -- 2 right
+	self.guardsxyz[5] = {2900, -3300, 512, -2900, -3476, 0} -- 3 bottom
+	self.guardsxyz[6] = {2554, -2280, 512, -2580, -2580, 0} -- 3 top
+	self.guardsxyz[7] = {-3300, 1876, 512, -3476, -2900, 0} -- 4 left
+	self.guardsxyz[8] = {-2280, 1710, 512, -2580, -2304, 0} -- 4 right
 	self.guardsxyz[9] = {1792, 1710, 384, -2580, 1380, 0} -- 5 bottom
 	self.guardsxyz[10] = {1792, 1700, 384, 1510, -1700, 0} -- 6 left
 	self.guardsxyz[11] = {1792, -1800, 384, -1792, -1505, 0} -- 7 top
@@ -214,7 +215,7 @@ function GameMode:InitGameMode()
 	self.guardsxyz[14] = {1152, 1040, 384, 870, -1152, 0} -- 10 left
 	self.guardsxyz[15] = {1152, -870, 384, -1152, -1170, 0} -- 11 top
 	self.guardsxyz[16] = {-896, 400, 384, -1170, -1152, 0} -- 12 right
-	self.guardsxyz[17] = {530, 400, 384, -1170, 200, 0} -- 13 bottom
+	self.guardsxyz[17] = {530, 410, 384, -1170, 200, 0} -- 13 bottom
 	self.guardsxyz[18] = {530, 400, 384, 300, -550, 0} -- 14 left
 	self.guardsxyz[19] = {530, -300, 384, -500, -550, 0} -- 15 top
 
@@ -565,6 +566,12 @@ function GameMode:PlayerSay(keys)
 			hero.skateAnimation = "modifier_skatimation_datadriven"
 		end
 	end
+
+	--[[
+	if string.find(keys.text, "^-reset") and plyID == 0 then
+		GameMode:ResetGame()
+	end
+	]]
 end
 
 
@@ -688,6 +695,7 @@ end
 
 function GameMode:HeroRevivied( hero , reviver)
 	-- respawn the ninja
+	hero:SetRespawnPosition(hero.deadPos)
 	hero:RespawnHero(false, false, false)
 	--PlayerResource:SetCameraTarget(hero:GetPlayerID(), hero)
 
@@ -986,6 +994,63 @@ function GameMode:ChanceRound()
 		FireGameEvent("show_center_message",msg)
 	end)
 end
+
+--[[ -- How do you reset the level of a hero?!?!
+function GameMode:ResetGame()
+	Timers:CreateTimer(2, function()
+		local msg = {
+			message = "RESETING GAME",
+			duration = 2.0
+		}
+		FireGameEvent("show_center_message",msg)
+	end)
+
+	-- Reset all ninjas
+	for i,v in  ipairs(SpawnPoints) do
+		local ninja = self.ninjas[i]
+		if ninja ~= nil then
+
+			-- revive dead ninjas
+			if not ninja:IsAlive() then
+				ninja:RespawnHero(false, false, false)
+			end
+
+			FindClearSpaceForUnit(ninja, v, true)
+			-- reset camera pos
+			ninja.player:SetAbsOrigin(v)
+			
+			-- stop moving after ninja teleports
+			ninja:StartPhysicsSimulation()
+			ninja:Stop()
+
+			ninja:SetGold(100, false)
+
+			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
+		end
+	end
+
+	-- Reset Camera of all players
+	SendToConsole("dota_camera_center")
+
+	self.nCurrentRound = 1
+	self.livesUsed = 0
+
+	-- Wipe Wolves
+	for i,v in ipairs(self.wolves) do
+		v:RemoveSelf()
+		table.remove(self.wolves, i)
+	end
+
+	self:PopulateZonesWithWolves()
+
+	-- Move the wolves in true zones only (reduce lag)
+	for i=1,15 do
+		self.wolvesToMove[i] = false
+	end
+	self.wolvesToMove[1] = true
+	GameMode:MoveWolvesInActiveZones()
+end
+]]
 
 function GameMode:CheckIfGameEnd()
 	local gameEnd = true
