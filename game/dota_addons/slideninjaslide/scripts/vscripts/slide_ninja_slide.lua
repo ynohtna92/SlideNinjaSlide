@@ -1,5 +1,5 @@
 --[[
-Last modified: 10/03/2015
+Last modified: 13/03/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "1.0"
+VERSION = "B130215"
 
 ROUNDS = 4
 LIVES = 3
@@ -152,6 +152,7 @@ function GameMode:InitGameMode()
 	self.nMaxRounds = ROUNDS
 	self.livesUsed = 0
 	self.infinite = false
+	self.doubleCheck = false
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -188,6 +189,14 @@ function GameMode:InitGameMode()
 		[8] = "particles/silencer_last_word_status_lightblue/silencer_last_word_status_lightblue.vpcf",
 		[9] = "particles/silencer_last_word_status_green/silencer_last_word_status_green.vpcf",
 		[10] = "particles/silencer_last_word_status_brown/silencer_last_word_status_brown.vpcf",
+	}
+
+	self.roundMessages = {
+		[1] = "",
+		[2] = "You have made it to round 2. Good luck!",
+		[3] = "You have made it to round 3... which is as far as you'll make it. It's been a good run, but now you're so dead...",
+		[4] = "You have made it to the last round. Unfortunately survival is not guarenteed my fellow ninjas.",
+		[5] = "You win. Your parents must be so damn proud.",
 	}
 
 	-- Scoreborad updater
@@ -854,6 +863,7 @@ function GameMode:LevelCompleted( hero )
 			duration = 3.0
 		}
 		FireGameEvent("show_center_message",msg)
+		GameRules:SendCustomMessage("<font color='#FF1493'>".. self.roundMessages[self.nCurrentRound] .."</font>", 0, 0)
 	end)
 end
 
@@ -907,9 +917,11 @@ function GameMode:SpawnItems()
 		self.itemindex = 0
 	end
 	if not (self.items[self.itemindex] == nil) then
-		if (self.items[self.itemindex]:GetContainer() ~= nil) then
-			self.items[self.itemindex]:GetContainer():RemoveSelf()
-			self.items[self.itemindex]:RemoveSelf()
+		if IsValidEntity(self.items[self.itemindex]) then
+			if (self.items[self.itemindex]:GetContainer() ~= nil) then
+				self.items[self.itemindex]:GetContainer():RemoveSelf()
+				self.items[self.itemindex]:RemoveSelf()
+			end
 		end
 	end
 	self.items[self.itemindex] = newItem
@@ -921,6 +933,18 @@ end
 
 -- Called when all heros haved died, providing additional chances to try again
 function GameMode:ChanceRound()
+	-- Double check
+	local gameEnd = true
+	for i,v in ipairs(self.ninjas) do
+		if v:IsAlive() then
+			gameEnd = false
+		end
+	end
+	if not gameEnd then
+		return
+	end
+
+	self.livesUsed = self.livesUsed + 1
 	print('[SNS] Lives Used: ' .. tostring(self.livesUsed))
 	GameRules:SendCustomMessage("<font color='#FF1493'>A chance has been used at the cost of 100G each.</font>", 0, 0)
 
@@ -1062,7 +1086,6 @@ function GameMode:CheckIfGameEnd()
 
 	-- allow extra trys after all ninjas have died
 	if gameEnd and self.livesUsed < LIVES then
-		self.livesUsed = self.livesUsed + 1
 		gameEnd = false
 		Timers:CreateTimer(4, function()
 			GameMode:ChanceRound()
@@ -1113,7 +1136,7 @@ function GameMode:InitialiseNinja(hero)
 		MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
 
 		Timers:CreateTimer(4, function()
-			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide!", 0, 0)
+			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide! [".. VERSION .. "]", 0, 0)
 			GameRules:SendCustomMessage("Main Developer & Mapper: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
 			GameRules:SendCustomMessage("Co-Developers: <font color='#FF1493'>Myll</font> (Coder) & <font color='#FF1493'>StrikerFred</font> (WC3 Developer)", 0, 0)
 			GameRules:SendCustomMessage("Special Thanks: <font color='#FF1493'>BMD & Noya</font> and everyone on IRC", 0, 0)
