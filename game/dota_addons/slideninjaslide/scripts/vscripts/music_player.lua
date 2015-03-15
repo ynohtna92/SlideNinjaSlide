@@ -85,12 +85,16 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 			Timers:RemoveTimer(mp.songTimer)
 		end
 		mp.currSongTime = 0
-		mp.songTimer = Timers:CreateTimer(1, function()
-			mp.currSongTime = mp.currSongTime + 1
-			return 1
-		end)
+		mp.songTimer = Timers:CreateTimer({
+			useGameTime = false,
+			endTime = 1,
+			callback = function()
+				mp.currSongTime = mp.currSongTime + 1
+				return 1
+			end
+		})
 		
-		mp.currSongLength = mp.currSongKV["Minutes"]*60+mp.currSongKV["Seconds"]
+		mp.currSongLength = mp.currSongKV["Seconds"]
 	end
 
 	onRanOutOfSongs()
@@ -153,10 +157,13 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 			end
 			Timers:RemoveTimer(mp.musicTimer)
 		end
-		mp.musicTimer = Timers:CreateTimer(function()
-			hPlayer:PickSong()
-			return mp.currSongLength+2
-		end)
+		mp.musicTimer = Timers:CreateTimer({
+			useGameTime = false,
+			callback = function()
+				hPlayer:PickSong()
+				return mp.currSongLength+2
+			end
+		})
 	end
 
 	-- private. this chooses the next song and plays it
@@ -275,6 +282,21 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 end
 
 -- ******************* UTILITY FUNCTIONS *******************
+
+-- Returns a shallow copy of the passed table.
+function shallowcopy(orig)
+	local orig_type = type(orig)
+	local copy
+	if orig_type == 'table' then
+		copy = {}
+		for orig_key, orig_value in pairs(orig) do
+			copy[orig_key] = orig_value
+		end
+	else -- number, string, boolean, etc
+		copy = orig
+	end
+	return copy
+end
 
 -- shuffle function from: https://github.com/xfbs/PiL3/blob/master/18MathLibrary/shuffle.lua
 -- doesn't use a while loop

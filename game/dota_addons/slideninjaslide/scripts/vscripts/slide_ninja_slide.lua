@@ -1125,15 +1125,7 @@ end
 
 function GameMode:InitialiseNinja(hero)
 	if not self.firstTime then
-		-- Start playing music on first ninja spawn
 		self.firstTime = true
-		Timers:CreateTimer(5, function()
-			if not DEBUG then
-				--MusicPlayer:AttachMusicPlayer( hero.player )
-			end
-		end)
-
-		MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
 
 		Timers:CreateTimer(4, function()
 			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide! [".. VERSION .. "]", 0, 0)
@@ -1193,6 +1185,11 @@ function GameMode:InitialiseNinja(hero)
 		GameMode:MakeLabelForPlayer( hero )
 
 		table.insert(self.ninjas, hero)
+
+		-- attach music player to this player ent
+		Timers:CreateTimer(5, function()
+			MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
+		end)
 
 		-- We this so this function will not be called when a hero is respawned
 		hero.firstTime = true
