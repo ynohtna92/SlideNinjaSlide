@@ -5,6 +5,7 @@ BASE_MODULES = {
 	--colliders_test,
 	'lib.statcollection',
 	'music_player',
+	'score_board',
 	'slide_ninja_slide',
 	'wolves',
 }

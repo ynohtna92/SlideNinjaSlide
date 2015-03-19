@@ -29,4 +29,16 @@
     "stat_collection_send"
     {
     }
+
+    "cgm_scoreboard_update_user"
+    {
+        "playerID"      "byte"
+        "playerName"    "string"
+    }
+
+    "cgm_scoreboard_update_score"
+    {
+        "playerID"      "byte"
+        "playerScore"    "long"
+    }
 }

@@ -156,6 +156,27 @@ function ColorIt( sStr, sColor )
 		color = "FF00FF"
 	elseif sColor == "teal" then
 		color = "008080"
+	-- Player Colors
+	elseif sColor == "0" then
+		color = "3164DA"
+	elseif sColor == "1" then
+		color = "57E19A"
+	elseif sColor == "2" then
+		color = "AA00A0"
+	elseif sColor == "3" then
+		color = "D3CB14"
+	elseif sColor == "4" then
+		color = "D65705"
+	elseif sColor == "5" then
+		color = "D26496"
+	elseif sColor == "6" then
+		color = "829650"
+	elseif sColor == "7" then
+		color = "64BEC8"
+	elseif sColor == "8" then
+		color = "056E32"
+	elseif sColor == "9" then
+		color = "825005"
 	end
 	return "<font color='#" .. color .. "'>" .. sStr .. "</font>"
 end

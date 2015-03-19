@@ -164,16 +164,16 @@ function GameMode:InitGameMode()
 
 	-- PLAYER COLORS
 	self.m_TeamColors = {}
-	self.m_TeamColors[0] = { 50, 100, 220 } -- 49:100:218
-	self.m_TeamColors[1] = { 90, 225, 155 } -- 87:224:154
-	self.m_TeamColors[2] = { 170, 0, 160 } -- 171:0:156
-	self.m_TeamColors[3] = { 210, 200, 20 } -- 211:203:16
-	self.m_TeamColors[4] = { 215, 90, 5 } -- 214:87:8
-	self.m_TeamColors[5] = { 210, 100, 150 } -- 210:97:153
-	self.m_TeamColors[6] = { 130, 150, 80 } -- 130:154:80
-	self.m_TeamColors[7] = { 100, 190, 200 } -- 99:188:206
-	self.m_TeamColors[8] = { 5, 110, 50 } -- 7:109:44
-	self.m_TeamColors[9] = { 130, 80, 5 } -- 124:75:6
+	self.m_TeamColors[0] = { 50, 100, 220 } -- 49:100:218 / #3164DA
+	self.m_TeamColors[1] = { 90, 225, 155 } -- 87:224:154 / #57E19A
+	self.m_TeamColors[2] = { 170, 0, 160 } -- 171:0:156 / #AA00A0
+	self.m_TeamColors[3] = { 210, 200, 20 } -- 211:203:16 / #D3CB14
+	self.m_TeamColors[4] = { 215, 90, 5 } -- 214:87:8 / #D65705
+	self.m_TeamColors[5] = { 210, 100, 150 } -- 210:97:153 / #D26496
+	self.m_TeamColors[6] = { 130, 150, 80 } -- 130:154:80 / #829650
+	self.m_TeamColors[7] = { 100, 190, 200 } -- 99:188:206 / #64BEC8
+	self.m_TeamColors[8] = { 5, 110, 50 } -- 7:109:44 / #056E32
+	self.m_TeamColors[9] = { 130, 80, 5 } -- 124:75:6 / #825005
 
 	self.whitespace = {}
 
@@ -199,11 +199,12 @@ function GameMode:InitGameMode()
 		[5] = "You win. Your parents must be so damn proud.",
 	}
 
-	-- Scoreborad updater
+	--[[ Scoreborad updater
 	self.scoreTimer = Timers:CreateTimer(2, function()
 		self:UpdateScoreboard()
 		return 0.5
 	end)
+	]]
 
 	self.guardboxes = {}
 
@@ -278,6 +279,7 @@ function GameMode:InitGameMode()
 	end)
 
 	MusicPlayer:Init("scripts/music.kv") 
+	ScoreBoard:Init()
 
 	print('[SNS] Loading complete!')
 end
@@ -670,6 +672,8 @@ function GameMode:HeroKilled( hero )
 	-- Update score
 	hero.score = hero.score - 1
 
+	ScoreBoard:ScoreUpdate(hero)
+
 	-- particle effect repetition
 	Timers:CreateTimer(function()
 		-- particles just run once
@@ -744,6 +748,8 @@ function GameMode:HeroRevivied( hero , reviver)
 	reviver:AddExperience(50, false, false)
 	reviver.score = reviver.score + 1
 
+	ScoreBoard:ScoreUpdate(reviver)
+
 	-- give split second of invulnerability
 	hero.isInvuln = true
 	Timers:CreateTimer(.3, function()
@@ -790,6 +796,8 @@ function GameMode:LevelCompleted( hero )
 	hero.score = hero.score + 5
 	hero:SetGold(hero:GetGold() + GOLD_BONUS_ROUND_WINNER, false)
 	hero:AddExperience(EXP_BONUS_ROUND_WINNER, false, false)
+
+	ScoreBoard:ScoreUpdate(hero)
 	--print(GameMode:GetNinja(hero:GetPlayerID()).score)
 
 	-- reward team
@@ -1171,6 +1179,8 @@ function GameMode:InitialiseNinja(hero)
 		hero.id = hero:GetPlayerID()
 		hero.player = PlayerResource:GetPlayer(hero:GetPlayerID())
 		hero.playerName = PlayerResource:GetPlayerName(hero:GetPlayerID())
+
+		ScoreBoard:PlayerUpdate(hero)
 		
 		-- Whitespace for scoreboard alignment.
 		local whitespace = ""
