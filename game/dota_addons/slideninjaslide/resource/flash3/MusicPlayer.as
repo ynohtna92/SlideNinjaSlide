@@ -113,14 +113,15 @@
 		public function screenResize(stageW:int, stageH:int, xScale:Number, yScale:Number, wide:Boolean){
 			
 			trace("Stage Size: ",stageW,stageH);
-						
-			this.x = this.x*yScale;
-			this.x += 1/6*this.x
-			this.y = this.y*yScale;
-			this.y += 1/4*this.y
+			
+			this.x = 60*yScale;
+			this.y = 70*yScale;
 			
 			trace("#Result Resize: ",this.x,this.y,yScale);
-					 
+
+			this.width = this.width*yScale*1/4;
+			this.height	 = this.height*yScale*1/4;
+			
 			//Now we just set the scale of this element, because these parameters are already the inverse ratios
 			this.scaleX = xScale*1/4;
 			this.scaleY = yScale*1/4;
