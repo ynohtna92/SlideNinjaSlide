@@ -306,7 +306,7 @@
 			this.players[args.playerID].id = args.playerID;
 			
 			this.nameLabels[args.playerID].htmlText = args.playerName;
-			if (args.playerID = pID)
+			if (args.playerID == pID)
 				this.sbP.htmlText = args.playerName;
 			sortScoreBoard();
 			scoreBoardShow(players_no);
