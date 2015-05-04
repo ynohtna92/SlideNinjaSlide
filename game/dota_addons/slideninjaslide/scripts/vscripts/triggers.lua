@@ -56,6 +56,9 @@ end
 
 function OnEndTouchIce (trigger)
 	print("End Ice")
+	if not trigger.activator then
+		return
+	end
 	if not trigger.activator.slide or trigger.activator:HasModifier("thaw_aura") then
 		return
 	end

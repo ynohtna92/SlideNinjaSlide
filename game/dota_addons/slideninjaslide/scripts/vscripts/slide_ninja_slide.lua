@@ -1,5 +1,5 @@
 --[[
-Last modified: 13/03/2015
+Last modified: 04/05/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B290315"
+VERSION = "B040515"
 
 ROUNDS = 4
 LIVES = 3
@@ -153,6 +153,8 @@ function GameMode:InitGameMode()
 	self.livesUsed = 0
 	self.infinite = false
 	self.doubleCheck = false
+	self.canReset = false
+	self.noReset = false -- Used to run things that should only be run once per player EVER!
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -477,17 +479,9 @@ function GameMode:OnHeroInGame(hero)
 	print("[SNS] Hero spawned in the game for the first time -- " .. hero:GetUnitName())
 	local className = hero:GetClassname()
 
-	ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", "#slideninjaslide_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
-
-	-- Display new round message
-	-- short pause before this text appears.
-	Timers:CreateTimer(5, function()
-		local msg = {
-			message = "ROUND " .. self.nCurrentRound,
-			duration = 3.0
-		}
-		FireGameEvent("show_center_message",msg)
-	end)
+	if not self.noReset then
+		ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", "#slideninjaslide_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
+	end
 
 	if DEBUG then
 		hero:SetGold(STARTING_GOLD, false)
@@ -578,11 +572,14 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	--[[
-	if string.find(keys.text, "^-reset") and plyID == 0 then
-		GameMode:ResetGame()
+	if string.find(keys.text, "^-reset") and plyID == GetListenServerHost():GetPlayerID() then
+		if self.canReset then
+			self.noReset = true
+			self.resetting = true
+			GameMode:ResetGame()
+			self.canReset = false
+		end
 	end
-	]]
 end
 
 
@@ -675,10 +672,10 @@ function GameMode:HeroKilled( hero )
 	ScoreBoard:ScoreUpdate(hero)
 
 	-- particle effect repetition
-	Timers:CreateTimer(function()
+	hero.haloTimer = Timers:CreateTimer(function()
 		-- particles just run once
 		if hero.halo == nil then
-			print("Creating Particles: "..self.haloParticles[hero:GetPlayerID()+1])
+			--print("Creating Particles: "..self.haloParticles[hero:GetPlayerID()+1])
 			--hero.halo = ParticleManager:CreateParticle(self.haloParticles[hero:GetPlayerID()+1], PATTACH_ABSORIGIN, hero)
 			hero.halo = ParticleManager:CreateParticle(self.haloParticles[hero:GetPlayerID()+1], PATTACH_ABSORIGIN, hero)
 			--hero.halo = ParticleManager:CreateParticle("particles/units/heroes/hero_silencer/silencer_last_word.vpcf", PATTACH_ABSORIGIN, hero)
@@ -1027,9 +1024,8 @@ function GameMode:ChanceRound()
 	end)
 end
 
---[[ -- How do you reset the level of a hero?!?!
 function GameMode:ResetGame()
-	Timers:CreateTimer(2, function()
+	Timers:CreateTimer(1, function()
 		local msg = {
 			message = "RESETING GAME",
 			duration = 2.0
@@ -1038,26 +1034,15 @@ function GameMode:ResetGame()
 	end)
 
 	-- Reset all ninjas
-	for i,v in  ipairs(SpawnPoints) do
-		local ninja = self.ninjas[i]
+	local temp = self.ninjas
+	self.ninjas = {}
+	for i,v in ipairs(SpawnPoints) do
+		local ninja = temp[i]
 		if ninja ~= nil then
-
-			-- revive dead ninjas
-			if not ninja:IsAlive() then
-				ninja:RespawnHero(false, false, false)
+			if ninja.haloTimer ~= nil then
+				Timers:RemoveTimer(ninja.haloTimer)
 			end
-
-			FindClearSpaceForUnit(ninja, v, true)
-			-- reset camera pos
-			ninja.player:SetAbsOrigin(v)
-			
-			-- stop moving after ninja teleports
-			ninja:StartPhysicsSimulation()
-			ninja:Stop()
-
-			ninja:SetGold(100, false)
-
-			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
+			PlayerResource:ReplaceHeroWith(ninja.id, "npc_dota_hero_antimage", 0, 0)
 		end
 	end
 
@@ -1067,11 +1052,22 @@ function GameMode:ResetGame()
 	self.nCurrentRound = 1
 	self.livesUsed = 0
 
-	-- Wipe Wolves
+	Timers:CreateTimer(5, function()
+		local msg = {
+			message = "ROUND " .. self.nCurrentRound,
+			duration = 3.0
+		}
+		FireGameEvent("show_center_message",msg)
+	end)
+
+	-- Clear Wolves
 	for i,v in ipairs(self.wolves) do
+		if v.randomMoveTimer ~= nil then
+			Timers:RemoveTimer(v.randomMoveTimer)
+		end
 		v:RemoveSelf()
-		table.remove(self.wolves, i)
 	end
+	self.wolves = {}
 
 	self:PopulateZonesWithWolves()
 
@@ -1082,7 +1078,6 @@ function GameMode:ResetGame()
 	self.wolvesToMove[1] = true
 	GameMode:MoveWolvesInActiveZones()
 end
-]]
 
 function GameMode:CheckIfGameEnd()
 	local gameEnd = true
@@ -1101,18 +1096,24 @@ function GameMode:CheckIfGameEnd()
 	end
 
 	if gameEnd then
-		print("[SNS] The Players have lost the game! Starting finishing sequence.")
+		print("[SNS] The Players have lost the game! Starting reset/finishing sequence.")
 		GameRules:SendCustomMessage("<font color='#FF1493'>All ninjas have fallen!</font>", 0, 0)
 		local msg = {
 			message = "YOU'VE LOST!",
 			duration = 3.0
 		}
 		FireGameEvent("show_center_message",msg)
-		Timers:CreateTimer(3, function()
-			GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
-			GameRules:SetSafeToLeave( true )
+
+		self.canReset = true
+		Timers:CreateTimer(15, function()
+			if not self.resetting then
+				GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
+				GameRules:SetSafeToLeave( true )
+			end
+			self.resetting = false
 		end)
 		self:EndMessage()
+		GameRules:SendCustomMessage("To reset the game the host must type <font color='#AEAEAE'>-reset</font> within 15 seconds.", 0, 0)
 	end
 end
 
@@ -1135,6 +1136,14 @@ function GameMode:InitialiseNinja(hero)
 	if not self.firstTime then
 		self.firstTime = true
 
+		Timers:CreateTimer(5, function()
+			local msg = {
+				message = "ROUND " .. self.nCurrentRound,
+				duration = 3.0
+			}
+			FireGameEvent("show_center_message",msg)
+		end)
+
 		Timers:CreateTimer(4, function()
 			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide! [".. VERSION .. "]", 0, 0)
 			GameRules:SendCustomMessage("Main Developer & Mapper: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
@@ -1151,6 +1160,12 @@ function GameMode:InitialiseNinja(hero)
 	end
 
 	if not hero.firstTime then
+		if not self.noReset then
+			-- attach music player to this player ent
+			Timers:CreateTimer(5, function()
+				MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
+			end)
+		end
 		Physics:Unit(hero)
 		hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
 		hero:SetGroundBehavior (PHYSICS_GROUND_LOCK)
@@ -1181,6 +1196,7 @@ function GameMode:InitialiseNinja(hero)
 		hero.playerName = PlayerResource:GetPlayerName(hero:GetPlayerID())
 
 		ScoreBoard:PlayerUpdate(hero)
+		ScoreBoard:ScoreUpdate(hero)
 		
 		-- Whitespace for scoreboard alignment.
 		local whitespace = ""
@@ -1195,11 +1211,6 @@ function GameMode:InitialiseNinja(hero)
 		GameMode:MakeLabelForPlayer( hero )
 
 		table.insert(self.ninjas, hero)
-
-		-- attach music player to this player ent
-		Timers:CreateTimer(5, function()
-			MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
-		end)
 
 		-- We this so this function will not be called when a hero is respawned
 		hero.firstTime = true
