@@ -232,7 +232,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
-		"AbilityTextureName"			"item_greater_salve"
+		"AbilityTextureName"			"item_potion_of_speed"
 		"Model"							"models/props_gameplay/salve_red.mdl"
 
 		// Stats		
@@ -321,7 +321,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
-		"AbilityTextureName"			"item_greater_clarity"
+		"AbilityTextureName"			"item_potion_of_mana"
 		"Model"							"models/props_gameplay/salve_blue.mdl"
 
 		// Stats		
@@ -480,6 +480,7 @@
 		"ID"                            "1020"  // unique ID number for this item.  Do not change this once 
 		"BaseClass"                     "item_datadriven"
 		"ItemBaseLevel"                 "1"
+		"ItemPurchasable"				"0"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
