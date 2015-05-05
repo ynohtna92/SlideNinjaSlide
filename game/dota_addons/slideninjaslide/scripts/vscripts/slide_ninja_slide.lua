@@ -155,6 +155,7 @@ function GameMode:InitGameMode()
 	self.doubleCheck = false
 	self.canReset = false
 	self.noReset = false -- Used to run things that should only be run once per player EVER!
+	self.noChance = false -- Toggle game chances
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -578,6 +579,16 @@ function GameMode:PlayerSay(keys)
 			self.resetting = true
 			GameMode:ResetGame()
 			self.canReset = false
+		end
+	end
+
+	if string.find(keys.text, "^-nochance") and plyID == GetListenServerHost():GetPlayerID() then
+		if self.noChance then
+			GameRules:SendCustomMessage("Chances Enabled!", 0, 0)
+			self.noChance = false
+		else
+			GameRules:SendCustomMessage("Chances Disabled!", 0, 0)
+			self.noChance = true
 		end
 	end
 end
@@ -1088,7 +1099,7 @@ function GameMode:CheckIfGameEnd()
 	end
 
 	-- allow extra trys after all ninjas have died
-	if gameEnd and self.livesUsed < LIVES then
+	if gameEnd and not self.noChance and self.livesUsed < LIVES then
 		gameEnd = false
 		Timers:CreateTimer(4, function()
 			GameMode:ChanceRound()
@@ -1107,6 +1118,7 @@ function GameMode:CheckIfGameEnd()
 		self.canReset = true
 		Timers:CreateTimer(15, function()
 			if not self.resetting then
+				self.canReset = false
 				GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
 				GameRules:SetSafeToLeave( true )
 			end
@@ -1156,6 +1168,7 @@ function GameMode:InitialiseNinja(hero)
 			GameRules:SendCustomMessage("Commands:", 0, 0)
 			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
 			GameRules:SendCustomMessage("-toggleanimation : Toggle between sliding animation", 0, 0)
+			GameRules:SendCustomMessage("-nochance : Toggle chances enabled/disabled (Host Only)", 0, 0)
 		end)
 	end
 
