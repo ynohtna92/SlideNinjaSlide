@@ -9,12 +9,54 @@
 	"npc_dota_hero_antimage_template"
 	{
 		"AbilityLayout"				"4"
-		"ModelScale"				".8"
+		"ModelScale"				"0.8"
 		"override_hero"				"npc_dota_hero_antimage"					// Hero to override
 		"Ability1"					"antimage_leap_of_faith"					// Ability 1
 		"Ability2"					"antimage_thaw"								// Ability 2
 		"Ability3"					"antimage_entangling_roots"					// Ability 3
 		"Ability4"					"antimage_brilliance_aura"					// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"18"										// Base strength
+		"AttributeStrengthGain"		"1.9"										// Strength bonus per level.
+		"AttributeBaseIntelligence"	"15"										// Base intelligence
+		"AttributeIntelligenceGain"	"2.6"										// Intelligence bonus per level.
+		"AttributeBaseAgility"		"30"										// Base agility
+		"AttributeAgilityGain"		"1.5"										// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	"npc_hero_spongebob"
+	{
+		"AbilityLayout"				"4"
+		"Model"						"models/spongebob/spongebob.vmdl"
+		"ModelScale"				"1.2"
+		"ItemSlots"
+		{}
+
+		"override_hero"				"npc_dota_hero_rattletrap"					// Hero to override
+		"Ability1"					"spongebob_leap_of_faith"					// Ability 1
+		"Ability2"					"antimage_thaw"								// Ability 2
+		"Ability3"					"spongebob_bite_of_freeze"					// Ability 3
+		"Ability4"					"spongebob_tokyo_drift"						// Ability 4
 		"Ability5"					""
 		"Ability6"					""
 		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards

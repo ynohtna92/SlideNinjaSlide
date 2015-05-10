@@ -6,5 +6,6 @@
 "CustomHeroList"
 {
 	"npc_dota_hero_antimage" "1"
+//	"npc_dota_hero_rattletrap"	"1"
 //	"npc_dota_hero_terrorblade" "1"
 }

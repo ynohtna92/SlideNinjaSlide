@@ -198,8 +198,14 @@ function GameMode:InitGameMode()
 		[1] = "",
 		[2] = "You have made it to round 2. Good luck!",
 		[3] = "You have made it to round 3... which is as far as you'll make it. It's been a good run, but now you're so dead...",
-		[4] = "You have made it to the last round. Unfortunately survival is not guarenteed my fellow ninjas.",
+		[4] = "You have made it to the last round. Unfortunately survival is not guarenteed my fellow heros.",
 		[5] = "You win. Your parents must be so damn proud.",
+	}
+
+	self.gameTheme = 1
+	self.gameHeros = {
+		[1] = {'npc_dota_hero_antimage', 'npc_wolf'},
+		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs'},
 	}
 
 	--[[ Scoreborad updater
@@ -325,7 +331,7 @@ function GameMode:CaptureGameMode()
 		mode:SetUseCustomHeroLevels( USE_CUSTOM_HERO_LEVELS )
 		mode:SetCustomHeroMaxLevel( MAX_LEVEL )
 		mode:SetCustomXPRequiredToReachNextLevel( XP_PER_LEVEL_TABLE )
-
+		
 		GameMode:OnFirstPlayerLoaded()
 	end
 end
@@ -371,7 +377,7 @@ function GameMode:OnNPCSpawned(keys)
 	--PrintTable(keys)
 	local npc = EntIndexToHScript(keys.entindex)
 
-	if npc:IsRealHero() and (npc:GetClassname() == "npc_dota_hero_antimage") then
+	if npc:IsRealHero() and ((npc:GetClassname() == "npc_dota_hero_antimage") or (npc:GetClassname() == "npc_dota_hero_rattletrap")) then
 		Timers:CreateTimer(.4, function()
 			if npc.isNinja ~= nil and npc.isNinja == false then
 				-- we're using a dummy
@@ -412,6 +418,7 @@ function GameMode:OnItemPickedUp( keys )
 			local item = hero:GetItemInSlot(i)
 			if item then
 				if item:GetAbilityName() == itemname then
+					print('Adding xp to '.. keys.PlayerID)
 					-- Remove item to prevent double spending
 					hero:RemoveItem(item)
 					hero:AddExperience(150, false, false)
@@ -479,6 +486,31 @@ end
 function GameMode:OnHeroInGame(hero)
 	print("[SNS] Hero spawned in the game for the first time -- " .. hero:GetUnitName())
 	local className = hero:GetClassname()
+
+	if className == "npc_dota_hero_rattletrap" then
+		print('Removing Wearables')
+		hero.wearableNames = {} -- In here we'll store the wearable names to revert the change
+		hero.hiddenWearables = {} 
+		local wearable = hero:FirstMoveChild()
+		while wearable ~= nil do
+			if wearable:GetClassname() == "dota_item_wearable" then
+				local modelName = wearable:GetModelName()
+				if string.find(modelName, "invisiblebox") == nil then
+					-- Add the original model name to revert later
+					table.insert(hero.wearableNames,modelName)
+					--print("Hidden "..modelName.."")
+
+					-- Set model invisible
+					wearable:SetModel("models/development/invisiblebox.vmdl")
+					table.insert(hero.hiddenWearables,wearable)
+				end
+			end
+			wearable = wearable:NextMovePeer()
+			if model ~= nil then
+				--print("Next Peer:" .. wearable:GetModelName())
+			end
+		end
+	end
 
 	if not self.noReset then
 		ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", "#slideninjaslide_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
@@ -565,7 +597,7 @@ function GameMode:PlayerSay(keys)
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
 	end
 
-	if string.find(keys.text, "^-toggleanimation") and not hero.slide then
+	if (string.find(keys.text, "^-toggleanimation") or string.find(keys.text, "^-ta")) and not hero.slide then
 		if hero.skateAnimation == "modifier_skatimation_datadriven" then
 			hero.skateAnimation = "modifier_skatimation2_datadriven"
 		else
@@ -590,6 +622,26 @@ function GameMode:PlayerSay(keys)
 			GameRules:SendCustomMessage("Chances Disabled!", 0, 0)
 			self.noChance = true
 		end
+	end
+
+	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and plyID == GetListenServerHost():GetPlayerID() then
+		GameRules:SendCustomMessage("SPONGEBOB SQUAREPANTS!", 0, 0)
+		SendToServerConsole( "dota_combine_models 0" )
+		--SendToServerConsole( "dota_wearables_clientside 1" )
+		--SendToConsole( "dota_wearables_clientside -rep" )
+		SendToConsole( "dota_combine_models 0" )
+		self.gameTheme = 2
+		FireGameEvent("show_center_message",msg)
+		Timers:CreateTimer(2,function()
+			self.noReset = true
+			GameMode:ResetGame()
+
+			MusicPlayer:ChangePlaylist("scripts/music_SB.kv")
+			for i,v  in ipairs(self.vUserIds) do
+				print('Updating Playlist')
+				v:UpdateMusicPlaylist( )
+			end
+		end)
 	end
 end
 
@@ -1053,7 +1105,7 @@ function GameMode:ResetGame()
 			if ninja.haloTimer ~= nil then
 				Timers:RemoveTimer(ninja.haloTimer)
 			end
-			PlayerResource:ReplaceHeroWith(ninja.id, "npc_dota_hero_antimage", 0, 0)
+			PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
 		end
 	end
 
@@ -1108,7 +1160,7 @@ function GameMode:CheckIfGameEnd()
 
 	if gameEnd then
 		print("[SNS] The Players have lost the game! Starting reset/finishing sequence.")
-		GameRules:SendCustomMessage("<font color='#FF1493'>All ninjas have fallen!</font>", 0, 0)
+		GameRules:SendCustomMessage("<font color='#FF1493'>All heros have fallen!</font>", 0, 0)
 		local msg = {
 			message = "YOU'VE LOST!",
 			duration = 3.0
@@ -1147,7 +1199,9 @@ end
 function GameMode:InitialiseNinja(hero)
 	if not self.firstTime then
 		self.firstTime = true
-
+		
+		SendToConsole('dota_always_show_player_names 1')
+		
 		Timers:CreateTimer(5, function()
 			local msg = {
 				message = "ROUND " .. self.nCurrentRound,
@@ -1168,7 +1222,7 @@ function GameMode:InitialiseNinja(hero)
 			GameRules:SendCustomMessage("Commands:", 0, 0)
 			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
 			GameRules:SendCustomMessage("-toggleanimation : Toggle between sliding animation", 0, 0)
-			GameRules:SendCustomMessage("-nochance : Toggle chances enabled/disabled (Host Only)", 0, 0)
+			GameRules:SendCustomMessage("-nochance : Toggle lives enabled/disabled (Host Only)", 0, 0)
 		end)
 	end
 
@@ -1181,7 +1235,7 @@ function GameMode:InitialiseNinja(hero)
 		end
 		Physics:Unit(hero)
 		hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
-		hero:SetGroundBehavior (PHYSICS_GROUND_LOCK)
+		hero:SetGroundBehavior (PHYSICS_GROUND_ABOVE)
 		hero:AdaptiveNavGridLookahead (true)
 		hero:SetPhysicsBoundingRadius(0)
 
@@ -1221,7 +1275,7 @@ function GameMode:InitialiseNinja(hero)
 
 		hero.deathDummies = {}
 
-		GameMode:MakeLabelForPlayer( hero )
+		--GameMode:MakeLabelForPlayer( hero )
 
 		table.insert(self.ninjas, hero)
 

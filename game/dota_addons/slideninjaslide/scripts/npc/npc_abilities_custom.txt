@@ -328,7 +328,7 @@
 
 		"BaseClass"						"ability_datadriven"
 		"AbilityTextureName"			"jakiro_liquid_fire"		
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 
@@ -363,10 +363,6 @@
 		{
 			"modifier_thaw"
 			{
-				"Aura" 			"thaw_aura"
-				"Aura_Radius"	"%radius"
-				"Aura_Teams"	"DOTA_UNIT_TARGET_TEAM_BOTH"
-				"Aura_Types"		"DOTA_UNIT_TARGET_HERO"
 				"Duration"		"%duration"
 				"OnCreated"
 				{
@@ -381,11 +377,36 @@
 							"01"	"%radius 1 1"
 						}
 					}
+				}
+
+				"ThinkInterval"  "0.03"
+				"OnIntervalThink"
+				{
+					"ActOnTargets"
+					{
+						"Target"
+						{
+							"Center"  	"TARGET"
+							"Radius" 	"%radius"
+							"Teams" 	"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+							"Types" 	"DOTA_UNIT_TARGET_HERO"
+						}
+					
+						"Action"    
+						{
+							"ApplyModifier"
+							{
+								"ModifierName"	"thaw_aura"
+								"Target" 		"TARGET"
+							}
+						}
+					}			
 				}	
 			}
 
 			"thaw_aura"
 			{
+				"Duration"	"0.1"
 				"IsDebuff"	"0"
 			}
 		}
@@ -424,7 +445,7 @@
 
 		"BaseClass"						"ability_datadriven"		
 		"AbilityBehavior" 				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-
+		"IsHidden"						"1"
 		"MaxLevel"						"1"
 		
 		"Modifiers"
@@ -439,6 +460,311 @@
 					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
 				}
 			}
+		}
+	}
+
+	//=================================================================================================================
+	// Spongebob: Bite of Freeze
+	//=================================================================================================================
+	"spongebob_bite_of_freeze"
+	{
+		"ID"							"6006"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"crystal_maiden_frostbite"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"800"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_bite_of_freeze"
+			}
+			"FireSound"
+			{
+				"Target" "TARGET"
+				"EffectName" "hero_Crystal.frostbite"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_bite_of_freeze"
+			{
+				"IsDebuff"		"1"
+				"TextureName"	"crystal_maiden_frostbite"
+				"EffectName"	 "particles/units/heroes/hero_crystalmaiden/maiden_frostbite_buff.vpcf"
+				"EffectAttachType" "attach_origin"
+				"Duration"		"%duration"
+				"States"
+				{
+					"MODIFIER_STATE_ROOTED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"ThinkInterval"	"%tick"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Type"	"DAMAGE_TYPE_MAGICAL"
+						"Damage"	"%damage_per_sec"
+						"Target"	"TARGET"
+					}
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"9 18 27"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_sec"			"20 30 40"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"tick"						"1.0"
+			}
+		}
+
+		"precache"
+		{
+			"particle"				"particles/units/heroes/hero_crystalmaiden/maiden_frostbite_buff.vpcf"
+			"soundfile"				"soundevents/game_sounds_heroes/game_sounds_crystalmaiden.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// Spongebob: Tokyo Drift
+	//=================================================================================================================
+	"spongebob_tokyo_drift"
+	{
+		"ID"							"6007"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"centaur_stampede"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"0.4"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"20 18 15"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"80"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "CASTER"
+				"ModifierName" "modifier_tokyo_drift"
+			}
+			"FireSound"
+			{
+				"Target" "CASTER"
+				"EffectName" "Hero_Omniknight.Purification"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_tokyo_drift"
+			{
+				"TextureName"		"centaur_stampede"
+
+				"EffectName"		"particles/units/heroes/hero_beastmaster/beastmaster_primal_target.vpcf"
+				"EffectAttachType" 	"follow_origin"
+
+				"Duration"			"%duration"
+				"ThinkInterval"	"0.1"
+				"OnIntervalThink"
+				{
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_nyx_assassin/nyx_assassin_impale_hit_dust.vpcf"
+						"EffectAttachType" 	"world_origin"
+					}
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_rubick/rubick_telekinesis_dust.vpcf"
+						"EffectAttachType" 	"world_origin"
+					}
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE"		"%turn_rate"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"1.6"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_move_speed_pct"		"125"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"turn_rate"					"-50"
+			}
+		}
+
+		"precache"
+		{
+			"particle"				"particles/units/heroes/hero_omniknight/omniknight_purification.vpcf"
+			"soundfile"				"soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts"
+			"particle"				"particles/units/heroes/hero_nyx_assassin/nyx_assassin_impale_hit_dust.vpcf"
+			"particle"				"particles/units/heroes/hero_rubick/rubick_telekinesis_dust.vpcf"
+			"particle"				"particles/units/heroes/hero_beastmaster/beastmaster_primal_target.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Spongebob: Leap of Faith
+	//=================================================================================================================
+	"spongebob_leap_of_faith"
+	{
+		"ID"							"6008"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"mirana_leap"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4 0.4 0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0 19.0 27.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+
+			"FireSound"
+			{
+				"EffectName"	"SlideNinjaSlide.JumpOfFaith"
+				"Target"		"CASTER"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName" 	"modifier_sb_leap_of_faith_datadriven"
+				"Target"		"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_sb_leap_of_faith_datadriven"
+			{
+				"Duration"		"%duration"
+				"IsDebuff"		"0"
+				"IsHidden"		"0"
+				"EffectName"	"particles/units/heroes/hero_siren/naga_siren_mirror_image.vpcf"
+				"EffectAttachType"	"follow_origin"
+
+				"States"
+				{
+					//"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"EffectName"	"DOTA_Item.Manta.Activate"
+						"Target"		"CASTER"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"SpongeBobLeapOfFaith"
+						"duration"		"%duration"
+					}
+				}
+			}
+		}
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"0.5 0.8 1.1"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"			"soundevents/slideninjaslide_sounds_custom.vsndevts"
+			"particle"			"particles/units/heroes/hero_siren/naga_siren_mirror_image.vpcf"
+			"soundfile"			"soundevents/game_sounds_items.vsndevts"
 		}
 	}
 

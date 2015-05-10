@@ -38,7 +38,12 @@ function OnStartTouchIce (trigger)
 			end
 
 			local direction = trigger.activator:GetForwardVector()
-			trigger.activator:SetPhysicsVelocity(direction * trigger.activator:GetIdealSpeed() * 1.2)
+			local multiplier = 1
+			if trigger.activator:HasModifier("modifier_tokyo_drift") then
+				multiplier = 2.25
+			end
+
+			trigger.activator:SetPhysicsVelocity(direction * trigger.activator:GetIdealSpeed() * 1.2 * multiplier)
 
 			if trigger.activator.slideNumber == 3 then
 				trigger.activator:Stop()

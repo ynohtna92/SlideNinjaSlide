@@ -73,10 +73,14 @@ Spells:
 			cd = 45 seconds
 
 TODO:
-	Fix camera after respawn so it follow the player correctly.
+	
+	LONG TERM GOALS:
+	
+		SPONGEBOB MODE:
+			Detects the phrase 'who lives in a pineapple under the sea' from any player
+			On detection will print 'SPONGEBOB SQUAREPANTS' in chat. 
 
-	SPONGEBOB MODE:
-		Detects the phrase 'who lives in a pineapple under the sea' from any player
-		On detection will print 'SPONGEBOB SQUAREPANTS' in chat. 
-
-		All abilities will then change to the spongebob ones, models, music, ect.
+			All abilities will then change to the spongebob ones, models, music, ect.
+	
+		RUN GAY RUN MODE:
+			Detects the phrase 'ayo captian jack' from the host.

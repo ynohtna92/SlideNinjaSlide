@@ -69,10 +69,18 @@ function Precache( context )
 
 	-- Entire Heros
 	PrecacheUnitByNameSync("npc_dota_hero_antimage", context)
+	PrecacheUnitByNameSync("npc_dota_hero_rattletrap", context)
+
+	PrecacheModel("models/spongebob/spongebob.vmdl", context)
+	PrecacheModel("models/courier/smeevil_crab/smeevil_crab.vmdl", context)
+	PrecacheModel("models/development/invisiblebox.vmdl", context)
 
 	-- Sounds
 	PrecacheResource( "soundfile", "soundevents/slideninjaslide_sounds_custom.vsndevts", context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_treant.vsndevts", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_chen.vsndevts", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 end
 
 -- Create the game mode when we activate

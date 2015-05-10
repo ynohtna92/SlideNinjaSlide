@@ -760,6 +760,11 @@ function Physics:Unit(unit)
     unit.PhysicsOnSlide = fun
   end
 
+  -- SNS
+  function unit:OnAction(fun)
+    unit.PhysicsOnAction = fun
+  end
+
   function unit:AdaptiveNavGridLookahead (adaptive)
     unit.bAdaptiveNavGridLookahead = adaptive
   end
@@ -2516,6 +2521,15 @@ Physics:CreateColliderProfile("aaboxblocker",
     findClearSpace = false,
     test = function(self, unit)
       return unit.IsRealHero and unit:IsRealHero() and unit:GetTeam() ~= unit:GetTeam() and IsPhysicsUnit(unit)
+    end,
+    preaction = function(self, box, unit)
+      if unit.PhysicsOnAction then
+        print('OnAction')
+        local status, action = pcall(unit.PhysicsOnAction, box, unit)
+        if not status then
+          print('[PHYSICS] Collision Unit PhysicsOnAction Failure!: ' .. action)
+        end
+      end
     end,
     action = function(self, box, unit)
       --PrintTable(box)
