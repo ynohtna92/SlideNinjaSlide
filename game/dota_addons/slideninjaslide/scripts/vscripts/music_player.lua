@@ -6,7 +6,6 @@
 
 MusicPlayer = {}
 
-
 function MusicPlayer:Init(musicKV)
 	self.DEBUG = false
 	self.musicKV = LoadKeyValues(musicKV)
@@ -44,7 +43,24 @@ function MusicPlayer:Init(musicKV)
 			
 		end
 	end, "", 0 )
+end
 
+function MusicPlayer:ChangePlaylist( musicKV )
+	print('Changing Playlist')
+
+	self.musicKV = LoadKeyValues(musicKV)
+	local index = 1
+	self.songs = {}
+	-- song name is 'k'
+	for k,v in pairs(self.musicKV) do
+		--print("k: " .. k)
+		-- define an index for the song
+		v.index = index
+		-- map index to song name
+		self.songs[index] = k
+		index = index + 1
+	end
+	self.totalSongs = index
 end
 
 function MusicPlayer:AttachMusicPlayer( hPlayer )
@@ -98,6 +114,14 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 	end
 
 	onRanOutOfSongs()
+
+	function hPlayer:UpdateMusicPlaylist(  )
+		songs = MusicPlayer.songs
+		musicKV = MusicPlayer.musicKV
+		hPlayer:StopMusic()
+		onRanOutOfSongs()
+		hPlayer:ContinueMusic()
+	end
 
 	function hPlayer:PlayMusic(  )
 		hPlayer:ContinueMusic()
