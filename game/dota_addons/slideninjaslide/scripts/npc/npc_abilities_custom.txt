@@ -388,7 +388,7 @@
 						{
 							"Center"  	"TARGET"
 							"Radius" 	"%radius"
-							"Teams" 	"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+							"Teams" 	"DOTA_UNIT_TARGET_TEAM_BOTH"
 							"Types" 	"DOTA_UNIT_TARGET_HERO"
 						}
 					
