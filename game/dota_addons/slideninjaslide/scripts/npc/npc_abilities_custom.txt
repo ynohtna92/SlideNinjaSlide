@@ -444,8 +444,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 
 		"BaseClass"						"ability_datadriven"		
-		"AbilityBehavior" 				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"IsHidden"						"1"
+		"AbilityBehavior" 				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"MaxLevel"						"1"
 		
 		"Modifiers"
