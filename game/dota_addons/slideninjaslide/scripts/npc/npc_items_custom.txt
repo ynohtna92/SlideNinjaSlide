@@ -273,7 +273,7 @@
 			"modifier_item_potion_of_speed"
 			{
 				"TextureName" "item_greater_salve"
-				"EffectName" "particles/generic_gameplay/rune_haste.vpcf"
+				"EffectName" "particles/generic_gameplay/rune_haste_owner.vpcf"
 				"EffectAttachType" "follow_origin"
 				"Duration" "%buff_duration"
 				"Properties"
