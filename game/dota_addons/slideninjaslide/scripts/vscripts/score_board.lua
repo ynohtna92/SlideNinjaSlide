@@ -10,6 +10,10 @@ function ScoreBoard:Init()
 	-- If there was something to do it would go here.
 end
 
+function ScoreBoard:ScoreBoardTitleUpdate( string )
+	FireGameEvent('cgm_scoreboard_update_title', { boardTitle = string })
+end
+
 function ScoreBoard:PlayerUpdate(hero)
 	local pID = tonumber(hero.id)
 	local pName = ColorIt(hero.playerName, tostring(pID))

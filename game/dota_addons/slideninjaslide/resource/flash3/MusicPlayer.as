@@ -114,8 +114,8 @@
 			
 			trace("Stage Size: ",stageW,stageH);
 			
-			this.x = 60*yScale;
-			this.y = 70*yScale;
+			this.x = 100*yScale;
+			this.y = 22*yScale;
 			
 			trace("#Result Resize: ",this.x,this.y,yScale);
 

@@ -31,6 +31,8 @@
 		public var players:Array = new Array();
 		public var players_sorted:Array;
 		
+		public var sortTable:Boolean = true;
+		
 		public var players_no:int;
 
 		private var backg_valve:MovieClip;
@@ -111,17 +113,22 @@
 			sbP.visible = false;
 			sbN.visible = false;
 			
+			var localID:int = this.globals.Players.GetLocalPlayer();
+			
 			for (var i:int = 0; i < this.nameLabels.length; i++)
 			{
 				this.nameLabels[i].text = "Disconnected";
 				players.push({name:"Disconnected", id:99, score:0});
 			}
+
+			this.sbP.text = "Disconnected";
 			
 			players_no = 10;
 			scoreBoardShow(players_no);		
 			
 			this.gameAPI.SubscribeToGameEvent("cgm_scoreboard_update_score", this.onScoreUpdate);
 			this.gameAPI.SubscribeToGameEvent("cgm_scoreboard_update_user", this.onUserUpdate);
+			this.gameAPI.SubscribeToGameEvent("cgm_scoreboard_update_title", this.onTitleUpdate);
 			
 			//dropd_valve.visible = true
 			trace("## Called ScoreBoard Setup Completed!");
@@ -155,32 +162,6 @@
 				trace(globals.Players.GetPlayerName( 0 ));
 				trace(globals.Players.GetMaxPlayers( 0 ));
 			}
-		}
-
-		//Parameters: 
-		//	mc - The movieclip to replace
-		//	type - The name of the class you want to replace with
-		//	keepDimensions - Resize from default dimensions to the dimensions of mc (optional, false by default)
-		public function replaceWithValveComponent(mc:MovieClip, type:String, keepDimensions:Boolean = false) : MovieClip {
-			var parent = mc.parent;
-			var oldx = mc.x;
-			var oldy = mc.y;
-			var oldwidth = mc.width;
-			var oldheight = mc.height;
-			
-			var newObjectClass = getDefinitionByName(type);
-			var newObject = new newObjectClass();
-			newObject.x = oldx;
-			newObject.y = oldy;
-			if (keepDimensions) {
-				newObject.width = oldwidth;
-				newObject.height = oldheight;
-			}
-			
-			parent.removeChild(mc);
-			parent.addChild(newObject);
-			
-			return newObject;
 		}
 		
 		//onScreenResize
@@ -286,6 +267,11 @@
 			}
 		}
 		
+		//onTitleUpdate
+		public function onTitleUpdate(args:Object) : void{
+			this.lbTitle.htmlText = Globals.instance.GameInterface.Translate(args.boardTitle);
+		}		
+		
 		//onScoreUpdate
 		public function onScoreUpdate(args:Object) : void{
 			var pID:int = globals.Players.GetLocalPlayer();
@@ -295,7 +281,8 @@
 			
 			if (args.playerID == pID)
 				this.sbN.text = args.playerScore;
-			sortScoreBoard();
+			if (this.sortTable)
+				sortScoreBoard();
 		}
 		
 		//onUserUpdate

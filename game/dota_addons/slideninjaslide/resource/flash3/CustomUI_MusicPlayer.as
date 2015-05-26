@@ -21,7 +21,7 @@ package {
     import scaleform.clik.events.*;
     import vcomponents.*;
 	
-	public class CustomUI extends MovieClip{
+	public class CustomUI_MusicPlayer extends MovieClip{
 		
 		//these three variables are required by the engine
 		public var gameAPI:Object;
@@ -35,7 +35,7 @@ package {
 		private var MouseStreamCheckbox:Object;
 		
 		//constructor, you usually will use onLoaded() instead
-		public function CustomUI() : void {
+		public function CustomUI_MusicPlayer() : void {
 	
 		}
 		
@@ -48,18 +48,6 @@ package {
 			Globals.instance.resizeManager.AddListener(this);
 
 			this.musicPlayer.setup(this.gameAPI, this.globals);
-			this.scoreBoard.setup(this.gameAPI, this.globals);
-
-			// BMD player_say event.
-			var oldChatSay:Function = globals.Loader_hud_chat.movieClip.gameAPI.ChatSay;
-			globals.Loader_hud_chat.movieClip.gameAPI.ChatSay = function(obj:Object, bool:Boolean) {
-				var type:int = globals.Loader_hud_chat.movieClip.m_nLastMessageMode
-				if (bool)
-					type = 4
-				
-				gameAPI.SendServerCommand( "player_say " + type + " " + obj.toString());
-				oldChatSay(obj, bool);
-			};
 
 			MouseStreamCheckbox = replaceWithValveComponent(mouseStreamCheckbox, "DotaCheckBoxDota");
 			MouseStreamCheckbox.visible = false // not ready yet
@@ -127,7 +115,6 @@ package {
 					
 			//pass the resize event to our module, we pass the width and height of the screen, as well as the INVERSE of the stage scaling ratios.
 			this.musicPlayer.screenResize(re.ScreenWidth, re.ScreenHeight, scaleRatioY, scaleRatioY, re.IsWidescreen());
-			this.scoreBoard.screenResize(re.ScreenWidth, re.ScreenHeight, scaleRatioY, scaleRatioY, re.IsWidescreen());
 		}
 	}
 }

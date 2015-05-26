@@ -41,4 +41,22 @@
         "playerID"      "byte"
         "playerScore"    "long"
     }
+
+    "cgm_scoreboard_update_title"
+    {
+        "boardTitle"   "string"
+    }
+
+    "cgm_timer_display"
+    {
+        "timerMsg"      "string"
+        "timerSeconds"  "string"
+        "timerEnd"      "bool"
+        "timerPosition" "byte"
+        "timerWarning"  "long"
+    }
+    "cgm_timer_pause"
+    {
+        "timePaused"      "bool"
+    }
 }

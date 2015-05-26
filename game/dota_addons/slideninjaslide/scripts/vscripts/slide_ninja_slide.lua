@@ -643,6 +643,17 @@ function GameMode:PlayerSay(keys)
 			end
 		end)
 	end
+	--[[
+	if string.find(keys.text, "^-time") then
+		FireGameEvent('cgm_timer_display', { timerMsg = "Test", timerSeconds = 8, timerWarning = 8, timerPosition = 1})
+	end
+	if string.find(keys.text, "^-pause") then
+		FireGameEvent('cgm_timer_pause', { timePaused = true})
+	end
+	if string.find(keys.text, "^-upause") then
+		FireGameEvent('cgm_timer_pause', { timePaused = false})
+	end
+	]]
 end
 
 
@@ -1088,13 +1099,11 @@ function GameMode:ChanceRound()
 end
 
 function GameMode:ResetGame()
-	Timers:CreateTimer(1, function()
-		local msg = {
-			message = "RESETING GAME",
-			duration = 2.0
-		}
-		FireGameEvent("show_center_message",msg)
-	end)
+	local msg = {
+		message = "RESETING GAME",
+		duration = 2.0
+	}
+	FireGameEvent("show_center_message",msg)
 
 	-- Reset all ninjas
 	local temp = self.ninjas
@@ -1115,7 +1124,7 @@ function GameMode:ResetGame()
 	self.nCurrentRound = 1
 	self.livesUsed = 0
 
-	Timers:CreateTimer(5, function()
+	Timers:CreateTimer(4, function()
 		local msg = {
 			message = "ROUND " .. self.nCurrentRound,
 			duration = 3.0
