@@ -1,5 +1,5 @@
 --[[
-Last modified: 04/05/2015
+Last modified: 19/06/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B100515"
+VERSION = "B190615"
 
 ROUNDS = 4
 LIVES = 3
@@ -98,6 +98,11 @@ function GameMode:InitGameMode()
 	GameRules:SetGoldTickTime( GOLD_TICK_TIME )
 	GameRules:SetHideKillMessageHeaders(true)
 	GameRules:GetGameModeEntity():SetStashPurchasingDisabled(true)
+
+	-- REBORN (TESTING)
+	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 10 )
+	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 0 )
+	GameRules:SetHeroMinimapIconScale(2)
 
 	--mode = GameRules:GetGameModeEntity()
 	--mode:SetFogOfWarDisabled(true)	
@@ -272,6 +277,8 @@ function GameMode:InitGameMode()
 
 	self.ninjas = {}
 
+	self.start = Entities:FindByName(nil, "start")
+
 	SpawnPoints = {}
 	local goodguys = Entities:FindAllByClassname("info_player_start_goodguys")
 	local badguys = Entities:FindAllByClassname("info_player_start_badguys")
@@ -279,9 +286,12 @@ function GameMode:InitGameMode()
 	for i,v in ipairs(goodguys) do
 		table.insert(SpawnPoints, v:GetAbsOrigin())
 	end
-		for i,v in ipairs(badguys) do
+
+	--[[
+	for i,v in ipairs(badguys) do
 		table.insert(SpawnPoints, v:GetAbsOrigin())
 	end
+	]]
 
 	self.Thinker = Timers:CreateTimer(function()
 		return self:OnThink()
@@ -465,7 +475,7 @@ function GameMode:OnAbilityUsed(keys)
 
 	local player = EntIndexToHScript(keys.PlayerID)
 	local abilityname = keys.abilityname
-	local hero = player:GetAssignedHero()
+	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
 
 	if abilityname == "item_tome_of_power" then
 		hero:HeroLevelUp(true)
@@ -605,6 +615,11 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
+	if ( string.find(keys.text, "^-reset") or string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") ) and plyID == GetListenServerHost():GetPlayerID() then
+		GameRules:SendCustomMessage("This command has been temporarily disabled!", 0, 0)
+		return
+	end
+
 	if string.find(keys.text, "^-reset") and plyID == GetListenServerHost():GetPlayerID() then
 		if self.canReset then
 			self.noReset = true
@@ -645,7 +660,7 @@ function GameMode:PlayerSay(keys)
 	end
 	--[[
 	if string.find(keys.text, "^-time") then
-		FireGameEvent('cgm_timer_display', { timerMsg = "Test", timerSeconds = 8, timerWarning = 8, timerPosition = 1})
+		FireGameEvent('cgm_timer_display', { timerMsg = "Test", timerSeconds = 8, timerWarning = 8, timerPosition = 1, timerEnd = true })
 	end
 	if string.find(keys.text, "^-pause") then
 		FireGameEvent('cgm_timer_pause', { timePaused = true})
@@ -685,8 +700,10 @@ function GameMode:OnThink()
 
 			if hero.nearbyDeadNinjas ~= {} then
 				for i,deadninja in ipairs(hero.nearbyDeadNinjas) do
-					if circleCircleCollision(hero:GetAbsOrigin(), deadninja.deadPos, hero:GetPaddedCollisionRadius()+25, deadninja:GetPaddedCollisionRadius()+25) then
-						GameMode:HeroRevivied(deadninja, hero)
+					if deadninja.deadPos then
+						if circleCircleCollision(hero:GetAbsOrigin(), deadninja.deadPos, hero:GetPaddedCollisionRadius()+25, deadninja:GetPaddedCollisionRadius()+25) then
+							GameMode:HeroRevivied(deadninja, hero)
+						end
 					end
 				end
 			end
@@ -795,7 +812,8 @@ function GameMode:HeroRevivied( hero , reviver)
 			count = count + 1
 		else
 			-- the hero is definitely at the correct location now, proceed with post-respawn stuff
-			EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", hero)
+			--EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", hero)
+			hero:EmitSoundParams("Hero_Omniknight.GuardianAngel.Cast", 1, 0.5, 1)
 			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, hero)
 			-- delete spawn effects after 1.5s
 			Timers:CreateTimer(1.5,function()
@@ -885,6 +903,35 @@ function GameMode:LevelCompleted( hero )
 	print('[SNS] Starting Round: ' .. tostring(self.nCurrentRound))
 
 	-- Reset all ninjas
+
+	for i,v in ipairs(self.ninjas) do
+		if v ~= nil then
+			-- revive dead ninjas
+			if not v:IsAlive() then
+				v:RespawnHero(false, false, false)
+			end
+
+			FindClearSpaceForUnit(v, SpawnPoints[i], true)
+			-- reset camera pos
+			v.player:SetAbsOrigin(SpawnPoints[i])
+
+			-- stop moving after ninja teleports
+			v:StartPhysicsSimulation()
+			v:Stop()
+
+			--ninja:SetForwardVector(Vector(1,0,0)) BROKEN
+
+			-- respawn effects
+			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
+			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, v)
+			-- delete spawn effects after 1.5s
+			Timers:CreateTimer(1.5,function()
+				ParticleManager:DestroyParticle(particle, true)
+			end)
+		end
+	end
+
+	--[[
 	for i,v in  ipairs(SpawnPoints) do
 		local ninja = self.ninjas[i]
 		if ninja ~= nil then
@@ -905,7 +952,7 @@ function GameMode:LevelCompleted( hero )
 			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
 
 			-- respawn effects
-			EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", ninja)
+			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
 			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, ninja)
 			-- delete spawn effects after 1.5s
 			Timers:CreateTimer(1.5,function()
@@ -913,6 +960,9 @@ function GameMode:LevelCompleted( hero )
 			end)
 		end
 	end
+	]]
+
+	EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
 
 	-- Reset Camera of all players
 	SendToConsole("dota_camera_center")
@@ -1053,7 +1103,7 @@ function GameMode:ChanceRound()
 			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
 
 			-- respawn effects
-			EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", ninja)
+			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
 			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, ninja)
 			-- delete spawn effects after 1.5s
 			Timers:CreateTimer(1.5,function()
@@ -1061,6 +1111,8 @@ function GameMode:ChanceRound()
 			end)
 		end
 	end
+
+	EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
 
 	-- Reset Camera of all players
 	SendToConsole("dota_camera_center")
@@ -1209,7 +1261,7 @@ function GameMode:InitialiseNinja(hero)
 	if not self.firstTime then
 		self.firstTime = true
 		
-		SendToConsole('dota_always_show_player_names 1')
+		--SendToConsole('dota_always_show_player_names 1')
 		
 		Timers:CreateTimer(5, function()
 			local msg = {
@@ -1284,7 +1336,7 @@ function GameMode:InitialiseNinja(hero)
 
 		hero.deathDummies = {}
 
-		--GameMode:MakeLabelForPlayer( hero )
+		GameMode:UpdatePlayerColor( hero.id )
 
 		table.insert(self.ninjas, hero)
 
@@ -1307,8 +1359,7 @@ end
 ---------------------------------------------------------------------------
 -- Put a label over a player's hero so people know who is on what team
 ---------------------------------------------------------------------------
-function GameMode:MakeLabelForPlayer( hero )
-	--[[
+function GameMode:UpdatePlayerColor( nPlayerID )
 	if not PlayerResource:HasSelectedHero( nPlayerID ) then
 		return
 	end
@@ -1317,11 +1368,10 @@ function GameMode:MakeLabelForPlayer( hero )
 	if hero == nil then
 		return
 	end
-	]]
 
-	local color = self:ColorForPlayer( tonumber(hero.id) )
-	local name = hero.playerName
-	hero:SetCustomHealthLabel( name, color[1], color[2], color[3] )
+	local color = self:ColorForPlayer( nPlayerID )
+	--local name = hero.playerName
+	PlayerResource:SetCustomPlayerColor( nPlayerID, color[1], color[2], color[3] )
 end
 
 ---------------------------------------------------------------------------

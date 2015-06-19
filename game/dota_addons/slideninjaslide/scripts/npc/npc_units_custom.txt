@@ -13,6 +13,8 @@
 		"BaseClass"		"npc_dota_creature"
 		"ModelScale"	"1"
 
+		"MinimapIconSize"           "300"
+
 		// Armor
 		//----------------------------------------------------------------
 		"ArmorPhysical"				"2"			// Physical protection.
@@ -66,6 +68,8 @@
 		"Model"			"models/courier/smeevil_crab/smeevil_crab.vmdl"
 		"BaseClass"		"npc_dota_creature"
 		"ModelScale"	"1"
+
+		"MinimapIconSize"           "300"
 
 		// Armor
 		//----------------------------------------------------------------

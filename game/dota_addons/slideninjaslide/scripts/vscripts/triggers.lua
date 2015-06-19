@@ -6,6 +6,11 @@ function OnStartTouchIce (trigger)
 		return
 	end
 	-- Turn on Slide
+
+	if not IsPhysicsUnit(trigger.activator) then
+		return
+	end
+
 	trigger.activator:Hibernate(false)
 	trigger.activator:PreventDI(true)
 

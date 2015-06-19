@@ -60,6 +60,16 @@
 			trace("## Called Timer Setup Completed!");
 		}
 		
+		//On UI unload, we need to kill the timer
+		public function kill() : void {
+			trace("Timer: Killing timer");
+			if ( this.timer != null) {
+				this.timer.stop();
+				this.timer = null;
+				trace("Timer: Timer Killed!");
+			}
+		}
+		
 		//onScreenResize
 		public function screenResize(stageW:int, stageH:int, xScale:Number, yScale:Number, wide:Boolean){
 			
@@ -85,6 +95,12 @@
 		}
 		
 		public function updateCounter(e:TimerEvent) :void{
+			// Check if object still exist in ui.
+			if ( this.timeRemaining == null ) {
+				kill()
+				return;
+			}
+				
 			if (Globals.instance.Loader_overlay.movieClip.dota_paused.visible || this.timerPaused)
 				this.startTime += .1;		
 			
@@ -102,10 +118,11 @@
 			if (time >= this.timerDuration){
 				this.timer.stop();
 				this.timer = null;
-				if (!this.timerEnd)
+				if (!this.timerEnd){
 					var t:Timer = new Timer(1000,1);
 					t.addEventListener(TimerEvent.TIMER, fadeOut);
 					t.start();
+				}
 			}
 		}
 		
