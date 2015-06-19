@@ -1,5 +1,5 @@
 --[[
-Last modified: 19/06/2015
+Last modified: 20/06/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B190615"
+VERSION = "B200615"
 
 ROUNDS = 4
 LIVES = 3
@@ -341,6 +341,7 @@ function GameMode:CaptureGameMode()
 		mode:SetUseCustomHeroLevels( USE_CUSTOM_HERO_LEVELS )
 		mode:SetCustomHeroMaxLevel( MAX_LEVEL )
 		mode:SetCustomXPRequiredToReachNextLevel( XP_PER_LEVEL_TABLE )
+		mode:SetLoseGoldOnDeath( false )
 		
 		GameMode:OnFirstPlayerLoaded()
 	end
@@ -603,6 +604,10 @@ function GameMode:PlayerSay(keys)
 		end)
 	end
 
+	if DEBUG and string.find(keys.text, "^-test") then
+		GameMode:ReviveAllWolves()
+	end
+
 	if string.find(keys.text, "^-unstuck") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
 	end
@@ -753,7 +758,7 @@ function GameMode:HeroKilled( hero )
 	hero:ForceKill(false)
 
 	-- Reimburse gold lost to death
-	hero:SetGold(hero:GetGold() + hero:GetDeathGoldCost(), false)
+	--hero:SetGold(hero:GetGold() + hero:GetDeathGoldCost(), false)
 
 	hero:StopPhysicsSimulation()
  
@@ -903,36 +908,8 @@ function GameMode:LevelCompleted( hero )
 	print('[SNS] Starting Round: ' .. tostring(self.nCurrentRound))
 
 	-- Reset all ninjas
-
-	for i,v in ipairs(self.ninjas) do
-		if v ~= nil then
-			-- revive dead ninjas
-			if not v:IsAlive() then
-				v:RespawnHero(false, false, false)
-			end
-
-			FindClearSpaceForUnit(v, SpawnPoints[i], true)
-			-- reset camera pos
-			v.player:SetAbsOrigin(SpawnPoints[i])
-
-			-- stop moving after ninja teleports
-			v:StartPhysicsSimulation()
-			v:Stop()
-
-			--ninja:SetForwardVector(Vector(1,0,0)) BROKEN
-
-			-- respawn effects
-			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
-			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, v)
-			-- delete spawn effects after 1.5s
-			Timers:CreateTimer(1.5,function()
-				ParticleManager:DestroyParticle(particle, true)
-			end)
-		end
-	end
-
-	--[[
 	for i,v in  ipairs(SpawnPoints) do
+		print(v)
 		local ninja = self.ninjas[i]
 		if ninja ~= nil then
 
@@ -940,8 +917,13 @@ function GameMode:LevelCompleted( hero )
 			if not ninja:IsAlive() then
 				ninja:RespawnHero(false, false, false)
 			end
+			if not ninja:IsAlive() then
+				ninja:RespawnHero(false, false, false)
+			end
 
 			FindClearSpaceForUnit(ninja, v, true)
+			FindClearSpaceForUnit(ninja, v, false)
+
 			-- reset camera pos
 			ninja.player:SetAbsOrigin(v)
 			
@@ -960,7 +942,6 @@ function GameMode:LevelCompleted( hero )
 			end)
 		end
 	end
-	]]
 
 	EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
 
@@ -975,6 +956,7 @@ function GameMode:LevelCompleted( hero )
 		v.lastZone = 0
 	end
 
+	GameMode:ReviveAllWolves()
 	
 	-- Move the wolves in true zones only (reduce lag)
 	for i=1,15 do

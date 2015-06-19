@@ -46,6 +46,10 @@ function GameMode:MoveWolvesInActiveZones()
 				Timers:RemoveTimer(v.randomMoveTimer)
 			end
 			v.randomMoveTimer = Timers:CreateTimer( v.randomTimeTillMove, function()
+				if v:IsNull() then
+					return nil
+				end
+
 				if not v:IsAlive() then
 					return nil
 				end
@@ -62,7 +66,7 @@ function GameMode:MoveWolvesInActiveZones()
 end
 
 function GameMode:MoveWolf( wolf )
-	for i=1,5 do        -- try x times to get a proper move location.
+	for i=1,10 do        -- try x times to get a proper move location.
 		local posToMove = wolf:GetAbsOrigin() + RandomVector(math.random(100,600))
 		if self:IsPointWithinZone(posToMove, Entities:FindByName(nil, "trigger_ice_slide_" .. wolf.zone)) then
 			wolf:MoveToPosition(posToMove)
@@ -94,4 +98,17 @@ end
 
 function GameMode:DestroyAllWolves(  )
 	deleteUnitsInTable( self.wolves )
+end
+
+function GameMode:ReviveAllWolves( )
+	for i,v in ipairs(self.wolves) do
+		if not v:IsNull() then
+			if v:IsAlive() then
+				v:SetHealth(v:GetMaxHealth())
+			end
+			if not v:IsAlive() then
+				v:RespawnUnit()
+			end
+		end
+	end
 end
