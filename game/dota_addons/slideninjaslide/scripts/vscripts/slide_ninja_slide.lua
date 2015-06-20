@@ -925,7 +925,9 @@ function GameMode:LevelCompleted( hero )
 			FindClearSpaceForUnit(ninja, v, false)
 
 			-- reset camera pos
-			ninja.player:SetAbsOrigin(v)
+			if not ninja.player:IsNull() then
+				ninja.player:SetAbsOrigin(v)
+			end
 			
 			-- stop moving after ninja teleports
 			ninja:StartPhysicsSimulation()
@@ -1076,8 +1078,10 @@ function GameMode:ChanceRound()
 
 			FindClearSpaceForUnit(ninja, v, true)
 			-- reset camera pos
-			ninja.player:SetAbsOrigin(v)
-			
+			if not ninja.player:IsNull() then
+				ninja.player:SetAbsOrigin(v)
+			end
+
 			-- stop moving after ninja teleports
 			ninja:StartPhysicsSimulation()
 			ninja:Stop()
