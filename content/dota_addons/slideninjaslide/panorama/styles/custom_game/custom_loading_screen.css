@@ -104,7 +104,7 @@
 
 #seq_antimage
 {
-	margin-left: 400px;
+	margin-left: 480px;
 	margin-top: 200px;
 	animation-name: seq_antimage_anim;
 	animation-duration: TotalLength;
@@ -127,8 +127,8 @@
 
 #seq_creep_fg
 {
-	margin-left: 800px;
-	margin-top: 500px;
+	margin-left: 870px;
+	margin-top: 550px;
 	animation-name: seq_creep_fg_anim;
 	animation-duration: TotalLength;
 	animation-timing-function: TimingFunc;
@@ -149,7 +149,7 @@
 
 #seq_creep_bg
 {
-	margin-left: 400px;
+	margin-left: 220px;
 	margin-top: 225px;
 	animation-name: seq_creep_bg_anim;
 	animation-duration: TotalLength;
