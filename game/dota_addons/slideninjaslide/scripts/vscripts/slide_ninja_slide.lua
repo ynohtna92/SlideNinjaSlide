@@ -646,7 +646,7 @@ function GameMode:PlayerSay(keys)
 		--SendToConsole( "dota_wearables_clientside -rep" )
 		SendToConsole( "dota_combine_models 0" )
 		self.gameTheme = 2
-		FireGameEvent("show_center_message",msg)
+		--FireGameEvent("show_center_message",msg)
 		Timers:CreateTimer(2,function()
 			self.noReset = true
 			GameMode:ResetGame()
@@ -773,6 +773,10 @@ function GameMode:HeroKilled( hero )
 
 	-- particle effect repetition
 	hero.haloTimer = Timers:CreateTimer(function()
+		if hero:IsNull() then
+			return nil
+		end
+
 		-- particles just run once
 		if hero.halo == nil then
 			--print("Creating Particles: "..self.haloParticles[hero:GetPlayerID()+1])
@@ -1157,10 +1161,9 @@ function GameMode:ResetGame()
 				Timers:RemoveTimer(ninja.haloTimer)
 			end
 			local oldHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
-			self.StopSoundForce( oldHero )
-			PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
+			self:StopSoundForce( oldHero )
 			UTIL_Remove( oldHero )
-			local newHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
+			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 		end
 	end
@@ -1214,26 +1217,34 @@ function GameMode:CheckIfGameEnd()
 		end)
 	end
 
-	if gameEnd then
-		print("[SNS] The Players have lost the game! Starting reset/finishing sequence.")
-		GameRules:SendCustomMessage("<font color='#FF1493'>All heros have fallen!</font>", 0, 0)
-		local msg = {
-			message = "YOU'VE LOST!",
-			duration = 3.0
-		}
-		FireGameEvent("show_center_message",msg)
-
-		self.canReset = true
-		Timers:CreateTimer(15, function()
-			if not self.resetting then
-				self.canReset = false
-				GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
-				GameRules:SetSafeToLeave( true )
+	if gameEnd then	-- Triple check
+		Timers:CreateTimer(0.1, function()
+			for i,v in ipairs(self.ninjas) do
+				if v:IsAlive() then
+					return
+				end
 			end
-			self.resetting = false
+
+			print("[SNS] The Players have lost the game! Starting reset/finishing sequence.")
+			GameRules:SendCustomMessage("<font color='#FF1493'>All heros have fallen!</font>", 0, 0)
+			local msg = {
+				message = "YOU'VE LOST!",
+				duration = 3.0
+			}
+			FireGameEvent("show_center_message",msg)
+
+			self.canReset = true
+			Timers:CreateTimer(15, function()
+				if not self.resetting then
+					self.canReset = false
+					GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
+					GameRules:SetSafeToLeave( true )
+				end
+				self.resetting = false
+			end)
+			self:EndMessage()
+			GameRules:SendCustomMessage("To reset the game the host must type <font color='#AEAEAE'>-reset</font> within 15 seconds.", 0, 0)	
 		end)
-		self:EndMessage()
-		GameRules:SendCustomMessage("To reset the game the host must type <font color='#AEAEAE'>-reset</font> within 15 seconds.", 0, 0)
 	end
 end
 
