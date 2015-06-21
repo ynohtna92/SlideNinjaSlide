@@ -1162,8 +1162,8 @@ function GameMode:ResetGame()
 			end
 			local oldHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
 			self:StopSoundForce( oldHero )
-			UTIL_Remove( oldHero )
 			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
+			UTIL_Remove( oldHero )
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 		end
 	end
