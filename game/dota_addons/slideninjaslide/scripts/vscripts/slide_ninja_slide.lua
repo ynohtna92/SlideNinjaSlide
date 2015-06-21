@@ -1,5 +1,5 @@
 --[[
-Last modified: 20/06/2015
+Last modified: 21/06/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B200615"
+VERSION = "B210615"
 
 ROUNDS = 4
 LIVES = 3
@@ -620,11 +620,6 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if ( string.find(keys.text, "^-reset") or string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") ) and plyID == GetListenServerHost():GetPlayerID() then
-		GameRules:SendCustomMessage("This command has been temporarily disabled!", 0, 0)
-		return
-	end
-
 	if string.find(keys.text, "^-reset") and plyID == GetListenServerHost():GetPlayerID() then
 		if self.canReset then
 			self.noReset = true
@@ -707,7 +702,9 @@ function GameMode:OnThink()
 				for i,deadninja in ipairs(hero.nearbyDeadNinjas) do
 					if deadninja.deadPos then
 						if circleCircleCollision(hero:GetAbsOrigin(), deadninja.deadPos, hero:GetPaddedCollisionRadius()+25, deadninja:GetPaddedCollisionRadius()+25) then
-							GameMode:HeroRevivied(deadninja, hero)
+							if deadninja.reviveTick == 0 then
+								GameMode:HeroRevivied(deadninja, hero)
+							end
 						end
 					end
 				end
@@ -741,6 +738,10 @@ function GameMode:OnThink()
 				end
 			end
 		end
+
+		if hero.reviveTick > 0 then
+			hero.reviveTick = hero.reviveTick - 1
+		end
 	end
 
 	return 0.1
@@ -748,6 +749,9 @@ end
 
 function GameMode:HeroKilled( hero )
 	EmitSoundOn("Hero_Antimage.PreAttack", hero)
+
+	-- revive timeout
+	hero.reviveTick = 2
 
 	-- record the pos
 	hero.deadPos = hero:GetAbsOrigin()
@@ -819,7 +823,7 @@ function GameMode:HeroRevivied( hero , reviver)
 			-- the hero is definitely at the correct location now, proceed with post-respawn stuff
 			--EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", hero)
 			hero:EmitSoundParams("Hero_Omniknight.GuardianAngel.Cast", 1, 0.5, 1)
-			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, hero)
+			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN_FOLLOW, hero)
 			-- delete spawn effects after 1.5s
 			Timers:CreateTimer(1.5,function()
 				ParticleManager:DestroyParticle(particle, true)
@@ -1152,7 +1156,12 @@ function GameMode:ResetGame()
 			if ninja.haloTimer ~= nil then
 				Timers:RemoveTimer(ninja.haloTimer)
 			end
+			local oldHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
+			self.StopSoundForce( oldHero )
 			PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
+			UTIL_Remove( oldHero )
+			local newHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
+			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 		end
 	end
 
@@ -1268,7 +1277,7 @@ function GameMode:InitialiseNinja(hero)
 		Timers:CreateTimer(20, function()
 			GameRules:SendCustomMessage("Commands:", 0, 0)
 			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
-			GameRules:SendCustomMessage("-toggleanimation : Toggle between sliding animation", 0, 0)
+			GameRules:SendCustomMessage("-toggleanimation/-ta: Toggle between sliding animation", 0, 0)
 			GameRules:SendCustomMessage("-nochance : Toggle lives enabled/disabled (Host Only)", 0, 0)
 		end)
 	end
@@ -1292,6 +1301,7 @@ function GameMode:InitialiseNinja(hero)
 		hero.zonesVisited = {}
 		hero.lastZone = 0
 		hero.isNinja = true
+		hero.reviveTick = 0
 		hero.skateAnimation = "modifier_skatimation_datadriven"
 
 		for i=1,14 do
@@ -1329,6 +1339,16 @@ function GameMode:InitialiseNinja(hero)
 		-- We this so this function will not be called when a hero is respawned
 		hero.firstTime = true
 	end
+end
+
+-- Sounds are left playing on Reset Game
+function GameMode:StopSoundForce ( unit )
+	local sound_name = "Hero_Chen.TeleportLoop"
+	local target = unit
+
+	StopSoundEvent(sound_name, target)
+	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_bits.vpcf")
+	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_rings.vpcf")
 end
 
 ---------------------------------------------------------------------------

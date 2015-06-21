@@ -307,7 +307,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"mana_regen"				"0.75 1.5 2.25"
+				"mana_regen"				"0.5 1.25 2"
 			}
 		}
 
@@ -701,11 +701,11 @@
 		"OnSpellStart"
 		{
 
-			"FireSound"
-			{
-				"EffectName"	"SlideNinjaSlide.JumpOfFaith"
-				"Target"		"CASTER"
-			}
+			//"FireSound"
+			//{
+			//	"EffectName"	"SlideNinjaSlide.JumpOfFaith"
+			//	"Target"		"CASTER"
+			//}
 
 			"ApplyModifier"
 			{
