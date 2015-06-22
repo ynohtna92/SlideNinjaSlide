@@ -817,7 +817,7 @@ function GameMode:HeroRevivied( hero , reviver)
 	hero:SetPhysicsVelocity(Vector(0,0,0))
 	hero:SetForwardVector(reviver:GetForwardVector())
 
-	count = 0
+	local count = 0
 	Timers:CreateTimer(function()
 		-- we need to setabs multiple times because for some reason it may lead to an inaccurate location if used once after respawn.
 		if count < 4 then
