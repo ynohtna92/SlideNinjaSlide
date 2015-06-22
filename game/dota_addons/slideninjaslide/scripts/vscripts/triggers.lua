@@ -2,7 +2,7 @@ require('physics')
 
 function OnStartTouchIce (trigger)
 	print("Start Ice")
-	if trigger.activator.slide or trigger.activator:HasModifier("thaw_aura") then
+	if trigger.activator.slide and trigger.activator:HasModifier("thaw_aura") then
 		return
 	end
 	-- Turn on Slide
@@ -69,7 +69,7 @@ function OnEndTouchIce (trigger)
 	if not trigger.activator then
 		return
 	end
-	if not trigger.activator.slide or trigger.activator:HasModifier("thaw_aura") then
+	if not trigger.activator.slide and trigger.activator:HasModifier("thaw_aura") then
 		return
 	end
 	-- Turn off Slide
