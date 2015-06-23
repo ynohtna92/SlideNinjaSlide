@@ -359,7 +359,7 @@ end
 -- This function is called once when the player fully connects and becomes "Ready" during Loading
 function GameMode:OnConnectFull(keys)
 	print ('[SNS] OnConnectFull')
---	PrintTable(keys)
+	--PrintTable(keys)
 	GameMode:CaptureGameMode()
 
 	local entIndex = keys.index+1
@@ -370,7 +370,8 @@ function GameMode:OnConnectFull(keys)
 	local playerID = ply:GetPlayerID()
 
 	-- Update the user ID table with this user
-	self.vUserIds[keys.userid] = ply
+	--self.vUserIds[keys.userid] = ply
+	table.insert(self.vUserIds, ply)
 
 	-- Update the Steam ID table
 	self.vSteamIds[PlayerResource:GetSteamAccountID(playerID)] = ply
@@ -614,6 +615,14 @@ function GameMode:PlayerSay(keys)
 		print(hero:GetForwardVector(), hero:GetAnglesAsVector())
 	end
 
+	if string.find(keys.text, "^-players") and plyID == GetListenServerHost():GetPlayerID() then
+		GameRules:SendCustomMessage("Players: " .. #self.vUserIds .. "/10", 0, 0)
+		for i,v  in ipairs(self.vUserIds) do
+			local phero = v:GetAssignedHero()
+			GameRules:SendCustomMessage("PID: " .. v:GetPlayerID() .. " " .. tostring(phero:HasOwnerAbandoned()) .. " " .. phero:GetClassname(), 0, 0)
+		end
+	end
+
 	if string.find(keys.text, "^-unstuck") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
 	end
@@ -659,7 +668,7 @@ function GameMode:PlayerSay(keys)
 
 			MusicPlayer:ChangePlaylist("scripts/music_SB.kv")
 			for i,v  in ipairs(self.vUserIds) do
-				print('Updating Playlist')
+				print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
 				v:UpdateMusicPlaylist( )
 			end
 		end)
@@ -1210,7 +1219,7 @@ function GameMode:ResetGame()
 				end
 			end
 
-			-- Remove abilitys from hero and add 1 ability point.
+			-- Remove abilities from hero and add 1 ability point.
 			newHero:SetAbilityPoints(1)
 			for i=0,3 do
 				local ability = newHero:GetAbilityByIndex(i)
