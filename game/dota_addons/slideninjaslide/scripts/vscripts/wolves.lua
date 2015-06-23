@@ -108,6 +108,7 @@ function GameMode:ReviveAllWolves( )
 			end
 			if not v:IsAlive() then
 				v:RespawnUnit()
+				print('respawning wolf')
 			end
 		end
 	end

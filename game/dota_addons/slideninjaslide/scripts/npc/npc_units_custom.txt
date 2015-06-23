@@ -14,6 +14,7 @@
 		"ModelScale"	"1"
 
 		"MinimapIconSize"           "300"
+		"CanRespawn" 				"1"
 
 		// Armor
 		//----------------------------------------------------------------
@@ -68,6 +69,7 @@
 		"Model"			"models/courier/smeevil_crab/smeevil_crab.vmdl"
 		"BaseClass"		"npc_dota_creature"
 		"ModelScale"	"1"
+		"CanRespawn" 				"1"
 
 		"MinimapIconSize"           "300"
 
