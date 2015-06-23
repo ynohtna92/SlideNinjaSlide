@@ -1,5 +1,5 @@
 --[[
-Last modified: 21/06/2015
+Last modified: 23/06/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B210615"
+VERSION = "B230615"
 
 ROUNDS = 4
 LIVES = 3
@@ -608,6 +608,12 @@ function GameMode:PlayerSay(keys)
 		GameMode:ReviveAllWolves()
 	end
 
+	if DEBUG and string.find(keys.text, "^-test2") then
+		hero:Stop()
+		hero:SetForwardVector(Vector(1,0,0))
+		print(hero:GetForwardVector(), hero:GetAnglesAsVector())
+	end
+
 	if string.find(keys.text, "^-unstuck") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
 	end
@@ -680,7 +686,7 @@ function GameMode:OnThink()
 			hero.nearbyWolves = {}
 			hero.nearbyDeadNinjas = {}
 			hero.nearbyDroppedItems = {}
-			for i,v in ipairs(Entities:FindAllInSphere(hero:GetAbsOrigin(), 120)) do
+			for i,v in ipairs(Entities:FindAllInSphere(hero:GetAbsOrigin(), 180)) do
 				if v.isWolf and v:IsAlive() then
 					table.insert(hero.nearbyWolves, v)
 				elseif v.isNinja and not v:IsAlive() then
@@ -902,6 +908,22 @@ function GameMode:LevelCompleted( hero )
 	ScoreBoard:ScoreUpdate(hero)
 	--print(GameMode:GetNinja(hero:GetPlayerID()).score)
 
+	-- Attaching a particle to the leading team heroes
+	local existingParticle = hero:Attribute_GetIntValue( "particleID", -1 )
+	if existingParticle == -1 then
+		local particleLeader = ParticleManager:CreateParticle( "particles/leader/leader_overhead.vpcf", PATTACH_OVERHEAD_FOLLOW, hero )
+		ParticleManager:SetParticleControlEnt( particleLeader, PATTACH_OVERHEAD_FOLLOW, hero, PATTACH_OVERHEAD_FOLLOW, "follow_overhead", hero:GetAbsOrigin(), true )
+		hero:Attribute_SetIntValue( "particleID", particleLeader )
+		Timers:CreateTimer(5, function()
+			local particleLeader = hero:Attribute_GetIntValue( "particleID", -1 )
+			if particleLeader ~= -1 then
+				ParticleManager:DestroyParticle( particleLeader, true )
+				hero:DeleteAttribute( "particleID" )
+			end
+		end)
+	end
+
+
 	-- reward team
 	for i,v in ipairs(self.ninjas) do
 		v:SetGold(v:GetGold() + GOLD_PER_ROUND, false)
@@ -941,7 +963,12 @@ function GameMode:LevelCompleted( hero )
 			ninja:StartPhysicsSimulation()
 			ninja:Stop()
 
-			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
+			Timers:CreateTimer(0.1,function()
+				if ninja ~= nil then
+					ninja:Stop()
+					ninja:SetForwardVector(Vector(1,0,0))
+				end
+			end)
 
 			-- respawn effects
 			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
@@ -953,10 +980,13 @@ function GameMode:LevelCompleted( hero )
 		end
 	end
 
-	EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
+	-- Delay by one tick
+	Timers:CreateTimer( function()
+			EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
 
-	-- Reset Camera of all players
-	SendToConsole("dota_camera_center")
+			-- Reset Camera of all players
+			SendToConsole("dota_camera_center")
+		end)
 
 	-- clear all zones.
 	for i,v in ipairs(self.ninjas) do
@@ -1039,7 +1069,13 @@ function GameMode:SpawnItems()
 	end
 	if not (self.items[self.itemindex] == nil) then
 		if IsValidEntity(self.items[self.itemindex]) then
-			if (self.items[self.itemindex]:GetContainer() ~= nil) then
+			local container = self.items[self.itemindex]:GetContainer()
+			if (container ~= nil) then
+				-- Overthrow particles :)
+				local nFXIndex = ParticleManager:CreateParticle( "particles/items2_fx/veil_of_discord.vpcf", PATTACH_CUSTOMORIGIN, container )
+				ParticleManager:SetParticleControl( nFXIndex, 0, container:GetOrigin() )
+				ParticleManager:SetParticleControl( nFXIndex, 1, Vector( 35, 35, 25 ) )
+				ParticleManager:ReleaseParticleIndex( nFXIndex )
 				self.items[self.itemindex]:GetContainer():RemoveSelf()
 				self.items[self.itemindex]:RemoveSelf()
 			end
@@ -1094,7 +1130,7 @@ function GameMode:ChanceRound()
 			ninja:StartPhysicsSimulation()
 			ninja:Stop()
 
-			-- ninja:SetForwardVector(Vector(1,0,0)) BROKEN
+			ninja:SetForwardVector(Vector(1,0,0))
 
 			-- respawn effects
 			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
@@ -1165,6 +1201,21 @@ function GameMode:ResetGame()
 			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
 			UTIL_Remove( oldHero )
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
+
+			-- Remove items from inventory
+			for i=0,11 do
+				local item = newHero:GetItemInSlot(i)
+				if item then
+					newHero:RemoveItem(item)
+				end
+			end
+
+			-- Remove abilitys from hero and add 1 ability point.
+			newHero:SetAbilityPoints(1)
+			for i=0,3 do
+				local ability = newHero:GetAbilityByIndex(i)
+				ability:SetLevel(0)
+			end
 		end
 	end
 

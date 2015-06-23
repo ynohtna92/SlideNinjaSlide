@@ -54,6 +54,9 @@ function Precache( context )
 	PrecacheResource("particle", "particles/silencer_last_word_status_green/silencer_last_word_status_green.vpcf", context)
 	PrecacheResource("particle", "particles/silencer_last_word_status_brown/silencer_last_word_status_brown.vpcf", context)
 
+	-- Round winners hat
+	PrecacheResource( "particle", "particles/leader/leader_overhead.vpcf", context )
+
 	--[[
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_blue", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_teal", context)
