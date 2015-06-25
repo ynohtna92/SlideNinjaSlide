@@ -1327,7 +1327,7 @@ function GameMode:InitialiseNinja(hero)
 	if not self.firstTime then
 		self.firstTime = true
 		
-		--SendToConsole('dota_always_show_player_names 1')
+		SendToConsole('dota_always_show_player_names 1')
 		
 		Timers:CreateTimer(5, function()
 			local msg = {
