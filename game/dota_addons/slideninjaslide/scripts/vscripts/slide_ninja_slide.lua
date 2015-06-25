@@ -161,6 +161,7 @@ function GameMode:InitGameMode()
 	self.canReset = false
 	self.noReset = false -- Used to run things that should only be run once per player EVER!
 	self.noChance = false -- Toggle game chances
+	self.nDeaths = 0 -- Total deaths from all ninjas
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -335,6 +336,7 @@ function GameMode:CaptureGameMode()
 	--	mode:SetRecommendedItemsDisabled( RECOMMENDED_BUILDS_DISABLED ) BROKEN use entry below
 		mode:SetHUDVisible( DOTA_HUD_VISIBILITY_SHOP_SUGGESTEDITEMS, false ) 
 		--mode:SetHUDVisible(8, false)
+		mode:SetTopBarTeamValuesOverride( USE_CUSTOM_TOP_BAR_VALUES )
 
 		mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
 		mode:SetBuybackEnabled( BUYBACK_ENABLED )
@@ -784,6 +786,10 @@ function GameMode:HeroKilled( hero )
 	-- Update score
 	hero.score = hero.score - 1
 
+	self.nDeaths = self.nDeaths + 1
+
+	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_BADGUYS, self.nDeaths )
+
 	ScoreBoard:ScoreUpdate(hero)
 
 	-- particle effect repetition
@@ -890,6 +896,9 @@ end
 
 function GameMode:LevelCompleted( hero )
 	self.nCurrentRound = self.nCurrentRound + 1
+
+	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
+
 	if self.nCurrentRound > self.nMaxRounds then
 		print("[SNS] The Players have won the game! Starting finishing sequence.")
 		GameRules:SendCustomMessage("<font color='#FF1493'>You have completed all the rounds.</font>", 0, 0)
@@ -1233,6 +1242,10 @@ function GameMode:ResetGame()
 
 	self.nCurrentRound = 1
 	self.livesUsed = 0
+	self.nDeaths = 0
+
+	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
+	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_BADGUYS, self.nDeaths )
 
 	Timers:CreateTimer(4, function()
 		local msg = {
@@ -1335,6 +1348,7 @@ function GameMode:InitialiseNinja(hero)
 				duration = 3.0
 			}
 			FireGameEvent("show_center_message",msg)
+			GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
 		end)
 
 		Timers:CreateTimer(4, function()
