@@ -221,3 +221,5 @@ pip-log.txt
 *.vmat_c
 *.vtex_c
 *.bin
+*.vxml_c
+*.vcss_c
