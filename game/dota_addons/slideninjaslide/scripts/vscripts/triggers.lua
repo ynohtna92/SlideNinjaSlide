@@ -69,6 +69,9 @@ function OnEndTouchIce (trigger)
 	if not trigger.activator then
 		return
 	end
+	if not IsPhysicsUnit(trigger.activator) then
+		return
+	end
 	if not trigger.activator.slide and trigger.activator:HasModifier("thaw_aura") then
 		return
 	end

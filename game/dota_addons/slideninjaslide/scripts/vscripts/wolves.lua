@@ -112,4 +112,13 @@ function GameMode:ReviveAllWolves( )
 			end
 		end
 	end
+	for i,v in ipairs(self.wolvesHeaven) do
+		local wolf = CreateUnitByName(self.gameHeros[self.gameTheme][2], v[1], true, nil, nil, DOTA_TEAM_NEUTRALS)
+		wolf:SetForwardVector(Vector(RandomFloat(-1, 1), RandomFloat(-1, 1), 0))
+		wolf.zone = v[2]
+		wolf.isWolf = true
+		table.insert(self.wolves, wolf)
+		print(v[1], v[2])
+	end
+	self.wolvesHeaven = {}
 end

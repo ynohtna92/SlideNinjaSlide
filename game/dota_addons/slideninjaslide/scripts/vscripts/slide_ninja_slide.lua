@@ -1,15 +1,15 @@
 --[[
-Last modified: 23/06/2015
+Last modified: 30/06/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
 
 print('[SNS] slide_ninja_slide.lua')
 
-DEBUG = false
+DEBUG = true
 THINK_TIME = 0.1
 
-VERSION = "B230615"
+VERSION = "B300615"
 
 ROUNDS = 4
 LIVES = 3
@@ -117,6 +117,7 @@ function GameMode:InitGameMode()
 --	ListenToGameEvent('player_chat', Dynamic_Wrap(GameMode, 'PlayerSay'), self) --[[Broken]]
 	ListenToGameEvent('player_connect', Dynamic_Wrap(GameMode, 'PlayerConnect'), self)
 	ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
+	ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), self)
 	ListenToGameEvent('dota_player_used_ability', Dynamic_Wrap(GameMode, 'OnAbilityUsed'), self)
 	ListenToGameEvent('dota_item_purchased', Dynamic_Wrap(GameMode, 'OnItemPurchased'), self)
 	ListenToGameEvent('dota_item_picked_up', Dynamic_Wrap(GameMode, 'OnItemPickedUp'), self)
@@ -162,6 +163,13 @@ function GameMode:InitGameMode()
 	self.noReset = false -- Used to run things that should only be run once per player EVER!
 	self.noChance = false -- Toggle game chances
 	self.nDeaths = 0 -- Total deaths from all ninjas
+	
+	-- T.U.E Mode
+	self.bTue = false 
+	self.tueUnit = nil
+	self.tueSpawn = Entities:FindByName(nil, "tue_spawn")
+	self.tueTimerWaypoints = nil
+	self.bTueChasing = false
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -210,8 +218,8 @@ function GameMode:InitGameMode()
 
 	self.gameTheme = 1
 	self.gameHeros = {
-		[1] = {'npc_dota_hero_antimage', 'npc_wolf'},
-		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs'},
+		[1] = {'npc_dota_hero_antimage', 'npc_wolf', 'scripts/music.kv'},
+		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs', 'scripts/music_SB.kv'},
 	}
 
 	--[[ Scoreborad updater
@@ -245,6 +253,7 @@ function GameMode:InitGameMode()
 	self.guardsxyz[19] = {530, -300, 384, -500, -550, 0} -- 15 top
 
 	self.wolves = {}
+	self.wolvesHeaven = {}
 	self.wolfHP = 550
 
 	self.wolvesPerRound = {}
@@ -279,6 +288,8 @@ function GameMode:InitGameMode()
 	self.ninjas = {}
 
 	self.start = Entities:FindByName(nil, "start")
+
+	self.walls = Entities:FindAllByName("wall") -- TUE MODE
 
 	SpawnPoints = {}
 	local goodguys = Entities:FindAllByClassname("info_player_start_goodguys")
@@ -473,7 +484,7 @@ function GameMode:OnItemPurchased( keys )
 end
 
 -- An ability was used by a player
-function GameMode:OnAbilityUsed(keys)
+function GameMode:OnAbilityUsed( keys )
 	print('[SNS] AbilityUsed: ' .. keys.abilityname )
 	--PrintTable(keys)
 
@@ -497,7 +508,7 @@ end
 
   The hero parameter is the hero entity that just spawned in
 ]]
-function GameMode:OnHeroInGame(hero)
+function GameMode:OnHeroInGame( hero )
 	print("[SNS] Hero spawned in the game for the first time -- " .. hero:GetUnitName())
 	local className = hero:GetClassname()
 
@@ -534,6 +545,16 @@ function GameMode:OnHeroInGame(hero)
 		hero:SetGold(STARTING_GOLD, false)
 	else
 		hero:SetGold(STARTING_GOLD, false)
+	end
+end
+
+function GameMode:OnEntityKilled( keys )
+	local entity = EntIndexToHScript(keys.entindex_killed)
+	local name = entity:GetUnitName()
+	print(name)
+	if name == "npc_wolf" or name == "npc_mr_krabs" then
+		table.insert(self.wolvesHeaven, { entity:GetAbsOrigin(), entity.zone } )
+		print(#self.wolvesHeaven)
 	end
 end
 
@@ -653,6 +674,32 @@ function GameMode:PlayerSay(keys)
 		else
 			GameRules:SendCustomMessage("Chances Disabled!", 0, 0)
 			self.noChance = true
+		end
+	end
+
+	if string.find(keys.text, "^-end") and plyID == GetListenServerHost():GetPlayerID() then
+		GameRules:SendCustomMessage("The host has ended the game. 5 seconds till the server shutdown.", 0, 0)
+		Timers:CreateTimer(2, function()
+			self:ForceEnd()
+		end)
+	end
+
+	if string.find(keys.text:lower(), "^-tue") and plyID == GetListenServerHost():GetPlayerID() then
+		if not self.bTue then
+			self.bTue = true
+			GameRules:SendCustomMessage("T.U.E Mode Enabled!", 0, 0)
+			-- Reset Game into T.U.E mode
+			self.noReset = true
+			GameMode:ResetGame()
+			GameMode:TueMode()
+
+			Timers:CreateTimer(2, function()
+				MusicPlayer:ChangePlaylist("scripts/music_TUE.kv")
+				for i,v  in ipairs(self.vUserIds) do
+					print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
+					v:UpdateMusicPlaylist( )
+				end
+			end)
 		end
 	end
 
@@ -941,7 +988,6 @@ function GameMode:LevelCompleted( hero )
 		end)
 	end
 
-
 	-- reward team
 	for i,v in ipairs(self.ninjas) do
 		v:SetGold(v:GetGold() + GOLD_PER_ROUND, false)
@@ -957,7 +1003,6 @@ function GameMode:LevelCompleted( hero )
 
 	-- Reset all ninjas
 	for i,v in  ipairs(SpawnPoints) do
-		print(v)
 		local ninja = self.ninjas[i]
 		if ninja ~= nil then
 
@@ -996,6 +1041,10 @@ function GameMode:LevelCompleted( hero )
 				ParticleManager:DestroyParticle(particle, true)
 			end)
 		end
+	end
+
+	if self.bTue then
+		self:TueNewRound()
 	end
 
 	-- Delay by one tick
@@ -1119,6 +1168,11 @@ function GameMode:ChanceRound()
 		return
 	end
 
+	if self.bTue then
+		self:TueEnd()
+		return
+	end
+
 	self.livesUsed = self.livesUsed + 1
 	print('[SNS] Lives Used: ' .. tostring(self.livesUsed))
 	GameRules:SendCustomMessage("<font color='#FF1493'>A chance has been used at the cost of 100G each.</font>", 0, 0)
@@ -1190,10 +1244,17 @@ function GameMode:ChanceRound()
 		FireGameEvent("show_center_message",msg)
 	end)
 	Timers:CreateTimer(2, function()
+		local lives = LIVES - self.livesUsed
 		local msg = {
-			message = "CHANCES LEFT: " .. tostring(LIVES - self.livesUsed),
+			message = "CHANCES LEFT: " .. tostring(lives),
 			duration = 2.0
 		}
+		if lives == 0 then
+			msg = {
+				message = "LAST CHANCE!",
+				duration = 2.0
+			}
+		end
 		FireGameEvent("show_center_message",msg)
 	end)
 end
@@ -1260,9 +1321,12 @@ function GameMode:ResetGame()
 		if v.randomMoveTimer ~= nil then
 			Timers:RemoveTimer(v.randomMoveTimer)
 		end
-		v:RemoveSelf()
+		if not v:IsNull() then
+			v:RemoveSelf()
+		end
 	end
 	self.wolves = {}
+	self.wolvesHeaven = {}
 
 	self:PopulateZonesWithWolves()
 
@@ -1321,6 +1385,121 @@ function GameMode:CheckIfGameEnd()
 	end
 end
 
+function GameMode:ForceEnd(  )
+	self:EndMessage()
+	Timers:CreateTimer(3, function()
+		GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
+		GameRules:SetSafeToLeave( true )
+	end)
+end
+
+function GameMode:TueMode(  )
+	-- Enable Wall
+	for _,v in ipairs(self.walls) do
+		v:SetEnabled(true, false)
+	end
+
+	-- Spawn Unit and kill Old
+	self.tueUnit = CreateUnitByName("npc_crash_tue", self.tueSpawn:GetAbsOrigin(), false, nil, nil, DOTA_TEAM_NEUTRALS)
+
+	Timers:CreateTimer(2, function()
+		GameRules:SendCustomMessage("The barrier will deactivate in 10 seconds.", 0, 0)
+
+		local count = 0
+		Timers:CreateTimer(5, function()
+			local msg = {
+				message = 5 - count,
+				duration = 0.5
+			}
+			if count == 5 then
+				msg = {
+					message = "GO!",
+					duration = 0.5
+				}
+			end
+			FireGameEvent("show_center_message",msg)
+			if count >= 5 then
+				-- Disable Wall
+				for _,v in ipairs(self.walls) do
+					v:SetEnabled(false, false)
+				end
+				Timers:CreateTimer(4, function()
+					self:TueChase()
+				end)
+				return nil
+			end
+			count = count + 1
+			return 1
+		end)
+	end)
+end
+
+function GameMode:TueChase(  )
+	self.bTueChasing = true
+
+	local waypoints = {}
+	for i=1,15 do
+		table.insert(waypoints, Entities:FindByName(nil, "tue_waypoint_" .. tostring(i)))
+	end
+	local currentWaypoint = 1
+
+	EmitGlobalSound("RoshanDT.Scream")
+	local range = 350
+
+	-- Waypoints
+	Timers:CreateTimer(function()
+		if self.tueUnit == nil or not self.bTueChasing then
+			return nil
+		end
+		if self.tueUnit:IsIdle() then
+			if currentWaypoint == 16 then
+				self:TueEnd()
+				return nil
+			end
+			self.tueUnit:MoveToPosition(waypoints[currentWaypoint]:GetAbsOrigin())
+			currentWaypoint = currentWaypoint + 1
+		end
+		return 0.03
+	end)
+
+	-- Kill units in path
+	Timers:CreateTimer(function()
+		if self.tueUnit == nil or not self.bTueChasing then
+			return nil
+		end
+		for _,v in ipairs(Entities:FindAllInSphere(self.tueUnit:GetAbsOrigin(), range)) do
+			if v.isWolf and v:IsAlive() then
+				v:ForceKill(false)
+			elseif v.isNinja and not v:IsInvulnerable() and not v.isInvuln and v:IsAlive() then
+				self:HeroKilled(v)
+			end
+		end
+		return 0.03
+	end)
+end
+
+function GameMode:TueNewRound(  )
+	print('TUE Round Completed!')
+	self.bTueChasing = false
+	self.tueUnit:RemoveSelf()
+	self.tueUnit = nil
+	self:TueMode()
+end
+
+function GameMode:TueEnd(  )
+	self.bTue = false
+	self.bTueChasing = false
+	self.tueUnit:RemoveSelf()
+	self.tueUnit = nil
+	GameRules:SendCustomMessage("You have lost! Resetting to normal mode.", 0, 0)
+	self:ResetGame()
+	MusicPlayer:ChangePlaylist(self.gameHeros[self.gameTheme][3])
+	for i,v  in ipairs(self.vUserIds) do
+		print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
+		v:UpdateMusicPlaylist( )
+	end
+end
+
 function GameMode:EndMessage(  )
   GameRules:SendCustomMessage("Thank you for playing Slide Ninja Slide!", 0, 0)
   GameRules:SendCustomMessage("<font color='#7FFF00'>Remember to share your feedback on the Workshop Page</font>.", 0, 0)
@@ -1364,6 +1543,7 @@ function GameMode:InitialiseNinja(hero)
 			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
 			GameRules:SendCustomMessage("-toggleanimation/-ta: Toggle between sliding animation", 0, 0)
 			GameRules:SendCustomMessage("-nochance : Toggle lives enabled/disabled (Host Only)", 0, 0)
+			GameRules:SendCustomMessage("-end : End the game (Host Only)", 0, 0)
 		end)
 	end
 
