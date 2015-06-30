@@ -6,7 +6,7 @@ Co-Author: Myll
 
 print('[SNS] slide_ninja_slide.lua')
 
-DEBUG = true
+DEBUG = false
 THINK_TIME = 0.1
 
 VERSION = "B300615"
@@ -636,6 +636,11 @@ function GameMode:PlayerSay(keys)
 		hero:Stop()
 		hero:SetForwardVector(Vector(1,0,0))
 		print(hero:GetForwardVector(), hero:GetAnglesAsVector())
+	end
+
+	if DEBUG and string.find(keys.text, "^-test3") then
+		print("firesound")
+		EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", hero)
 	end
 
 	if string.find(keys.text, "^-players") and plyID == GetListenServerHost():GetPlayerID() then
@@ -1399,6 +1404,10 @@ function GameMode:TueMode(  )
 		v:SetEnabled(true, false)
 	end
 
+	local barrier =  ParticleManager:CreateParticle("particles/units/heroes/hero_dark_seer/dark_seer_wall_of_replica.vpcf", PATTACH_ABSORIGIN, self.walls[1])
+	ParticleManager:SetParticleControl(barrier, 0, Entities:FindByName(nil, "wall_1"):GetAbsOrigin())
+	ParticleManager:SetParticleControl(barrier, 1, Entities:FindByName(nil, "wall_2"):GetAbsOrigin())
+
 	-- Spawn Unit and kill Old
 	self.tueUnit = CreateUnitByName("npc_crash_tue", self.tueSpawn:GetAbsOrigin(), false, nil, nil, DOTA_TEAM_NEUTRALS)
 
@@ -1423,6 +1432,7 @@ function GameMode:TueMode(  )
 				for _,v in ipairs(self.walls) do
 					v:SetEnabled(false, false)
 				end
+				ParticleManager:DestroyParticle(barrier, false)
 				Timers:CreateTimer(4, function()
 					self:TueChase()
 				end)
@@ -1444,7 +1454,7 @@ function GameMode:TueChase(  )
 	local currentWaypoint = 1
 
 	EmitGlobalSound("RoshanDT.Scream")
-	local range = 350
+	local range = 370
 
 	-- Waypoints
 	Timers:CreateTimer(function()
@@ -1469,12 +1479,34 @@ function GameMode:TueChase(  )
 		end
 		for _,v in ipairs(Entities:FindAllInSphere(self.tueUnit:GetAbsOrigin(), range)) do
 			if v.isWolf and v:IsAlive() then
+				local mine = ParticleManager:CreateParticle("particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf", PATTACH_ABSORIGIN, self.tueUnit)
+				ParticleManager:SetParticleControl(mine, 0, v:GetAbsOrigin())
+				ParticleManager:SetParticleControl(mine, 1, Vector(0, 0, 300))
+				EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", v)
 				v:ForceKill(false)
 			elseif v.isNinja and not v:IsInvulnerable() and not v.isInvuln and v:IsAlive() then
+				local damage_indicator = ParticleManager:CreateParticle("particles/generic_gameplay/screen_damage_indicator.vpcf", PATTACH_EYES_FOLLOW, v)
+				local splat = ParticleManager:CreateParticle("particles/screen/splat_screen.vpcf", PATTACH_EYES_FOLLOW, v)
+				EmitGlobalSound("SlideNinjaSlide.ArtilleryCorpseExplodeDeath1")
 				self:HeroKilled(v)
 			end
 		end
 		return 0.03
+	end)
+
+	-- Explosion Particles
+	Timers:CreateTimer(function()
+		if self.tueUnit == nil or not self.bTueChasing then
+			return nil
+		end
+		local lastpos = self.tueUnit:GetAbsOrigin()
+		Timers:CreateTimer(0.5, function()
+			local mine = ParticleManager:CreateParticle("particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf", PATTACH_ABSORIGIN, self.tueUnit)
+			ParticleManager:SetParticleControl(mine, 0, lastpos)
+			ParticleManager:SetParticleControl(mine, 1, Vector(0, 0, 300))
+			EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", self.tueUnit)
+		end)
+		return 1
 	end)
 end
 
@@ -1550,8 +1582,11 @@ function GameMode:InitialiseNinja(hero)
 	if not hero.firstTime then
 		if not self.noReset then
 			-- attach music player to this player ent
+			MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
 			Timers:CreateTimer(5, function()
-				MusicPlayer:AttachMusicPlayer( hero:GetPlayerOwner() )
+				if not hero:IsNull() then
+					hero:GetPlayerOwner():PlayMusic()
+				end
 			end)
 		end
 		Physics:Unit(hero)

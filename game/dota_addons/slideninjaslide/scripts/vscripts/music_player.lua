@@ -302,7 +302,7 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 		EmitSoundOnClient(mp.currentSong, hPlayer)
 	end
 
-	hPlayer:PlayMusic()
+	--hPlayer:PlayMusic()
 end
 
 -- ******************* UTILITY FUNCTIONS *******************

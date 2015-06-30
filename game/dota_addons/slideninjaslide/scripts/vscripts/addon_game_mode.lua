@@ -57,6 +57,11 @@ function Precache( context )
 	-- Round winners hat
 	PrecacheResource( "particle", "particles/leader/leader_overhead.vpcf", context )
 
+	PrecacheResource( "particle", "particles/screen/screen_splat.vpcf", context )
+	PrecacheResource( "particle", "particles/screen/splat_screen.vpcf", context )
+	PrecacheResource( "particle", "particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf", context)
+	PrecacheResource( "particle", "particles/units/heroes/hero_dark_seer/dark_seer_wall_of_replica.vpcf", context)
+	
 	--[[
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_blue", context)
 	PrecacheResource("particle_folder", "particles/silencer_last_word_status_teal", context)
@@ -79,12 +84,13 @@ function Precache( context )
 	PrecacheModel("models/development/invisiblebox.vmdl", context)
 
 	-- Sounds
-	PrecacheResource( "soundfile", "soundevents/slideninjaslide_sounds_custom.vsndevts", context )
+	PrecacheResource("soundfile", "soundevents/slideninjaslide_sounds_custom.vsndevts", context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_treant.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_chen.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_roshan_halloween.vsndevts", context)
+	--PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
 end
 
 -- Create the game mode when we activate
