@@ -864,6 +864,9 @@ function GameMode:HeroKilled( hero )
 
 		-- repeat as long as the hero is dead
 		if not hero:IsAlive() then
+			if hero.halo ~= nil then
+				ParticleManager:SetParticleControl( hero.halo, 0, hero.deadPos )
+			end
 			return .5 -- sync this with the particle effect
 		else
 			print("Deleting halo particles")

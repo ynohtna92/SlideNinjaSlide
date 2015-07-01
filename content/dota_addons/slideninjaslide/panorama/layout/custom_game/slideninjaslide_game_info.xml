@@ -1,0 +1,39 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/slideninjaslide_game_info.css" />
+	</styles>
+	<Panel class="SlideninjaslideGameInfo">
+		<Panel id="Title">
+			<Label id="TitleName" text="#addonname" />
+		</Panel>
+		<Label id="ObjectiveHeader" class="Header" html="true" text="#slideninjaslide_game_info_header_objective" />
+		<Label id="BriefDescription" text="#slideninjaslide_brief_description" />
+		<Label id="HowToPlayHeader" class="Header" html="true" text="#slideninjaslide_game_info_header_how_to_play" />
+		<Panel id="AntimageRow" class="InfoRow">
+			<Label id="AmText" html="true" text="#slideninjaslide_game_info_antimage" />
+			<Image id="AmImage" src="file://{images}/custom_game/game_info/antimage.psd" />
+		</Panel>
+		<Panel id="CreepsRow" class="InfoRow">
+			<Image id="CreepsImage" src="file://{images}/custom_game/game_info/creeps.psd" />
+			<Label id="CreepsText" html="true" text="#slideninjaslide_game_info_creeps" />
+		</Panel>
+		<Label id="AdditionalHeader" class="Header" html="true" text="#slideninjaslide_game_info_additional_header" />
+		<Panel id="AddRow" class="InfoRow">
+			<Panel id="RsRow" class="AddRow">
+				<Label id="AdText01" class="AdText" html="true" text="#slideninjaslide_game_info_ad01" />
+				<Image id="RsImage" src="file://{images}/custom_game/game_info/roshan.psd" />
+			</Panel>
+			<Panel id="SbRow" class="AddRow">
+			<Image id="SbImage" src="file://{images}/custom_game/game_info/spongebob.psd" />
+			<Label id="AdText02" class="AdText" html="true" text="#slideninjaslide_game_info_ad02" />
+			</Panel>
+		</Panel>		
+		<Label id="TipsHeader" class="Header" html="true" text="#slideninjaslide_game_info_tips_header" />
+		<Panel id="TipsRow" class="InfoRow">
+			<Label id="TipText01" class="TipText" html="true" text="#slideninjaslide_game_info_tip01" />
+			<Label id="TipText02" class="TipText" html="true" text="#slideninjaslide_game_info_tip02" />
+			<Label id="TipText03" class="TipText" html="true" text="#slideninjaslide_game_info_tip03" />
+		</Panel>
+	</Panel>
+</root>
+

@@ -893,7 +893,7 @@
 		"ID"							"5999"
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior" 				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityBehavior" 				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"BaseClass"						"ability_datadriven"
 		"AbilityTextureName"			"rubick_empty1"
 		"MaxLevel"						"1"

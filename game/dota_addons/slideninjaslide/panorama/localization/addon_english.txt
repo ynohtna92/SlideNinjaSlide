@@ -1,0 +1,17 @@
+"addon"
+{
+	"addonname"										"Slide Ninja Slide"
+	"slideninjaslide_game_info_header_objective"			"Objective:"
+	"slideninjaslide_brief_description"					"Make it through 4 rounds of increasing difficulty with the support of your allies to win the game!"
+	"slideninjaslide_game_info_header_how_to_play"		"How To Play:"
+	"slideninjaslide_game_info_antimage"					"Each player controls a <span class='antimage'>Ninja</span>, equipped with abilities that can be used to help avoid hitting <span class='creeps'>Grunts</span> in each area. If you or an ally dies, the hero can be resurrected by moving over its beacon."
+	"slideninjaslide_game_info_creeps"						"You must avoid the enemy <span class='creeps'>Grunts</span> as hitting them will instantly kill your hero."
+	"overthrow_game_info_items"						"Keep an eye out for <span class='treasure'>treasure</span> deliveries. An icon will appear on your map where an <span class='items'>item</span> will appear."
+	"slideninjaslide_game_info_tips_header"				"Tips:"
+	"slideninjaslide_game_info_tip01"						"You must work together as a team in order to reach the end of each round."
+	"slideninjaslide_game_info_tip02"						"Experience will be earned when you enter a new safe zone. The amount of experience gained is based on your Save-To-Death ratio."
+	"slideninjaslide_game_info_tip03"						"There are commands available for both host and players listed at the start and end of the game. These commands are able to alter the sliding animation of your hero, reset the game, and end the game."
+	"slideninjaslide_game_info_additional_header"			"Additional Features:"
+	"slideninjaslide_game_info_ad01"						"The T.U.E timed chase mode can be started by the host at any time using the <span class='command'>-tue</span> commmand."
+	"slideninjaslide_game_info_ad02"						"The more difficult Slide Spongebob Slide mode can be started by the host with the phrase <span class='command'>Who lives in a pineapple under the sea</span>."
+}

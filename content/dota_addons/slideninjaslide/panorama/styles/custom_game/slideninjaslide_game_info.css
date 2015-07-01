@@ -1,0 +1,193 @@
+.SlideninjaslideGameInfo
+{
+    width:100%;
+    padding-right: 40px;
+    flow-children: down;
+}
+ 
+Label
+{
+    font-size: 18px;
+    color: #999999;
+    vertical-align: top;
+}
+ 
+#Title
+{
+    flow-children: right;
+}
+
+#TitleIcon
+{
+    width: 64px;
+    height: 64px;
+    vertical-align: center;
+}
+
+#TitleName
+{
+    color: #cccccc;
+    font-size: 50px;
+    margin-left: 16px;
+    margin-top: 16px;
+    text-transform: uppercase;
+    vertical-align: center;
+}
+
+#BriefDescription
+{
+    margin-top: 10px;
+}
+
+#AmText,
+#CreepsText
+{
+    width: 50%;
+}
+
+#AdText01
+{
+    width: 50%;
+}
+
+#AdText02
+{
+    width: 45%;
+}
+
+.Header
+{
+	font-size: 18px;
+    font-weight: bold;
+	margin-top: 36px;
+	text-transform: uppercase;
+}
+
+#ObjectiveHeader
+{
+	margin-top: 18px;
+}
+
+#CreepsRow
+{
+    margin-top: -40px;
+}
+
+#AmText
+{
+    margin-top: 60px;
+	text-align: right;
+}
+
+#AmImage
+{
+    margin-top: -20px;
+    margin-left: 10px;
+    width: 255px;
+    height: 300px;
+}
+
+#CreepsRow
+{
+    margin-top: -60px;
+}
+
+#CreepsImage
+{
+    width: 272px;
+    height: 200px;
+}
+
+#CreepsText
+{
+    margin-top: 140px;
+}
+
+#TipsHeader
+{
+	margin-top: 10px;
+}
+
+#TipsRow
+{
+	flow-children: down;
+	margin-right: 92px;
+	margin-top: 10px;
+}
+
+#AddRow
+{
+    flow-children: down;
+    margin-right: 92px;
+    margin-top: 10px;
+}
+
+#RsRow
+{
+    margin-top: 20px;
+}
+
+#RsImage
+{
+    margin-top: -70px;
+    width: 300px;
+    height: 232px;
+}
+
+#SbRow
+{
+    margin-top: 50px;
+}
+
+#SbImage
+{
+    margin-top: -60px;
+    width: 230px;
+    height: 252px;
+}
+
+.AdText
+{
+    margin-left: 16px;
+    margin-bottom: 10px;
+}
+
+.TipText
+{
+	margin-left: 16px;
+    margin-bottom: 10px;
+}
+
+.InfoRow
+{
+    flow-children: right;
+    width: 100%;
+}
+
+.AddRow
+{
+    flow-children: right;
+    width: 100%;
+}
+
+
+Label .antimage,
+Label .creeps
+{
+    color: #cccccc;
+    font-weight: bold;
+}
+
+Label .items,
+Label .gold,
+Label .xp
+{
+    color: #fcaf3d;
+    font-weight: bold;
+}
+
+Label .command
+{
+    color: #cccccc;
+    font-style: italic;
+}
