@@ -1,5 +1,5 @@
 --[[
-Last modified: 30/06/2015
+Last modified: 02/07/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B300615"
+VERSION = "B020715"
 
 ROUNDS = 4
 LIVES = 3
@@ -210,10 +210,10 @@ function GameMode:InitGameMode()
 
 	self.roundMessages = {
 		[1] = "",
-		[2] = "You have made it to round 2. Good luck!",
-		[3] = "You have made it to round 3... which is as far as you'll make it. It's been a good run, but now you're so dead...",
-		[4] = "You have made it to the last round. Unfortunately survival is not guarenteed my fellow heros.",
-		[5] = "You win. Your parents must be so damn proud.",
+		[2] = "#slideninjaslide_round_message02",
+		[3] = "#slideninjaslide_round_message03",
+		[4] = "#slideninjaslide_round_message04",
+		[5] = "#slideninjaslide_round_message05",
 	}
 
 	self.gameTheme = 1
@@ -674,16 +674,16 @@ function GameMode:PlayerSay(keys)
 
 	if string.find(keys.text, "^-nochance") and plyID == GetListenServerHost():GetPlayerID() then
 		if self.noChance then
-			GameRules:SendCustomMessage("Chances Enabled!", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_command_nochance_on", 0, 0)
 			self.noChance = false
 		else
-			GameRules:SendCustomMessage("Chances Disabled!", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_command_nochance_off", 0, 0)
 			self.noChance = true
 		end
 	end
 
 	if string.find(keys.text, "^-end") and plyID == GetListenServerHost():GetPlayerID() then
-		GameRules:SendCustomMessage("The host has ended the game. 5 seconds till the server shutdown.", 0, 0)
+		GameRules:SendCustomMessage("#slideninjaslide_command_end", 0, 0)
 		Timers:CreateTimer(2, function()
 			self:ForceEnd()
 		end)
@@ -692,7 +692,7 @@ function GameMode:PlayerSay(keys)
 	if string.find(keys.text:lower(), "^-tue") and plyID == GetListenServerHost():GetPlayerID() then
 		if not self.bTue then
 			self.bTue = true
-			GameRules:SendCustomMessage("T.U.E Mode Enabled!", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_command_tue", 0, 0)
 			-- Reset Game into T.U.E mode
 			self.noReset = true
 			GameMode:ResetGame()
@@ -956,9 +956,9 @@ function GameMode:LevelCompleted( hero )
 
 	if self.nCurrentRound > self.nMaxRounds then
 		print("[SNS] The Players have won the game! Starting finishing sequence.")
-		GameRules:SendCustomMessage("<font color='#FF1493'>You have completed all the rounds.</font>", 0, 0)
+		GameRules:SendCustomMessage("#slideninjaslide_levelcomplete", 0, 0)
 		local msg = {
-			message = "YOU'VE WON!",
+			message = "#slideninjaslide_won",
 			duration = 3.0
 		}
 		FireGameEvent("show_center_message",msg)
@@ -1089,7 +1089,7 @@ function GameMode:LevelCompleted( hero )
 			duration = 3.0
 		}
 		FireGameEvent("show_center_message",msg)
-		GameRules:SendCustomMessage("<font color='#FF1493'>".. self.roundMessages[self.nCurrentRound] .."</font>", 0, 0)
+		GameRules:SendCustomMessage(self.roundMessages[self.nCurrentRound], 0, 0)
 	end)
 end
 
@@ -1183,7 +1183,7 @@ function GameMode:ChanceRound()
 
 	self.livesUsed = self.livesUsed + 1
 	print('[SNS] Lives Used: ' .. tostring(self.livesUsed))
-	GameRules:SendCustomMessage("<font color='#FF1493'>A chance has been used at the cost of 100G each.</font>", 0, 0)
+	GameRules:SendCustomMessage("#slideninjaslide_chanceround_penalty", 0, 0)
 
 	-- penalty team
 	for i,v in ipairs(self.ninjas) do
@@ -1246,7 +1246,7 @@ function GameMode:ChanceRound()
 	-- short pause before this text appears.
 	Timers:CreateTimer(0, function()
 		local msg = {
-			message = "RESETING ROUND",
+			message = "#slideninjaslide_resetround",
 			duration = 1.5
 		}
 		FireGameEvent("show_center_message",msg)
@@ -1259,7 +1259,7 @@ function GameMode:ChanceRound()
 		}
 		if lives == 0 then
 			msg = {
-				message = "LAST CHANCE!",
+				message = "#slideninjaslide_lastchance",
 				duration = 2.0
 			}
 		end
@@ -1269,7 +1269,7 @@ end
 
 function GameMode:ResetGame()
 	local msg = {
-		message = "RESETING GAME",
+		message = "#slideninjaslide_gamereset",
 		duration = 2.0
 	}
 	FireGameEvent("show_center_message",msg)
@@ -1371,9 +1371,9 @@ function GameMode:CheckIfGameEnd()
 			end
 
 			print("[SNS] The Players have lost the game! Starting reset/finishing sequence.")
-			GameRules:SendCustomMessage("<font color='#FF1493'>All heros have fallen!</font>", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_heros_fallen", 0, 0)
 			local msg = {
-				message = "YOU'VE LOST!",
+				message = "#slideninjaslide_lost",
 				duration = 3.0
 			}
 			FireGameEvent("show_center_message",msg)
@@ -1388,7 +1388,7 @@ function GameMode:CheckIfGameEnd()
 				self.resetting = false
 			end)
 			self:EndMessage()
-			GameRules:SendCustomMessage("To reset the game the host must type <font color='#AEAEAE'>-reset</font> within 15 seconds.", 0, 0)	
+			GameRules:SendCustomMessage("#slideninjaslide_reset_game_message", 0, 0)	
 		end)
 	end
 end
@@ -1415,7 +1415,7 @@ function GameMode:TueMode(  )
 	self.tueUnit = CreateUnitByName("npc_crash_tue", self.tueSpawn:GetAbsOrigin(), false, nil, nil, DOTA_TEAM_NEUTRALS)
 
 	Timers:CreateTimer(2, function()
-		GameRules:SendCustomMessage("The barrier will deactivate in 10 seconds.", 0, 0)
+		GameRules:SendCustomMessage("#slideninjaslide_tue_barrier", 0, 0)
 
 		local count = 0
 		Timers:CreateTimer(5, function()
@@ -1425,7 +1425,7 @@ function GameMode:TueMode(  )
 			}
 			if count == 5 then
 				msg = {
-					message = "GO!",
+					message = "#slideninjaslide_tue_go",
 					duration = 0.5
 				}
 			end
@@ -1526,7 +1526,7 @@ function GameMode:TueEnd(  )
 	self.bTueChasing = false
 	self.tueUnit:RemoveSelf()
 	self.tueUnit = nil
-	GameRules:SendCustomMessage("You have lost! Resetting to normal mode.", 0, 0)
+	GameRules:SendCustomMessage("#slideninjaslide_tue_lost", 0, 0)
 	self:ResetGame()
 	MusicPlayer:ChangePlaylist(self.gameHeros[self.gameTheme][3])
 	for i,v  in ipairs(self.vUserIds) do
@@ -1536,9 +1536,9 @@ function GameMode:TueEnd(  )
 end
 
 function GameMode:EndMessage(  )
-  GameRules:SendCustomMessage("Thank you for playing Slide Ninja Slide!", 0, 0)
-  GameRules:SendCustomMessage("<font color='#7FFF00'>Remember to share your feedback on the Workshop Page</font>.", 0, 0)
-  GameRules:SendCustomMessage("https://github.com/ynohtna92/SlideNinjaSlide", 0, 0)
+  GameRules:SendCustomMessage("#slideninjaslide_end_message01", 0, 0)
+  GameRules:SendCustomMessage("#slideninjaslide_end_message02", 0, 0)
+  GameRules:SendCustomMessage("#slideninjaslide_end_message03", 0, 0)
   GameRules:SendCustomMessage(" ", 0, 0)
 end
 
@@ -1567,18 +1567,18 @@ function GameMode:InitialiseNinja(hero)
 
 		Timers:CreateTimer(4, function()
 			GameRules:SendCustomMessage("Welcome to Slide Ninja Slide! [".. VERSION .. "]", 0, 0)
-			GameRules:SendCustomMessage("Main Developer & Mapper: <font color='#FF1493'>A_Dizzle</font>", 0, 0)
-			GameRules:SendCustomMessage("Co-Developers: <font color='#FF1493'>Myll</font> (Coder) & <font color='#FF1493'>StrikerFred</font> (WC3 Developer)", 0, 0)
-			GameRules:SendCustomMessage("Special Thanks: <font color='#FF1493'>BMD & Noya</font> and everyone on IRC", 0, 0)
-			GameRules:SendCustomMessage("Support this project on Github at https://github.com/ynohtna92/SlideNinjaSlide", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_start_message02", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_start_message03", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_start_message04", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_start_message05", 0, 0)
 		end)
 
 		Timers:CreateTimer(20, function()
-			GameRules:SendCustomMessage("Commands:", 0, 0)
-			GameRules:SendCustomMessage("-unstuck : Reposition if stuck", 0, 0)
-			GameRules:SendCustomMessage("-toggleanimation/-ta: Toggle between sliding animation", 0, 0)
-			GameRules:SendCustomMessage("-nochance : Toggle lives enabled/disabled (Host Only)", 0, 0)
-			GameRules:SendCustomMessage("-end : End the game (Host Only)", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_commands01", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_commands02", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_commands03", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_commands04", 0, 0)
+			GameRules:SendCustomMessage("#slideninjaslide_commands05", 0, 0)
 		end)
 	end
 
