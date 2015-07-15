@@ -220,6 +220,15 @@ function circleCircleCollision(p1Origin, p2Origin, p1Radius, p2Radius)
   end
 end
 
+function distanceBetweenEntities2D(entity1, entity2)
+	local x1 = entity1:GetAbsOrigin().x
+	local y1 = entity1:GetAbsOrigin().y
+	local x2 = entity2:GetAbsOrigin().x
+	local y2 = entity2:GetAbsOrigin().y
+
+	return math.sqrt(math.pow(x2-x1, 2) + math.pow(y2-y1, 2))
+end
+
 --[[
   Continuous collision algorithm for circular 2D bodies, see
   http://www.gvu.gatech.edu/people/official/jarek/graphics/material/collisionFitzgeraldForsthoefel.pdf

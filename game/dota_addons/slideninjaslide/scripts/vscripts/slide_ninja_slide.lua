@@ -1468,9 +1468,12 @@ function GameMode:TueChase(  )
 			if currentWaypoint == 16 then
 				self:TueEnd()
 				return nil
+			end	
+			if distanceBetweenEntities2D(waypoints[currentWaypoint], self.tueUnit) > 10 then
+				self.tueUnit:MoveToPosition(waypoints[currentWaypoint]:GetAbsOrigin())
+			else
+				currentWaypoint = currentWaypoint + 1
 			end
-			self.tueUnit:MoveToPosition(waypoints[currentWaypoint]:GetAbsOrigin())
-			currentWaypoint = currentWaypoint + 1
 		end
 		return 0.03
 	end)
