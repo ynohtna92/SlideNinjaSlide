@@ -1202,7 +1202,7 @@ function GameMode:ChanceRound()
 
 			FindClearSpaceForUnit(ninja, v, true)
 			-- reset camera pos
-			if not ninja.player:IsNull() then
+			if ninja.player and not ninja.player:IsNull() then
 				ninja.player:SetAbsOrigin(v)
 			end
 
