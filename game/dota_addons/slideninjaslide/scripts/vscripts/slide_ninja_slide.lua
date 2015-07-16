@@ -1,5 +1,5 @@
 --[[
-Last modified: 02/07/2015
+Last modified: 16/07/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B020715"
+VERSION = "B160715"
 
 ROUNDS = 4
 LIVES = 3
@@ -1026,7 +1026,7 @@ function GameMode:LevelCompleted( hero )
 			FindClearSpaceForUnit(ninja, v, false)
 
 			-- reset camera pos
-			if not ninja.player:IsNull() then
+			if ninja.player and not ninja.player:IsNull() then
 				ninja.player:SetAbsOrigin(v)
 			end
 			
