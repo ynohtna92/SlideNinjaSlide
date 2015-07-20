@@ -577,7 +577,7 @@ function GameMode:PlayerSay(keys)
 		return
 	end
 
-	if DEBUG and string.find(txt, "^-tractor") then
+	if DEBUG and string.find(txt, "^-tractor$") then
 		print('tractor')
 		local m = string.match(txt, "(%d)")
 		if m ~= nil then
@@ -608,7 +608,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if DEBUG and string.find(keys.text, "^-gold") then
+	if DEBUG and string.find(keys.text, "^-gold$") then
 		print("Giving gold to player")
 		for k,v in pairs(HeroList:GetAllHeroes()) do
 			v:SetGold(50000, false)
@@ -621,29 +621,29 @@ function GameMode:PlayerSay(keys)
 		print(player.hero:IsSlide())
 	end
 
-	if DEBUG and string.find(keys.text, "^-kill") then
+	if DEBUG and string.find(keys.text, "^-kill$") then
 		GameMode:HeroKilled( hero )
 		Timers:CreateTimer(3, function()
 			GameMode:HeroRevivied( hero, hero)
 		end)
 	end
 
-	if DEBUG and string.find(keys.text, "^-test") then
+	if DEBUG and string.find(keys.text, "^-test$") then
 		GameMode:ReviveAllWolves()
 	end
 
-	if DEBUG and string.find(keys.text, "^-test2") then
+	if DEBUG and string.find(keys.text, "^-test2$") then
 		hero:Stop()
 		hero:SetForwardVector(Vector(1,0,0))
 		print(hero:GetForwardVector(), hero:GetAnglesAsVector())
 	end
 
-	if DEBUG and string.find(keys.text, "^-test3") then
+	if DEBUG and string.find(keys.text, "^-test3$") then
 		print("firesound")
 		EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", hero)
 	end
 
-	if string.find(keys.text, "^-players") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-players$") and plyID == GetListenServerHost():GetPlayerID() then
 		GameRules:SendCustomMessage("Players: " .. #self.vUserIds .. "/10", 0, 0)
 		for i,v  in ipairs(self.vUserIds) do
 			local phero = v:GetAssignedHero()
@@ -651,11 +651,11 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-unstuck") then
+	if string.find(keys.text, "^-unstuck$") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
 	end
 
-	if (string.find(keys.text, "^-toggleanimation") or string.find(keys.text, "^-ta")) and not hero.slide then
+	if (string.find(keys.text, "^-toggleanimation$") or string.find(keys.text, "^-ta$")) and not hero.slide then
 		if hero.skateAnimation == "modifier_skatimation_datadriven" then
 			hero.skateAnimation = "modifier_skatimation2_datadriven"
 		else
@@ -663,7 +663,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-reset") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-reset$") and plyID == GetListenServerHost():GetPlayerID() then
 		if self.canReset then
 			self.noReset = true
 			self.resetting = true
@@ -672,7 +672,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-nochance") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-nochance$") and plyID == GetListenServerHost():GetPlayerID() then
 		if self.noChance then
 			GameRules:SendCustomMessage("#slideninjaslide_command_nochance_on", 0, 0)
 			self.noChance = false
@@ -682,14 +682,14 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-end") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-end$") and plyID == GetListenServerHost():GetPlayerID() then
 		GameRules:SendCustomMessage("#slideninjaslide_command_end", 0, 0)
 		Timers:CreateTimer(2, function()
 			self:ForceEnd()
 		end)
 	end
 
-	if string.find(keys.text:lower(), "^-tue") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text:lower(), "^-tue$") and plyID == GetListenServerHost():GetPlayerID() then
 		if not self.bTue then
 			self.bTue = true
 			GameRules:SendCustomMessage("#slideninjaslide_command_tue", 0, 0)
