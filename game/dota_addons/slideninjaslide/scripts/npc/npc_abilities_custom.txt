@@ -605,6 +605,12 @@
 				"Target" "CASTER"
 				"EffectName" "Hero_Omniknight.Purification"
 			}
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"SpongeBobTokyoDrift"
+				"duration"		"%duration"
+			}
 		}
 
 		"Modifiers"

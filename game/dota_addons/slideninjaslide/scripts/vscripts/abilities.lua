@@ -85,6 +85,31 @@ function LeapOfFaith ( keys )
 	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_rings.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
 end
 
+function SpongeBobTokyoDrift( keys )
+	local caster = keys.caster
+	local duration = keys.duration
+
+	local time = 0
+	local particles_active = {}
+
+	print("Tokyo Drift")
+
+	Timers:CreateTimer(0.1, function()
+		local fxIndex = ParticleManager:CreateParticle("particles/units/heroes/hero_beastmaster/beastmaster_primal_target_flash.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster)
+		ParticleManager:SetParticleControlEnt( fxIndex, 2, caster, PATTACH_ABSORIGIN_FOLLOW, "attach_hitloc", caster:GetAbsOrigin(), true )
+		table.insert(particles_active, fxIndex)
+		if time < duration and caster:IsAlive() then
+			time = time + 0.1
+			return 0.1
+		else
+			for _,v in ipairs(particles_active) do
+				ParticleManager:DestroyParticle(v, false)
+			end
+			return nil
+		end
+	end)
+end
+
 --[[
 	FORKED from SpellLibrary
 	Original Author: Pizzalol

@@ -42,6 +42,7 @@ function Precache( context )
 	PrecacheResource("particle", "particles/units/heroes/hero_doom_bringer/doom_bringer_doom.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_silencer/silencer_last_word.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_silencer/silencer_last_word_status.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_beastmaster/beastmaster_primal_target_flash.vpcf", context)
 
 	PrecacheResource("particle", "particles/silencer_last_word_status_blue/silencer_last_word_status_blue.vpcf", context)
 	PrecacheResource("particle", "particles/silencer_last_word_status_teal/silencer_last_word_status_teal.vpcf", context)
