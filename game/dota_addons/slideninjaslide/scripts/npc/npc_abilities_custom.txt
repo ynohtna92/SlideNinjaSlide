@@ -773,6 +773,149 @@
 		}
 	}
 
+	//=================================================================================================================
+	// TUE: Bubble Beam
+	//=================================================================================================================
+	"tue_bubble_beam"
+	{
+		"ID"							"6009"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"abaddon_aphotic_shield"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"MaxLevel"						"1"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"14.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"50"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile" 	"scripts/vscripts/abilities.lua"
+				"Function"		"BubbleBeam"
+
+				"radius"		"%radius"
+				"duration"		"%duration"
+				"bubble_speed"	"%bubble_speed"
+
+				"proj_particle"	"particles/units/heroes/hero_puck/puck_illusory_orb.vpcf"
+				"proj_modifier"	"modifier_illusory_orb_projectile_datadriven"
+			}
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"		"1"
+			
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"BubbleBeamOnHit"
+				"Target"		"TARGET"
+				"duration"		"%duration_debuff"	
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_tue_bubble_beam_projectile_datadriven"
+				"Target"		"TARGET"
+			}
+			
+			"FireSound"
+			{
+				"EffectName"	"Hero_Puck.Illusory_Orb_Damage"
+				"Target"		"TARGET"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_tue_bubble_beam_passive_datadriven"
+			{
+				"Attributes"				"MODIFIER_ATTRIBUTE_PERMANENT"
+				"Passive"					"1"
+				"IsHidden"					"1"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ABILITY_LAYOUT"		"5"
+				}
+			}
+
+			"modifier_tue_bubble_beam_projectile_datadriven"
+			{
+				"Duration"		"%duration_debuff"
+				"IsDebuff"		"1"
+				"EffectName"	"particles/units/heroes/hero_medusa/medusa_mana_shield.vpcf"
+				"EffectAttachType"	"follow_origin"
+
+				"States"
+				{
+					//"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_ROOTED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"BubbleBeamOnHit"
+						"Target"		"TARGET"
+						"duration"		"%duration_debuff"
+					}
+				}
+			}
+		}
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"1.5"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bubble_speed"				"50"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"66"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration_debuff"			"2.0"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"					"soundevents/game_sounds_heroes/game_sounds_puck.vsndevts"
+			"particle"					"particles/units/heroes/hero_puck/puck_illusory_orb.vpcf"
+			"particle"					"particles/units/heroes/hero_puck/puck_illusory_orb_blink_out.vpcf"
+		}
+	}
+
 //---------------
 // Dummy Stuff
 //---------------

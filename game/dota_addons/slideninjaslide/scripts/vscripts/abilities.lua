@@ -235,6 +235,80 @@ function SpongeBobLeapOfFaith( keys )
 	end)
 end
 
+function BubbleBeam( keys )
+	print("BubbleBeam")
+
+	-- init ability
+	local caster = keys.caster
+	local ability = keys.ability
+
+	local radius = keys.radius
+	local bubbleSpeed = keys.bubble_speed + caster:GetIdealSpeed()
+	print(bubbleSpeed, radius)
+	local duration = keys.duration
+
+	local casterOrigin = caster:GetAbsOrigin()
+	local targetDirection = caster:GetForwardVector()
+	local projVelocity = targetDirection * bubbleSpeed
+
+	local startTime = GameRules:GetGameTime()
+	local endTime = startTime + duration
+
+	-- Create linear projectile
+	local projID = ProjectileManager:CreateLinearProjectile( {
+		Ability = ability,
+		EffectName = keys.proj_particle,
+		vSpawnOrigin = casterOrigin,
+		fDistance = 1000,
+		fStartRadius = radius,
+		fEndRadius = radius,
+		Source = caster,
+		bHasFrontalCone = false,
+		bReplaceExisting = false,
+		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
+		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
+		iUnitTargetType = DOTA_UNIT_TARGET_BASIC,
+		fExpireTime = endTime,
+		bDeleteOnHit = true,
+		vVelocity = projVelocity,
+		bProvidesVision = false,
+		iVisionRadius = 1000,
+		iVisionTeamNumber = caster:GetTeamNumber()
+	} )
+end
+
+function BubbleBeamOnHit( keys )
+	print("BubbleBeamOnHit")
+
+	local target = keys.target
+	local duration = keys.duration
+	local mid = duration/2
+	local height = 200
+	local jump = height/(mid/0.03)
+	local time_elapsed = 0
+
+	Timers:CreateTimer(0, function()		
+		local ground_position = GetGroundPosition(target:GetAbsOrigin() , target)
+		time_elapsed = time_elapsed + 0.03
+		if time_elapsed < mid then
+			target:SetAbsOrigin(target:GetAbsOrigin() + Vector(0,0,jump)) -- Up
+		else
+			target:SetAbsOrigin(target:GetAbsOrigin() - Vector(0,0,jump)) -- Down
+		end
+		--print(caster:GetAbsOrigin().z, ground_position.z)
+		if target:GetAbsOrigin().z - ground_position.z <= 0 then
+			return nil
+		end
+
+		return 0.03
+	end)
+
+end
+
+function BubbleBeamStop( keys )
+	print("BubbleBeamStop")
+end
+
 function debug_teleport( keys )
 	print(keys.target_points[1])
 	FindClearSpaceForUnit(keys.caster, keys.target_points[1], true)

@@ -1,5 +1,5 @@
 --[[
-Last modified: 16/07/2015
+Last modified: 15/08/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B160715"
+VERSION = "B150815"
 
 ROUNDS = 4
 LIVES = 3
@@ -761,7 +761,7 @@ function GameMode:OnThink()
 
 			if hero.nearbyWolves ~= {} then
 				for i,wolf in ipairs(hero.nearbyWolves) do
-					if not hero:IsInvulnerable() and not hero.isInvuln and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
+					if not hero:IsInvulnerable() and not hero.isInvuln and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						GameMode:HeroKilled(hero)
 					end
 				end
@@ -1618,7 +1618,12 @@ function GameMode:InitialiseNinja(hero)
 
 		if DEBUG then
 			hero:SetControllableByPlayer(0, true)
+			AddAbilityToUnit(hero, "tue_bubble_beam")
 			AddAbilityToUnit(hero, "debug_teleport")
+		end
+
+		if self.bTue then
+			AddAbilityToUnit(hero, "tue_bubble_beam")
 		end
 
 		hero.id = hero:GetPlayerID()
