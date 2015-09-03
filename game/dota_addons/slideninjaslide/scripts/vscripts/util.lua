@@ -116,7 +116,9 @@ end
 -- Given element and list, returns the position of the element in the list.
 -- Returns -1 if element was not found, or if list is nil.
 function GetIndex(list, element)
-	if list == nil then return -1 end
+	if list == nil then 
+		return -1 
+	end
 	for i=1,#list do
 		if list[i] == element then
 			return i

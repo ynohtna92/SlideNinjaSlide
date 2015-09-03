@@ -1,0 +1,17 @@
+"addon"
+{
+        "addonname"                                                                             "Slide Ninja Slide"
+        "slideninjaslide_game_info_header_objective"                    "Objetivo:"
+        "slideninjaslide_brief_description"                                     "Passe por 4 rodadas de crescente dificuldade com a ajuda dos seus aliados para vencer o jogo!"
+        "slideninjaslide_game_info_header_how_to_play"          "Como Jogar:"
+        "slideninjaslide_game_info_antimage"                                    "Cada jogador controla um <span class='antimage'>Ninja</span>, equipado com habilidades que podem ser usadas para ajudar em desviar dos <span class='creeps'>Grunts</span> em cada área. Se você ou seu aliado morrer, o herói pode ser renascido ao passar por cima do local onde ele morreu."
+        "slideninjaslide_game_info_creeps"                                              "Você deve desviar     dos <span class='creeps'>Grunts</span> inimigos, ao colidir com eles você morre instantaneamente."
+        "overthrow_game_info_items"                                             "Fique de olho nos <span class='treasure'>tesouros</span> pelo chão. Um icone irá aparecer no seu mapa para indicar onde um <span class='items'>item</span> irá aparecer."
+        "slideninjaslide_game_info_tips_header"                         "Dicas:"
+        "slideninjaslide_game_info_tip01"                                               "Você deve trabalhar em equipe se você pretende chegar ao fim de cada rodada."
+        "slideninjaslide_game_info_tip02"                                               "Você receberá pontos de experiência quando entrar em uma nova zona segura. A quantia de experiência ganha vai depender da média entre Aliados Renascidos e suas mortes."
+        "slideninjaslide_game_info_tip03"                                               "Existem comandos disponíveis para ambos, quem está hospedando e para os jogadores, estes comandos estão disponíveis ao inicio e fim do jogo. Estes comandos permitem alterar a animação de deslizar do seu herói, resetar o jogo e finalizar o jogo."
+        "slideninjaslide_game_info_additional_header"                   "Caracteristicas Adicionais:"
+        "slideninjaslide_game_info_ad01"                                                "O modo T.U.E. pode ser iniciado pelo host a qualquer momento usando o comando <span class='command'>-tue</span>."
+        "slideninjaslide_game_info_ad02"                                                "O modo mais dificil \"Slide Bob Sponja Slide\" pode ser iniciado pelo host a qualquer momento usando a frase <span class='command'>Who lives in a pineapple under the sea</span>."
+}
