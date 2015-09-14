@@ -1,0 +1,17 @@
+"addon"
+{
+	"addonname"										"忍者大战"
+	"slideninjaslide_game_info_header_objective"			"目标："
+	"slideninjaslide_brief_description"					"在队友的帮助下经历4轮难度递增的考验，最终获得游戏胜利！"
+	"slideninjaslide_game_info_header_how_to_play"		"游戏指南："
+	"slideninjaslide_game_info_antimage"					"每个玩家控制一名<span class='antimage'>忍者</span>，配备不同的技能以避免打到每个区域内的<span class='creeps'>咕噜</span>。如果你或者你的队友死亡，英雄可以移动到自己的信标处复活。"
+	"slideninjaslide_game_info_creeps"						"你必须躲开敌方的<span class='creeps'>咕噜</span>，因为伤害他们会立刻杀死你的英雄。"
+	"overthrow_game_info_items"						"时刻留意<span class='treasure'>宝藏</span>的出现。物品快要出现时会在地图相应位置出现图标。"
+	"slideninjaslide_game_info_tips_header"				"贴士："
+	"slideninjaslide_game_info_tip01"						"想要达成目标，你必须注意团队合作。"
+	"slideninjaslide_game_info_tip02"						"进入安全区域可以获得经验。经验获取量基于生死率。"
+	"slideninjaslide_game_info_tip03"						"在游戏开始和结束时都有指令清单可供参考。这些清单可以改变英雄的滑行动画，重设游戏或是结束游戏。"
+	"slideninjaslide_game_info_additional_header"			"其他特色："
+	"slideninjaslide_game_info_ad01"						"主机可以输入<span class='command'>-tue</span>指令开启T.U.E限时追击模式。"
+	"slideninjaslide_game_info_ad02"						"主机可以输入<span class='command'>Who lives in a pineapple under the sea</span>开启更难的海绵宝宝大战</span>。"
+}
