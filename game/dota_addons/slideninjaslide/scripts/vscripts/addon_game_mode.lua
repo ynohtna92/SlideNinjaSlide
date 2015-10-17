@@ -3,7 +3,7 @@ BASE_MODULES = {
 	'timers',
 	'physics',
 	--colliders_test,
-	'lib.statcollection',
+	'statcollection.init',
 	'music_player',
 	'score_board',
 	'slide_ninja_slide',

@@ -64,13 +64,6 @@ USE_CUSTOM_XP_VALUES = true             -- Should we use custom XP values to lev
 SLIDE_VERSION = 1						-- Version 1 uses aaboxes, 2 uses PHYSICS_NAV_SLIDE
 DROPPED_ITEM_RADIUS = 20
 
--- Set up the GetDotaStats stats for this mod.
-if not DEBUG then
-  statcollection.addStats({
-	modID = '708fc3881df6e26b45fa78ba2529af01' --GET THIS FROM http://getdotastats.com/#d2mods__my_mods
-  })
-end
-
 XP_PER_LEVEL_TABLE = {}
 for i=1,MAX_LEVEL do
   XP_PER_LEVEL_TABLE[i] = 50 * (i - 1) * (i + 2)
@@ -683,7 +676,7 @@ function GameMode:PlayerSay(keys)
 	end
 
 	if string.find(keys.text, "^-end$") and plyID == GetListenServerHost():GetPlayerID() then
-		GameRules:SendCustomMessage("#slideninjaslide_command_end", 0, 0)
+		GameRules:SendCustomMessage("#slideninjaslide_end_command", 0, 0)
 		Timers:CreateTimer(2, function()
 			self:ForceEnd()
 		end)
