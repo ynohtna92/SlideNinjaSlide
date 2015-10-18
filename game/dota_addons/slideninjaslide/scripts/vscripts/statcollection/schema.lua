@@ -168,9 +168,11 @@ function GetItemList(hero)
 end
 
 function GetAbilityName( hero, id )
-    ability = hero:GetAbilityByIndex(id)
+    local ability = hero:GetAbilityByIndex(id)
     if ability then
-        return ability:GetAbilityName()
+        local abilityName = string.gsub(ability:GetAbilityName(), "antimage_", "") --remove unnecessary parts of string
+        abilityName = string.gsub(ability:GetAbilityName(), "rattletrap_", "") --remove unnecessary parts of string
+        return abilityName
     end
     return ""
 end
