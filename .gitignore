@@ -223,5 +223,7 @@ pip-log.txt
 *.bin
 *.vxml_c
 *.vcss_c
+*.vjs_c
 
 settings.kv
+panorama_debugger.cfg
