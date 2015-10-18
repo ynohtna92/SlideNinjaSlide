@@ -1,0 +1,66 @@
+.BaseHud
+{
+    width: 100%;
+    height: 100%;
+    flow-children: down;
+}
+
+.MusicPlayer
+{
+    padding-top: 2px;
+    padding-left: 52px;
+    flow-children: right;
+}
+
+#MusicPlayerText
+{
+    color: #FFCC00;
+    text-shadow: 2px 2px 2px black;
+    font-size: 34px;
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+.MusicPlayerButton
+{
+    width: 38px;
+    height: 38px;
+    margin-left: 2px;
+}
+
+#rewindBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/RewindBtn.png");
+    background-size: 100%;
+}
+
+#stopBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/StopBtn.png");
+    background-size: 100%;
+}
+
+#pauseBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/PauseBtn.png");
+    background-size: 100%;
+    margin-right: -40px;
+}
+
+#playBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/PlayBtn.png");
+    background-size: 100%;
+}
+
+#forwardBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/ForwardBtn.png");
+    background-size: 100%;
+}
+
+#loopBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/LoopBtn.png");
+    background-size: 100%;
+}

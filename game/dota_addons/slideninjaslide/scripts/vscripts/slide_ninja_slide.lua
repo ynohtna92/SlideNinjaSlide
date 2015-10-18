@@ -107,7 +107,7 @@ function GameMode:InitGameMode()
 
 	-- Hooks
 	ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), self)
---	ListenToGameEvent('player_chat', Dynamic_Wrap(GameMode, 'PlayerSay'), self) --[[Broken]]
+	ListenToGameEvent('player_chat', Dynamic_Wrap(GameMode, 'PlayerSay'), self)
 	ListenToGameEvent('player_connect', Dynamic_Wrap(GameMode, 'PlayerConnect'), self)
 	ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
 	ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), self)
@@ -171,6 +171,7 @@ function GameMode:InitGameMode()
 	self.vBots = {}
 	self.vBroadcasters = {}
 	self.vUserIds = {}
+	self.vPlayerIDToHero = {}
 
 	-- PLAYER COLORS
 	self.m_TeamColors = {}
@@ -324,6 +325,22 @@ function GameMode:OnFirstPlayerLoaded()
 	end
 end
 
+-- Store teams, players and heroes
+function GameMode:HeroInit( hero )
+  local pID = hero:GetPlayerID()
+  self.vPlayerIDToHero[pID] = hero
+  if self.vPlayers[pID] ~= nil then
+    return
+  end
+  self.vPlayers[pID] = pID
+  --print('TeamNumber: '..hero:GetTeamNumber())
+  if hero:GetTeamNumber() == DOTA_TEAM_GOODGUYS then
+    table.insert(self.vRadiant, pID)
+  elseif hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
+    table.insert(self.vDire, pID)
+  end
+end
+
 mode = nil
 
 -- This function is called as the first player loads and sets up the GameMode parameters
@@ -401,7 +418,8 @@ function GameMode:OnNPCSpawned(keys)
 				-- we're using a dummy
 				return
 			end
-
+			
+			self:HeroInit(npc)
 			self:InitialiseNinja(npc)
 
 			if not npc.bFirstSpawned then
@@ -412,6 +430,7 @@ function GameMode:OnNPCSpawned(keys)
 	elseif npc:IsRealHero() and not (npc:GetClassname() == "npc_dota_hero_antimage") then
 		if not npc.bFirstSpawned then
 			npc.bFirstSpawned = true
+			GameMode:HeroInit(npc)
 			GameMode:OnHeroInGame(npc)
 		end
 	end
@@ -555,12 +574,11 @@ function GameMode:PlayerSay(keys)
 	--print ('[SNS] PlayerSay')
 	--PrintTable(keys)
 
-	local ply = keys.ply
-	local plyID = ply:GetPlayerID()
-	local hero = ply:GetAssignedHero()
+	--local ply = keys.ply
+	local plyID = keys.userid - 1
+	local hero = self.vPlayerIDToHero[plyID]
 	local txt = keys.text
-
-	print(plyID)
+	local args = split(txt, " ")
 
 	if keys.teamOnly then
 		-- This text was team-only

@@ -4,6 +4,7 @@
 	</script>
 	<Panel>
 		<CustomUIElement type="GameInfo" 			layoutfile="file://{resources}/layout/custom_game/slideninjaslide_game_info.xml" />
+		<CustomUIElement type="Hud" 				layoutfile="file://{resources}/layout/custom_game/music_player.xml" />
 	</Panel>
 </root>
 
