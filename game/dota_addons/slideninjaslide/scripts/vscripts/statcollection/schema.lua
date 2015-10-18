@@ -171,7 +171,7 @@ function GetAbilityName( hero, id )
     local ability = hero:GetAbilityByIndex(id)
     if ability then
         local abilityName = string.gsub(ability:GetAbilityName(), "antimage_", "") --remove unnecessary parts of string
-        abilityName = string.gsub(ability:GetAbilityName(), "rattletrap_", "") --remove unnecessary parts of string
+        abilityName = string.gsub(ability:GetAbilityName(), "spongebob_", "sb_") --remove unnecessary parts of string
         return abilityName
     end
     return ""
