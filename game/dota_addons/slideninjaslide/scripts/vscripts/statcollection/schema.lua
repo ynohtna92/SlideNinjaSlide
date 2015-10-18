@@ -66,6 +66,7 @@ function BuildGameArray()
     game.rnd = GameMode.nCurrentRound; -- Current Round
     game.ch = GameMode.livesUsed; -- Chances Used
     game.dth = GameMode.nDeaths; -- Total ninja deaths
+    game.the = getTheme(); -- Game Theme (can be 0,1 or "yes", "no")
     return game
 end
 
@@ -94,6 +95,10 @@ function BuildPlayersArray()
                     -- Ability List
                     abn = GetAbilityNameList(hero),
                     abl = GetAbilityLevelList(hero),
+                    ab1 = GetAbilityNameLevel(hero, 0), --ability 1 (name + level)
+                    ab2 = GetAbilityNameLevel(hero, 1), --ability 2 (name + level)
+                    ab3 = GetAbilityNameLevel(hero, 2), --ability 3 (name + level)
+                    ab4 = GetAbilityNameLevel(hero, 3), --ability 4 (name + level)
 
                     -- SNS Specific
                     scr = hero.score, -- Save-to-death ratio
@@ -192,4 +197,18 @@ function GetAbilityLevelList( hero )
         table.insert(nameTable, GetAbilityLevel(hero, i))
     end
     return table.concat(nameTable, ",")
+end
+
+function GetAbilityNameLevel( hero, id )
+    return GetAbilityName(hero, id) .. "__" .. GetAbilityLevel(hero, id)
+end
+
+function getTheme()
+    local theme = GameMode.gameTheme;
+    if theme == 1 then
+        return "Normal"
+    else if theme == 2 then
+        return "SpongeBob"
+    end
+    return "Unknown"
 end
