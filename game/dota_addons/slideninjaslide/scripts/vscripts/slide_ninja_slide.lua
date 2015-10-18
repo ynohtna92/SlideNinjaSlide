@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B150815"
+VERSION = "B181015"
 
 ROUNDS = 4
 LIVES = 3
@@ -1720,4 +1720,8 @@ function GameMode:SetupGuards()
 			self.guardboxes[i].draw = true
 		end
 	end
+end
+
+function GetVersion()
+    return VERSION
 end

@@ -5,7 +5,7 @@ function customSchema:init()
     -- Check the schema_examples folder for different implementations
 
     -- Flag Example
-    -- statCollection:setFlags({version = GetVersion()})
+    statCollection:setFlags({version = GetVersion()})
 
     -- Listen for changes in the current state
     ListenToGameEvent('game_rules_state_change', function(keys)
@@ -63,9 +63,9 @@ end
 -- Returns a table with our custom game tracking.
 function BuildGameArray()
     local game = {}
-    game.rounds = GameMode.nCurrentRound; -- Current Round
-    game.lives = GameMode.livesUsed; -- Chances Used
-    game.deaths = GameMode.nDeaths; -- Total ninja deaths
+    game.rnd = GameMode.nCurrentRound; -- Current Round
+    game.ch = GameMode.livesUsed; -- Chances Used
+    game.dth = GameMode.nDeaths; -- Total ninja deaths
     return game
 end
 
@@ -84,25 +84,19 @@ function BuildPlayersArray()
 
                     -- Example functions of generic stats (keep, delete or change any that you don't need)
                     ph = GetHeroName(playerID), --Hero by its short name
-                    level = hero:GetLevel(), -- Return the level of the hero
-                    deaths = hero:GetDeaths(),  --Number of deaths of this players hero
+                    lvl = hero:GetLevel(), -- Return the level of the hero
+                    dth = hero:GetDeaths(),  --Number of deaths of this players hero
                     nt = GetNetworth(hero), --Sum of hero gold and item worth
 
                     -- Item List
                     il = GetItemList(hero),
 
                     -- Ability List
-                    a1 = GetAbilityName(hero, 0),
-                    a1l = GetAbilityLevel(hero, 0),
-                    a2 = GetAbilityName(hero, 1),
-                    a2l = GetAbilityLevel(hero, 1),
-                    a3 = GetAbilityName(hero, 2),
-                    a3l = GetAbilityLevel(hero, 2),
-                    a4 = GetAbilityName(hero, 3),
-                    a4l = GetAbilityLevel(hero, 3),
+                    abn = GetAbilityNameList(hero),
+                    abl = GetAbilityLevelList(hero),
 
                     -- SNS Specific
-                    score = hero.score, -- Save-to-death ratio
+                    scr = hero.score, -- Save-to-death ratio
 
                 })
             end
@@ -176,10 +170,26 @@ function GetAbilityName( hero, id )
     return ""
 end
 
+function GetAbilityNameList( hero )
+    local nameTable = {}
+    for i=0,3 do
+        table.insert(nameTable, GetAbilityName(hero, i))
+    end
+    return table.concat(nameTable, ",")
+end
+
 function GetAbilityLevel( hero, id )
     ability = hero:GetAbilityByIndex(id)
     if ability then
         return ability:GetLevel()
     end
     return 0
+end
+
+function GetAbilityLevelList( hero )
+    local nameTable = {}
+    for i=0,3 do
+        table.insert(nameTable, GetAbilityLevel(hero, i))
+    end
+    return table.concat(nameTable, ",")
 end
