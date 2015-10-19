@@ -299,6 +299,7 @@ function MusicPlayer:AttachMusicPlayer( hPlayer )
 			PrintTable(mp.lastPlayedSongs)
 			print("\n")
 		end
+		CustomGameEventManager:Send_ServerToPlayer(self,"playing_music", {song=mp.currentSong} )
 		EmitSoundOnClient(mp.currentSong, hPlayer)
 	end
 

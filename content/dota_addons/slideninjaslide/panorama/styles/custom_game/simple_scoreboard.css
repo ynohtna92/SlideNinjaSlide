@@ -1,0 +1,173 @@
+.BaseHud
+{
+    width: 100%;
+    height: 100%;
+    flow-children: down;
+}
+
+#Scoreboard
+{
+    horizontal-align: right;
+    width: 288px;
+    margin-top: 50px;
+    margin-right: 290px;
+    flow-children: down;
+}
+
+.ScoreboardTop
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/top.png");
+    background-size: 100%;
+    width: 100%;
+    height: 74px;
+}
+
+.ScoreboardSingle
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/single.png");
+    background-size: 100%;
+    width: 100%;
+    height: 86px;
+}
+
+#sbTitle
+{
+    color: #FFFFFF;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    width: 226px;
+    margin-top: 12px;
+    margin-left: 22px;
+}
+
+.sbButton
+{
+    width: 23px;
+    height: 25px;
+    horizontal-align: right;
+    margin-right: 12px;
+    margin-top: 12px;
+}
+
+#downBtn
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/buttonDown.png");
+    background-size: 100%;
+}
+
+#upBtn
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/buttonUp.png");
+    background-size: 100%;
+}
+
+.player
+{
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 20px;
+    width: 160px;
+    text-align: left;
+    margin-left: 22px;
+}
+
+.score
+{
+    color: #FFFFFF;
+    font-size: 20px;
+    text-align: center;
+    width: 88px;
+    horizontal-align: right;
+    margin-right: 15px;
+}
+
+#sbP, #sbP0, #sbN, #sbN0
+{
+    margin-top: 46px;
+}
+
+#ScoreboardBottom
+{
+    flow-children: down;
+    width: 100%;
+}
+
+.ScoreboardMiddle
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/Mid.png");
+    background-size: 100%;
+    height: 33px;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.ScoreboardLast
+{
+    background-image: url("file://{resources}/images/custom_game/simple_scoreboard/last.png");
+    background-size: 100%;
+    height: 50px;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.MusicPlayer
+{
+    padding-top: 2px;
+    padding-left: 52px;
+    flow-children: right;
+}
+
+#MusicPlayerText
+{
+    color: #FFCC00;
+    text-shadow: 2px 2px 2px black;
+    font-size: 34px;
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+.MusicPlayerButton
+{
+    width: 38px;
+    height: 38px;
+    margin-left: 2px;
+}
+
+#rewindBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/RewindBtn.png");
+    background-size: 100%;
+}
+
+#stopBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/StopBtn.png");
+    background-size: 100%;
+}
+
+#pauseBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/PauseBtn.png");
+    background-size: 100%;
+    margin-right: -40px;
+}
+
+#playBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/PlayBtn.png");
+    background-size: 100%;
+}
+
+#forwardBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/ForwardBtn.png");
+    background-size: 100%;
+}
+
+#loopBtn
+{
+    background-image: url("file://{resources}/images/custom_game/music_player/LoopBtn.png");
+    background-size: 100%;
+}

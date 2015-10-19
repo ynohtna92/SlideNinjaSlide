@@ -1,6 +1,4 @@
 
-var mpTitle = $( "#MusicPlayerText" );
-
 function OnButtonPressed( data ) {
 	var iPlayerID = Players.GetLocalPlayer();
 	var btnName = data;
@@ -28,8 +26,18 @@ function OnButtonPressed( data ) {
 	}
 }
 
+function NowPlaying( table )
+{
+	$('#stopBtn').visible = true;
+	$('#playBtn').visible = false;
+	$.Msg(table.song);
+	$('#NowPlaying').text = table.song;
+	$('#NowPlayingBox').AddClass('playing');
+	$.Schedule(8, function(){$('#NowPlayingBox').RemoveClass('playing');});
+}
+
 (function () {
-	mpTitle = $.Localize( "#MusicPlayerTitle" );
+	GameEvents.Subscribe( "playing_music", NowPlaying );
 	$('#playBtn').visible = false;
 	$('#stopBtn').visible = true;
 })();

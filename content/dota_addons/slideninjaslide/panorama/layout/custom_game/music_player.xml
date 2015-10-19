@@ -8,13 +8,16 @@
   </scripts>
   <Panel hittest="false" class="BaseHud">
     <Panel hittest="false" id="MusicPlayer" class="MusicPlayer">
-        <Label id="MusicPlayerText" text="MUSIC:"/>
+        <Label id="MusicPlayerText" text="#MusicPlayerTitle"/>
         <Button id="rewindBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('rewindBtn')"/>
         <Button id="pauseBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('pauseBtn')"/>
         <Button id="stopBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('stopBtn')"/>
         <Button id="playBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('playBtn')"/>
         <Button id="forwardBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('forwardBtn')"/>
         <Button id="loopBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('loopBtn')"/>
+    </Panel>
+    <Panel hittest="false" id="NowPlayingBox">
+      <Label id="NowPlaying" text="Placeholder"/>
     </Panel>
   </Panel>
 </root>

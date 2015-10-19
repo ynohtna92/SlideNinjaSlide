@@ -64,3 +64,45 @@
     background-image: url("file://{resources}/images/custom_game/music_player/LoopBtn.png");
     background-size: 100%;
 }
+
+#NowPlayingBox
+{
+    height: 22px;
+    width: 270px;
+    margin-left: -270px;
+    text-overflow: clip;
+    transition-property: transform;
+    transition-duration: 0.25s;
+    transition-timing-function: linear;
+}
+
+#NowPlaying
+{
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    animation-name: scroll;
+    animation-duration: 6s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.playing
+{
+    transform: translateX(318px);
+}
+
+
+@keyframes 'scroll' 
+{
+    0% 
+    {
+        transform: translateX(100%);
+    }
+    100% 
+    {
+        transform: translateX(-100%);
+    }
+}

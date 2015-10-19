@@ -1,0 +1,60 @@
+<root>
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/custom_game/simple_scoreboard.css" />
+  </styles>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/simple_scoreboard.js" /> 
+  </scripts>
+  <Panel hittest="false" class="BaseHud">
+    <Panel hittest="true" id="Scoreboard" class="Scoreboard">
+        <Panel hittest="true" id="ScoreboardTop" class="ScoreboardTop">
+          <Label id="sbTitle" text="#ScoreBoardTitle"/>
+          <Button id="downBtn" class="sbButton" onactivate="OnButtonPressed('downBtn')"/>
+          <Button id="upBtn" class="sbButton" onactivate="OnButtonPressed('upBtn')"/>
+          <Label id="sbP" class="player" text="Player -1"/>
+          <Label id="sbN" class="score" text="0"/>
+          <Label id="sbP0" class="player" text="Player 0"/>
+          <Label id="sbN0" class="score" text="0"/>
+        </Panel>
+        <Panel hittest="true" id="ScoreboardBottom">
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP1" class="player" text="Player 1"/>
+            <Label id="sbN1" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP2" class="player" text="Player 2"/>
+            <Label id="sbN2" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP3" class="player" text="Player 3"/>
+            <Label id="sbN3" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP4" class="player" text="Player 4"/>
+            <Label id="sbN4" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP5" class="player" text="Player 5"/>
+            <Label id="sbN5" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP6" class="player" text="Player 6"/>
+            <Label id="sbN6" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP7" class="player" text="Player 7"/>
+            <Label id="sbN7" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardMiddle">
+            <Label id="sbP8" class="player" text="Player 8"/>
+            <Label id="sbN8" class="score" text="0"/>
+          </Panel>
+          <Panel hittest="true" class="ScoreboardLast">
+            <Label id="sbP9" class="player" text="Player 9"/>
+            <Label id="sbN9" class="score" text="0"/>
+          </Panel>
+        </Panel>
+    </Panel>
+  </Panel>
+</root>
