@@ -66,6 +66,7 @@ function BuildGameArray()
     game.rnd = GameMode.nCurrentRound; -- Current Round
     game.ch = GameMode.livesUsed; -- Chances Used
     game.dth = GameMode.nDeaths; -- Total ninja deaths
+    game.the = getTheme(); -- Game Theme (can be 0,1 or "yes", "no")
     return game
 end
 
@@ -92,8 +93,17 @@ function BuildPlayersArray()
                     il = GetItemList(hero),
 
                     -- Ability List
-                    abn = GetAbilityNameList(hero),
-                    abl = GetAbilityLevelList(hero),
+                    an1 = GetAbilityName(hero, 0), --ability 1 (name) -- shows us the total selection and winrate of each skill, broken into SB and Normal theme
+                    al1 = GetAbilityNameLevel(hero, 0), --ability 1 (name + level) -- shows us the final level and its winrate of each skill, broken into SB and Normal theme
+                    
+                    an2 = GetAbilityName(hero, 1), --ability 2 (name)
+                    al2 = GetAbilityNameLevel(hero, 1), --ability 2 (name + level)
+                    
+                    an3 = GetAbilityName(hero, 2), --ability 3 (name)
+                    al3 = GetAbilityNameLevel(hero, 2), --ability 3 (name + level)
+                    
+                    an4 = GetAbilityName(hero, 3), --ability 4 (name)
+                    al4 = GetAbilityNameLevel(hero, 3), --ability 4 (name + level)
 
                     -- SNS Specific
                     scr = hero.score, -- Save-to-death ratio
@@ -163,9 +173,11 @@ function GetItemList(hero)
 end
 
 function GetAbilityName( hero, id )
-    ability = hero:GetAbilityByIndex(id)
+    local ability = hero:GetAbilityByIndex(id)
     if ability then
-        return ability:GetAbilityName()
+        local abilityName = string.gsub(ability:GetAbilityName(), "antimage_", "") --remove unnecessary parts of string
+        abilityName = string.gsub(ability:GetAbilityName(), "spongebob_", "sb_") --remove unnecessary parts of string
+        return abilityName
     end
     return ""
 end
@@ -192,4 +204,18 @@ function GetAbilityLevelList( hero )
         table.insert(nameTable, GetAbilityLevel(hero, i))
     end
     return table.concat(nameTable, ",")
+end
+
+function GetAbilityNameLevel( hero, id )
+    return GetAbilityName(hero, id) .. "__" .. GetAbilityLevel(hero, id)
+end
+
+function getTheme()
+    local theme = GameMode.gameTheme;
+    if theme == 1 then
+        return "Normal"
+    else if theme == 2 then
+        return "SpongeBob"
+    end
+    return "Unknown"
 end
