@@ -63,10 +63,10 @@ end
 -- Returns a table with our custom game tracking.
 function BuildGameArray()
     local game = {}
-    game.rnd = GameMode.nCurrentRound; -- Current Round
-    game.ch = GameMode.livesUsed; -- Chances Used
-    game.dth = GameMode.nDeaths; -- Total ninja deaths
-    game.the = getTheme(); -- Game Theme (can be 0,1 or "yes", "no")
+    game.rnd = GameMode.nCurrentRound -- Current Round
+    game.ch = GameMode.livesUsed -- Chances Used
+    game.dth = GameMode.nDeaths -- Total ninja deaths
+    game.the = GetTheme() -- Game Theme (can be 0,1 or "yes", "no")
     return game
 end
 
@@ -210,11 +210,11 @@ function GetAbilityNameLevel( hero, id )
     return GetAbilityName(hero, id) .. "__" .. GetAbilityLevel(hero, id)
 end
 
-function getTheme()
-    local theme = GameMode.gameTheme;
+function GetTheme( )
+    local theme = GameMode.gameTheme
     if theme == 1 then
         return "Normal"
-    else if theme == 2 then
+    elseif theme == 2 then
         return "SpongeBob"
     end
     return "Unknown"

@@ -171,6 +171,7 @@ function GameMode:InitGameMode()
 	self.vBots = {}
 	self.vBroadcasters = {}
 	self.vUserIds = {}
+	self.vUserIdToPly = {}
 	self.vPlayerIDToHero = {}
 
 	-- PLAYER COLORS
@@ -393,7 +394,7 @@ function GameMode:OnConnectFull(keys)
 	local playerID = ply:GetPlayerID()
 
 	-- Update the user ID table with this user
-	--self.vUserIds[keys.userid] = ply
+	self.vUserIdToPly[keys.userid] = ply
 	table.insert(self.vUserIds, ply)
 
 	-- Update the Steam ID table
@@ -574,8 +575,8 @@ function GameMode:PlayerSay(keys)
 	--print ('[SNS] PlayerSay')
 	--PrintTable(keys)
 
-	--local ply = keys.ply
-	local plyID = keys.userid - 1
+	local ply = self.vUserIdToPly[keys.userid]
+	local plyID = ply:GetPlayerID()
 	local hero = self.vPlayerIDToHero[plyID]
 	local txt = keys.text
 	local args = split(txt, " ")
