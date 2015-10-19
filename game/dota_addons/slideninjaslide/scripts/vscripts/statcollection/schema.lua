@@ -86,7 +86,7 @@ function BuildPlayersArray()
                     -- Example functions of generic stats (keep, delete or change any that you don't need)
                     ph = GetHeroName(playerID), --Hero by its short name
                     lvl = hero:GetLevel(), -- Return the level of the hero
-                    dth = hero:GetDeaths(),  --Number of deaths of this players hero
+                    pd = hero:GetDeaths(),  --Number of deaths of this players hero
                     nt = GetNetworth(hero), --Sum of hero gold and item worth
 
                     -- Item List
