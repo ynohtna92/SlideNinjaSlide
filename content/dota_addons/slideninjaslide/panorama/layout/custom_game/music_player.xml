@@ -16,8 +16,10 @@
         <Button id="forwardBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('forwardBtn')"/>
         <Button id="loopBtn" class="MusicPlayerButton" onactivate="OnButtonPressed('loopBtn')"/>
     </Panel>
-    <Panel hittest="false" id="NowPlayingBox">
-      <Label id="NowPlaying" text="Placeholder"/>
+    <Panel hittest="false" class="Clip">
+      <Panel hittest="false" id="NowPlayingBox">
+        <Label hittest="false" id="NowPlaying" text="Placeholder"/>
+      </Panel>
     </Panel>
   </Panel>
 </root>
