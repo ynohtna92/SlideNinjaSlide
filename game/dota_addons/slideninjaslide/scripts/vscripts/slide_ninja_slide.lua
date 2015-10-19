@@ -64,6 +64,9 @@ USE_CUSTOM_XP_VALUES = true             -- Should we use custom XP values to lev
 SLIDE_VERSION = 1						-- Version 1 uses aaboxes, 2 uses PHYSICS_NAV_SLIDE
 DROPPED_ITEM_RADIUS = 20
 
+FORCE_PICKED_HERO = "npc_dota_hero_antimage"  -- What hero should we force all players to spawn as? (e.g. "npc_dota_hero_axe").  Use nil to allow players to pick their own hero.
+
+
 XP_PER_LEVEL_TABLE = {}
 for i=1,MAX_LEVEL do
   XP_PER_LEVEL_TABLE[i] = 50 * (i - 1) * (i + 2)
@@ -367,6 +370,10 @@ function GameMode:CaptureGameMode()
 		mode:SetCustomXPRequiredToReachNextLevel( XP_PER_LEVEL_TABLE )
 		mode:SetLoseGoldOnDeath( false )
 		
+		if FORCE_PICKED_HERO ~= nil then
+			mode:SetCustomGameForceHero( FORCE_PICKED_HERO )
+		end
+
 		GameMode:OnFirstPlayerLoaded()
 	end
 end
