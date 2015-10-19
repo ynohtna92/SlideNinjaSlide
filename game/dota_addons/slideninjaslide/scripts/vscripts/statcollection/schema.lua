@@ -93,12 +93,17 @@ function BuildPlayersArray()
                     il = GetItemList(hero),
 
                     -- Ability List
-                    abn = GetAbilityNameList(hero),
-                    abl = GetAbilityLevelList(hero),
-                    ab1 = GetAbilityNameLevel(hero, 0), --ability 1 (name + level)
-                    ab2 = GetAbilityNameLevel(hero, 1), --ability 2 (name + level)
-                    ab3 = GetAbilityNameLevel(hero, 2), --ability 3 (name + level)
-                    ab4 = GetAbilityNameLevel(hero, 3), --ability 4 (name + level)
+                    an1 = GetAbilityName(hero, 0), --ability 1 (name) -- shows us the total selection and winrate of each skill, broken into SB and Normal theme
+                    al1 = GetAbilityNameLevel(hero, 0), --ability 1 (name + level) -- shows us the final level and its winrate of each skill, broken into SB and Normal theme
+                    
+                    an2 = GetAbilityName(hero, 1), --ability 2 (name)
+                    al2 = GetAbilityNameLevel(hero, 1), --ability 2 (name + level)
+                    
+                    an3 = GetAbilityName(hero, 2), --ability 3 (name)
+                    al3 = GetAbilityNameLevel(hero, 2), --ability 3 (name + level)
+                    
+                    an4 = GetAbilityName(hero, 3), --ability 4 (name)
+                    al4 = GetAbilityNameLevel(hero, 3), --ability 4 (name + level)
 
                     -- SNS Specific
                     scr = hero.score, -- Save-to-death ratio
