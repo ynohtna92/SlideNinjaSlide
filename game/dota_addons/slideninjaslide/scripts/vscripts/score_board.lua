@@ -26,4 +26,5 @@ function ScoreBoard:ScoreUpdate(hero)
 	local pScore = hero.score
 	--print(pID,pScore)
 	FireGameEvent('cgm_scoreboard_update_score', { playerID = pID, playerScore = pScore})
+	CustomGameEventManager:Send_ServerToAllClients("update_score_scoreboard", { id = pID, score = pScore } )
 end
