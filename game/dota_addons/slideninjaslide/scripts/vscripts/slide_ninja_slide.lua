@@ -1,5 +1,5 @@
 --[[
-Last modified: 15/08/2015
+Last modified: 21/10/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B181015"
+VERSION = "B211015"
 
 ROUNDS = 4
 LIVES = 3

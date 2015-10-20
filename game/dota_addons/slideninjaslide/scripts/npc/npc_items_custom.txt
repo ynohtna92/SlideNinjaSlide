@@ -259,6 +259,11 @@
 				"Target" "CURSOR_TARGET"
 				"ModifierName" "modifier_item_potion_of_speed"
 			}
+			"ApplyModifier"
+			{
+				"Target" "CURSOR_TARGET"
+				"ModifierName"	"modifier_bloodseeker_thirst"
+			}
 			"FireSound"
 			{
 				"Target" "UNIT"
@@ -286,6 +291,14 @@
 					{
 						"Target" "UNIT"
 						"ModifierName" "modifier_item_potion_of_speed"
+					}
+				}
+				"OnDestroy"
+				{
+					"RemoveModifier"
+					{
+						"Target" "Unit"
+						"ModifierName"	"modifier_bloodseeker_thirst"
 					}
 				}
 			}
