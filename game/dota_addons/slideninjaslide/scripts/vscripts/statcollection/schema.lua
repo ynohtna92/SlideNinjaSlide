@@ -63,10 +63,10 @@ end
 -- Returns a table with our custom game tracking.
 function BuildGameArray()
     local game = {}
-    game.rnd = GameMode.nCurrentRound -- Current Round
-    game.ch = GameMode.livesUsed -- Chances Used
-    game.dth = GameMode.nDeaths -- Total ninja deaths
-    game.the = GetTheme() -- Game Theme (can be 0,1 or "yes", "no")
+    game.rnd = GameMode.nCurrentRound       -- Current Round
+    game.ch = GameMode.livesUsed            -- Chances Used
+    game.dth = GameMode.nDeaths             -- Total ninja deaths
+    game.the = GetTheme()                   -- Game Theme (can be 0,1 or "yes", "no")
     return game
 end
 
@@ -84,29 +84,29 @@ function BuildPlayersArray()
                     steamID32 = PlayerResource:GetSteamAccountID(playerID),
 
                     -- Example functions of generic stats (keep, delete or change any that you don't need)
-                    ph = GetHeroName(playerID), --Hero by its short name
-                    lvl = hero:GetLevel(), -- Return the level of the hero
-                    pd = hero:GetDeaths(),  --Number of deaths of this players hero
-                    nt = GetNetworth(hero), --Sum of hero gold and item worth
+                    ph = GetHeroName(playerID),         --Hero by its short name
+                    lvl = hero:GetLevel(),              --Return the level of the hero
+                    pd = hero:GetDeaths(),              --Number of deaths of this players hero
+                    nt = GetNetworth(hero),             --Sum of hero gold and item worth
 
                     -- Item List
                     il = GetItemList(hero),
 
                     -- Ability List
-                    an1 = GetAbilityName(hero, 0), --ability 1 (name) -- shows us the total selection and winrate of each skill, broken into SB and Normal theme
+                    an1 = GetAbilityName(hero, 0),      --ability 1 (name) -- shows us the total selection and winrate of each skill, broken into SB and Normal theme
                     al1 = GetAbilityNameLevel(hero, 0), --ability 1 (name + level) -- shows us the final level and its winrate of each skill, broken into SB and Normal theme
                     
-                    an2 = GetAbilityName(hero, 1), --ability 2 (name)
+                    an2 = GetAbilityName(hero, 1),      --ability 2 (name)
                     al2 = GetAbilityNameLevel(hero, 1), --ability 2 (name + level)
                     
-                    an3 = GetAbilityName(hero, 2), --ability 3 (name)
+                    an3 = GetAbilityName(hero, 2),      --ability 3 (name)
                     al3 = GetAbilityNameLevel(hero, 2), --ability 3 (name + level)
                     
-                    an4 = GetAbilityName(hero, 3), --ability 4 (name)
+                    an4 = GetAbilityName(hero, 3),      --ability 4 (name)
                     al4 = GetAbilityNameLevel(hero, 3), --ability 4 (name + level)
 
                     -- SNS Specific
-                    scr = hero.score, -- Save-to-death ratio
+                    scr = hero.score,                   --Save-to-death ratio
 
                 })
             end
