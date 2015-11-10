@@ -860,6 +860,7 @@ function GameMode:HeroKilled( hero )
 	self.nDeaths = self.nDeaths + 1
 
 	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_BADGUYS, self.nDeaths )
+	CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_BADGUYS, teamScore = self.nDeaths } )
 
 	ScoreBoard:ScoreUpdate(hero)
 
@@ -972,6 +973,7 @@ function GameMode:LevelCompleted( hero )
 	self.nCurrentRound = self.nCurrentRound + 1
 
 	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
+	CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_GOODGUYS, teamScore = self.nCurrentRound } )
 
 	if self.nCurrentRound > self.nMaxRounds then
 		print("[SNS] The Players have won the game! Starting finishing sequence.")
@@ -1334,6 +1336,8 @@ function GameMode:ResetGame()
 
 	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
 	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_BADGUYS, self.nDeaths )
+	CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_GOODGUYS, teamScore = self.nCurrentRound } )
+	CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_BADGUYS, teamScore = self.nDeaths } )	
 
 	Timers:CreateTimer(4, function()
 		local msg = {
@@ -1585,6 +1589,7 @@ function GameMode:InitialiseNinja(hero)
 			}
 			FireGameEvent("show_center_message",msg)
 			GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
+			CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_GOODGUYS, teamScore = self.nCurrentRound } )
 		end)
 
 		Timers:CreateTimer(4, function()

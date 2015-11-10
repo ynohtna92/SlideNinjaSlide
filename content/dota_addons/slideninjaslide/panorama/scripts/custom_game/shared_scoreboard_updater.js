@@ -1,5 +1,7 @@
 "use strict";
 
+var teamScores = [0,0,0,0];
+
 //=============================================================================
 //=============================================================================
 function _ScoreboardUpdater_SetTextSafe( panel, childName, textValue )
@@ -286,7 +288,7 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
                 {
                     _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[j], localPlayerTeamId )
                 }
-                if ( teamPlayers <= 5 )
+                if ( teamPlayers.length <= 5 )
                 {
                     var empty = 5 - teamPlayers.length;
                     for ( var i = 0; i < empty; i++ )
@@ -305,7 +307,7 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
                     _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[k], localPlayerTeamId )
                 }
             }
-            if ( teamPlayers != 10 )
+            if ( teamPlayers.length != 10 )
             {
                 var empty = 5;
                 if ( teamPlayers.length > 5 )
@@ -327,7 +329,7 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
         teamsInfo.max_team_players = teamPlayers.length;
     }
 
-    _ScoreboardUpdater_SetTextSafe( teamPanel, "TeamScore", teamDetails.team_score )
+    _ScoreboardUpdater_SetTextSafe( teamPanel, "TeamScore", teamScores[teamId] )
     _ScoreboardUpdater_SetTextSafe( teamPanel, "TeamName", $.Localize( teamDetails.team_name ) )
     
     if ( GameUI.CustomUIConfig().team_colors )
@@ -434,3 +436,13 @@ function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle )
     }
     return teamsList;
 }
+
+function SetTopBarValue( data )
+{
+    $.Msg("Team: "+data.teamId + " Score: "+data.teamScore);
+    teamScores[data.teamId] = data.teamScore;
+}
+
+(function () {
+    GameEvents.Subscribe( "SetTopBarScoreValue", SetTopBarValue );
+})();
