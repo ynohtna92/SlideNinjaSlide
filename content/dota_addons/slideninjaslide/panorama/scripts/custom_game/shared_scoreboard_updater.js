@@ -11,7 +11,6 @@ function _ScoreboardUpdater_SetTextSafe( panel, childName, textValue )
     var childPanel = panel.FindChildInLayoutFile( childName )
     if ( childPanel === null )
         return;
-    
     childPanel.text = textValue;
 }
 
@@ -39,13 +38,13 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
     var playerInfo = Game.GetPlayerInfo( playerId );
     if ( playerInfo )
     {
+        goldValue = playerInfo.player_gold;
         isTeammate = ( playerInfo.player_team_id == localPlayerTeamId );
         if ( isTeammate )
         {
             ultStateOrTime = Game.GetPlayerUltimateStateOrTime( playerId );
+            _ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", goldValue );
         }
-        goldValue = playerInfo.player_gold;
-        
         playerPanel.SetHasClass( "player_dead", ( playerInfo.player_respawn_seconds >= 0 ) );
         playerPanel.SetHasClass( "local_player_teammate", isTeammate && ( playerId != Game.GetLocalPlayerID() ) );
 
@@ -66,10 +65,6 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
             else
             {
                 playerPortrait.SetImage( "file://{images}/custom_game/unassigned.png" );
-            }
-            if ( playerInfo.player_selected_hero == "npc_dota_hero_skeleton_king" && playerInfo.player_team_id == 2 )
-            {
-                playerPortrait.SetImage("file://{images}/custom_game/skeleton_king.png");
             }
         }
         
@@ -122,6 +117,17 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
             }
         }
     }
+    else
+    {                   
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerName", "" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "HeroName", "")
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "Level", "" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "Kills", "-" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "Deaths", "-" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "Assists", "-" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "HeroNameAndDescription", "" );
+        _ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", "0" );
+    }
     
     var playerItemsContainer = playerPanel.FindChildInLayoutFile( "PlayerItemsContainer" );
     if ( playerItemsContainer )
@@ -143,71 +149,7 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
                 var itemInfo = playerItems.inventory[i];
                 if ( itemInfo )
                 {
-                    var item_image_name = "file://{images}/items/" + itemInfo.item_name.replace( "item_imba_", "" ) + ".png"
-                    if ( itemInfo.item_name.indexOf( "recipe" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/recipe.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_quelling_blade" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/quelling_blade.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_gem" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/gem.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_ward_observer" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/ward_observer.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_ward_sentry" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/ward_sentry.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_ward_dispenser" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/ward_dispenser.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_tango" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/tango.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_tango_single" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/tango_single.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_courier" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/courier.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_tpscroll" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/tpscroll.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_travel_boots" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/travel_boots.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_flying_courier" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/flying_courier.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_ultimate_scepter" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/ultimate_scepter.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_smoke_of_deceit" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/smoke_of_deceit.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_travel_boots_2" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/travel_boots_2.png"
-                    }
-                    if ( itemInfo.item_name.indexOf( "item_imba_shadow_blade" ) >= 0 )
-                    {
-                        item_image_name = "file://{images}/items/invis_sword.png"
-                    }
+                    var item_image_name = "file://{images}/custom_game/items/" + itemInfo.item_name.replace( "item_", "" ) + ".png";
                     itemPanel.SetImage( item_image_name );
                 }
                 else
@@ -216,11 +158,6 @@ function _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContaine
                 }
             }
         }
-    }
-
-    if ( isTeammate )
-    {
-        _ScoreboardUpdater_SetTextSafe( playerPanel, "TeammateGoldAmount", goldValue );
     }
 
     _ScoreboardUpdater_SetTextSafe( playerPanel, "PlayerGoldAmount", goldValue );
@@ -248,6 +185,7 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
     var teamPanel = containerPanel.FindChild( teamPanelName );
     if ( teamPanel === null )
     {
+        return;
 //      $.Msg( "UpdateTeamPanel.Create: ", teamPanelName, " = ", scoreboardConfig.teamXmlName );
         teamPanel = $.CreatePanel( "Panel", containerPanel, teamPanelName );
         teamPanel.SetAttributeInt( "team_id", teamId );
@@ -274,19 +212,22 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
     teamPanel.SetHasClass( "local_player_team", localPlayerTeamId == teamId );
     teamPanel.SetHasClass( "not_local_player_team", localPlayerTeamId != teamId );
 
-    var teamPlayers = Game.GetPlayerIDsOnTeam( teamId )
+    var teamPlayers = Game.GetPlayerIDsOnTeam( 2 );
     var playersContainer = teamPanel.FindChildInLayoutFile( "PlayersContainer" );
 //  $.Msg( playersContainer );
     if ( playersContainer )
     {
-        // Hard coded custer fuck for single team
-        if ( teamId == 2)
+        if (playersContainer.layoutfile.indexOf("top_scoreboard.xml") > -1)
         {
-            if ( teamPlayers.length <= 5 )
+            // Hard coded custer fuck for single team
+            if ( teamId == 2)
             {
-                for ( var j = 0; j < teamPlayers.length; j++)
+                var tpMax = teamPlayers.length;
+                if ( teamPlayers.length > 5 )
+                    tpMax = 5;
+                for ( var j = 0; j < tpMax; j++)
                 {
-                    _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[j], localPlayerTeamId )
+                    _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[j], localPlayerTeamId );
                 }
                 if ( teamPlayers.length <= 5 )
                 {
@@ -297,25 +238,32 @@ function _ScoreboardUpdater_UpdateTeamPanel( scoreboardConfig, containerPanel, t
                     }
                 }
             }
-        }
-        if ( teamId == 3 )
-        {
-            if ( teamPlayers.length >= 6)
+            if ( teamId == 3 )
             {
-                for ( var k = 5; k < teamPlayers.length; k++)
+                if ( teamPlayers.length >= 6)
                 {
-                    _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[k], localPlayerTeamId )
+                    for ( var k = 5; k < teamPlayers.length; k++)
+                    {
+                        _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, teamPlayers[k], localPlayerTeamId );
+                    }
+                }
+                if ( teamPlayers.length != 10 )
+                {
+                    var empty = 5;
+                    if ( teamPlayers.length > 5 )
+                        empty = 10 - teamPlayers.length;
+                    for ( var l = 0; l < empty; l++ )
+                    {
+                        _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, 10-empty+l, -1 );
+                    }
                 }
             }
-            if ( teamPlayers.length != 10 )
+        }
+        else
+        {
+            for (var player of teamPlayers)
             {
-                var empty = 5;
-                if ( teamPlayers.length > 5 )
-                    empty = 10 - teamPlayers.length;
-                for ( var l = 0; l < empty; l++ )
-                {
-                    _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, 10-empty+l, -1 );
-                }
+                _ScoreboardUpdater_UpdatePlayerPanel( scoreboardConfig, playersContainer, player, localPlayerTeamId );
             }
         }
     }
@@ -366,7 +314,9 @@ function _ScoreboardUpdater_UpdateAllTeamsAndPlayers( scoreboardConfig, teamsCon
         teamsList.push( Game.GetTeamDetails( teamId ) );
     }
     // Force team push into array so we can display the rest of the first team.
-    teamsList.push({"team_id":3,"team_name":"#DOTA_GoodGuys","team_max_players":10,"team_score":0,"team_num_players":1});
+    var tempTeam = Game.GetTeamDetails(2);
+    tempTeam.team_id = "3";
+    teamsList.push(tempTeam);
 
     // update/create team panels
     var teamsInfo = { max_team_players: 0 };
@@ -439,7 +389,6 @@ function ScoreboardUpdater_GetSortedTeamInfoList( scoreboardHandle )
 
 function SetTopBarValue( data )
 {
-    $.Msg("Team: "+data.teamId + " Score: "+data.teamScore);
     teamScores[data.teamId] = data.teamScore;
 }
 
