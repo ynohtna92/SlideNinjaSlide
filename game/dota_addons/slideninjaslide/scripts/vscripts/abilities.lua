@@ -243,13 +243,17 @@ function BubbleBeam( keys )
 	local ability = keys.ability
 
 	local radius = keys.radius
-	local bubbleSpeed = keys.bubble_speed + caster:GetIdealSpeed()
+	local bubbleSpeed = keys.bubble_speed
+	if ( caster.slide ) then
+		bubbleSpeed = bubbleSpeed + (caster:GetIdealSpeed()*0.5)
+	end
 	print(bubbleSpeed, radius)
 	local duration = keys.duration
 
 	local casterOrigin = caster:GetAbsOrigin()
 	local targetDirection = caster:GetForwardVector()
 	local projVelocity = targetDirection * bubbleSpeed
+
 
 	local startTime = GameRules:GetGameTime()
 	local endTime = startTime + duration

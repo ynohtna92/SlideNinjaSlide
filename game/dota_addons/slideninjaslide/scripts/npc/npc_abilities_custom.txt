@@ -894,7 +894,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bubble_speed"				"50"
+				"bubble_speed"				"450"
 			}
 			"03"
 			{
