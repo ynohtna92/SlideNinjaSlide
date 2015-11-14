@@ -8,6 +8,7 @@ BASE_MODULES = {
 	'score_board',
 	'slide_ninja_slide',
 	'wolves',
+	'popups',
 }
 
 local function load_module(mod_name)
