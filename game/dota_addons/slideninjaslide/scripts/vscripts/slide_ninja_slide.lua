@@ -1,15 +1,15 @@
 --[[
-Last modified: 21/10/2015
+Last modified: 14/11/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
 
 print('[SNS] slide_ninja_slide.lua')
 
-DEBUG = false
+DEBUG = true
 THINK_TIME = 0.1
 
-VERSION = "B211015"
+VERSION = "B141115"
 
 ROUNDS = 4
 LIVES = 3
@@ -456,21 +456,6 @@ function GameMode:OnItemPickedUp( keys )
 	end
 	local player = PlayerResource:GetPlayer(keys.PlayerID)
 	local itemname = keys.itemname
-
-	if itemname == "item_tome_of_experience" then
-		-- Remove item from inventory
-		for i=0,11 do
-			local item = hero:GetItemInSlot(i)
-			if item then
-				if item:GetAbilityName() == itemname then
-					print('Adding xp to '.. keys.PlayerID)
-					-- Remove item to prevent double spending
-					hero:RemoveItem(item)
-					hero:AddExperience(150, false, false)
-				end
-			end
-		end
-	end
 end
 
 -- An item was purchased by a player
@@ -487,20 +472,6 @@ function GameMode:OnItemPurchased( keys )
 
 	-- The cost of the item purchased
 	local itemcost = keys.itemcost
-
-	if itemName == "item_tome_of_power" then
-		-- Remove item from inventory
-		for i=0,11 do
-			local item = hero:GetItemInSlot(i)
-			if item then
-				if item:GetAbilityName() == itemName then
-					-- Remove item to prevent double spending
-					hero:RemoveItem(item)
-					hero:HeroLevelUp(true)
-				end
-			end
-		end
-	end
 end
 
 -- An ability was used by a player
@@ -511,14 +482,6 @@ function GameMode:OnAbilityUsed( keys )
 	local player = EntIndexToHScript(keys.PlayerID)
 	local abilityname = keys.abilityname
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
-
-	if abilityname == "item_tome_of_power" then
-		hero:HeroLevelUp(true)
-	end
-
-	if abilityname == "item_tome_of_experience" then
-		hero:AddExperience(150, false, false)
-	end
 end
 
 --[[
@@ -780,7 +743,11 @@ function GameMode:OnThink()
 
 			if hero.nearbyWolves ~= {} then
 				for i,wolf in ipairs(hero.nearbyWolves) do
-					if not hero:IsInvulnerable() and not hero.isInvuln and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
+					if not hero:IsInvulnerable() 
+						and not hero.isInvuln 
+						and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") 
+						and not wolf:HasModifier("modifier_item_ultimate_gay_potion")
+						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						GameMode:HeroKilled(hero)
 					end
 				end
