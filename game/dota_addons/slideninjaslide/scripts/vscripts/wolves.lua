@@ -41,7 +41,7 @@ end
 function GameMode:MoveWolvesInActiveZones()
 	for i,v in ipairs(self.wolves) do
 		if self.wolvesToMove[v.zone] then
-			v.randomTimeTillMove = RandomInt(0,10)
+			v.randomTimeTillMove = RandomInt(0,100)/10
 			if v.randomMoveTimer ~= nil then
 				Timers:RemoveTimer(v.randomMoveTimer)
 			end
@@ -57,15 +57,21 @@ function GameMode:MoveWolvesInActiveZones()
 					return nil
 				end
 				if GameMode:MoveWolf(v) then
-					v.randomTimeTillMove = RandomInt(0,10)
+					v.randomTimeTillMove = RandomInt(0,100)/10
 					return v.randomTimeTillMove
 				end
+				return 3
 			end)
 		end
 	end
 end
 
 function GameMode:MoveWolf( wolf )
+	if wolf.fleeing and not wolf:IsIdle() then
+		return false
+	elseif wolf.fleeing and wolf:IsIdle() then
+		wolf.fleeing = false
+	end
 	for i=1,10 do        -- try x times to get a proper move location.
 		local posToMove = wolf:GetAbsOrigin() + RandomVector(math.random(100,600))
 		if self:IsPointWithinZone(posToMove, Entities:FindByName(nil, "trigger_ice_slide_" .. wolf.zone)) then
@@ -93,6 +99,30 @@ function GameMode:AssignWolfRect( wolf )
 		if isPointWithinRectangle( wolf:GetAbsOrigin(), self.wolfRects[i] ) then
 			wolf.wolfRect = self.wolfRects[i]
 		end
+	end
+end
+
+function GameMode:FleeWolf( point, wolf )
+	-- ScareWolf away from point.
+	local wolfABS = wolf:GetAbsOrigin()
+	local moveTo = wolfABS + (wolfABS - point):Normalized()*500
+	local lastValid = wolfABS
+	local endPoint = moveTo
+	local midpoints = math.ceil((wolfABS - endPoint):Length() / 32)
+	local navConnect = false
+	local index = 1
+	while not navConnect and index < midpoints do
+		lastPoint = wolfABS
+		wolfABS = wolfABS + (endPoint - wolfABS):Normalized() * 32 * index
+		navConnect = not GridNav:IsTraversable(wolfABS) or GridNav:IsBlocked(wolfABS) or not self:IsPointWithinZone(wolfABS, Entities:FindByName(nil, "trigger_ice_slide_".. wolf.zone))
+		index = index + 1
+	end
+	if navConnect then
+		moveTo = lastPoint
+	end
+	if self:IsPointWithinZone(moveTo, Entities:FindByName(nil, "trigger_ice_slide_".. wolf.zone)) then
+		wolf:MoveToPosition(moveTo)
+		wolf.fleeing = true
 	end
 end
 
