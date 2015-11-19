@@ -218,6 +218,7 @@ function GameMode:InitGameMode()
 	self.gameHeros = {
 		[1] = {'npc_dota_hero_antimage', 'npc_wolf', 'scripts/music.kv'},
 		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs', 'scripts/music_SB.kv'},
+		[3] = {{'npc_dota_hero_kunkka', 'npc_dota_hero_chaos_knight', 'npc_dota_hero_alchemist', 'npc_dota_hero_omniknight'}, 'npc_skin_head', 'scripts/music_RGR.kv'},
 	}
 
 	--[[ Scoreborad updater
@@ -447,7 +448,7 @@ end
 -- An item was picked up by a player
 function GameMode:OnItemPickedUp( keys )
 	print ( '[SNS] OnItemPickedUp: ' .. keys.itemname )
-	--PrintTable(keys)
+	PrintTable(keys)
 
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
 	local itemEntity = keys.itemEnt
@@ -462,7 +463,6 @@ end
 function GameMode:OnItemPurchased( keys )
 	print ( '[SNS] OnItemPurchased: ' .. keys.itemname )
 	PrintTable(keys)
-
 	-- The playerID of the hero who is buying something
 	local player = EntIndexToHScript(keys.PlayerID)
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
@@ -635,6 +635,7 @@ function GameMode:PlayerSay(keys)
 
 	if string.find(keys.text, "^-unstuck$") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
+		hero:Stop()
 	end
 
 	if (string.find(keys.text, "^-toggleanimation$") or string.find(keys.text, "^-ta$")) and not hero.slide then
@@ -747,6 +748,7 @@ function GameMode:OnThink()
 						and not hero.isInvuln 
 						and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") 
 						and not wolf:HasModifier("modifier_item_ultimate_gay_potion")
+						and not wolf:HasModifier("modifier_rgr_gaynish")
 						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						GameMode:HeroKilled(hero)
 					end
@@ -1149,6 +1151,9 @@ function GameMode:SpawnItems()
 	local droppedItem = CreateItemOnPositionSync(Vector(x, y, 256), newItem)
 	droppedItem.isDroppedItem = true
 	droppedItem.itemName = itemToSpawn
+	if (self.gameTheme == 3) then
+		droppedItem:SetRenderColor(255, 0, 255)
+	end
 end
 
 -- Called when all heros haved died, providing additional chances to try again
@@ -1323,6 +1328,9 @@ function GameMode:ResetGame()
 			v:RemoveSelf()
 		end
 	end
+	-- Clear Item/Ability Entities
+	GayTrapDestroyAll()
+
 	self.wolves = {}
 	self.wolvesHeaven = {}
 

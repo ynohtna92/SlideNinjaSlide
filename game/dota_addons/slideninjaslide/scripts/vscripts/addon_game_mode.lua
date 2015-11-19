@@ -9,6 +9,7 @@ BASE_MODULES = {
 	'slide_ninja_slide',
 	'wolves',
 	'popups',
+	'items',
 }
 
 local function load_module(mod_name)
@@ -96,6 +97,11 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_roshan_halloween.vsndevts", context)
 	--PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
+
+	-- RGR
+	PrecacheResource("particle", "particles/units/heroes/hero_gyrocopter/gyro_guided_missile_target.vpcf", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts", context)
 end
 
 -- Create the game mode when we activate

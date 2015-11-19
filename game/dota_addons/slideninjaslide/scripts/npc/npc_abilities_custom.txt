@@ -328,7 +328,7 @@
 
 		"BaseClass"						"ability_datadriven"
 		"AbilityTextureName"			"jakiro_liquid_fire"		
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 
@@ -338,7 +338,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 
 		"AbilityCastRange"				"1000"
-		"AbilityCastPoint"				"0.4"
+		"AbilityCastPoint"				"0.0"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1061,6 +1061,296 @@
 					"MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY"		"MODIFIER_STATE_VALUE_ENABLED"
 				}
 			}
+		}
+	}
+
+//---------------
+// BEGIN RGR
+//---------------
+	//=================================================================================================================
+	// Basic: Cock Ring
+	//=================================================================================================================
+	"rgr_cock_ring"
+	{
+		"ID"							"6010"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"rattletrap_power_cogs"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"MaxLevel"						"3"
+		
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"Modifiers"
+		{
+			"Aura_Modifier_RGR"
+			{
+				//"EffectName"		"particles/items_fx/aura_shivas.vpcf"
+				//"EffectAttachType" 	"follow_origin"
+				"Passive" "1"
+				"IsHidden" "1"
+				"Aura" "Aura_Mana_Regen_RGR"
+				"Aura_Radius" "%radius"
+				"Aura_Teams" "DOTA_UNIT_TARGET_TEAM_BOTH"
+				"Aura_Types" "DOTA_UNIT_TARGET_HERO"
+			}
+
+			"Aura_Mana_Regen_RGR"
+			{
+				"IsDebuff" "0"
+				"IsPurgable" "0"
+				"Properties"
+				{
+					 "MODIFIER_PROPERTY_MANA_REGEN_CONSTANT" "%mana_regen"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_regen"				"0.75 1.5 2.25"
+			}
+		}
+
+		"precache"
+		{
+			"particle"	"particles/items_fx/aura_shivas.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Basic: Leap of Gayness
+	//=================================================================================================================
+	"rgr_leap_of_gayness"
+	{
+		"ID"							"6011"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"slark_pounce"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4 0.4 0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"3.0"
+		"AbilityCooldown"				"30.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName" 	"modifier_leap_of_gayness_datadriven"
+				"Target"		"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_leap_of_gayness_datadriven"
+			{
+				"Duration"		"%AbilityDuration"
+				"IsDebuff"		"0"
+				"IsHidden"		"0"
+				"OverrideAnimation" "ACT_DOTA_ATTACK"
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"LeapOfGayness"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_centaur/centaur_warstomp.vpcf"
+						"EffectAttachType" 	"follow_origin"
+						"EffectRadius"		"255"
+						"Target" 			"CASTER"
+						"ControlPoints"
+						{
+							"01"	"255 0 255"
+						}
+					}
+
+					"FireSound"
+					{
+						"Target"		"CASTER"
+						"EffectName"	"Hero_Centaur.HoofStomp"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_ROOTED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE"	"0.11"
+				}
+			}
+		}
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"min_blink_range"			"0 100 200"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"blink_range"				"300 600 900"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"3"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_warstomp.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Gaynish
+	//=================================================================================================================
+	"rgr_gaynish"
+	{
+		"ID"							"6012"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"pugna_decrepify"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4 0.4 0.4"
+		"AbilityCastRange"				"800"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"8.0 15.0 22.0"
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75 60 50"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_rgr_gaynish"
+			}
+			"FireSound"
+			{
+				"Target"		"UNIT"
+				"EffectName"	"Hero_Pugna.Decrepify"
+
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"Gaynish"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_gaynish"
+			{
+				"IsDebuff"				"1"
+				"StatusEffectName"			"particles/status_fx/status_effect_ghost.vpcf"
+				"StatusEffectPriority" "15"
+				"EffectName"				"particles/items_fx/ghost.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"Duration"				"%duration"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE" "%bonus_spell_damage_pct"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" "%bonus_movement_speed" 
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_ATTACK_IMMUNE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"8 15 22"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"-50"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_spell_damage_pct"	"-66"
+			}
+		}
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_pugna/pugna_decrepify.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts"
 		}
 	}
 }

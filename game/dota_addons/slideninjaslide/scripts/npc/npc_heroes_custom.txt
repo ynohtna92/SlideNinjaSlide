@@ -15,7 +15,7 @@
 		"Ability2"					"antimage_thaw"								// Ability 2
 		"Ability3"					"antimage_entangling_roots"					// Ability 3
 		"Ability4"					"antimage_brilliance_aura"					// Ability 4
-		"Ability5"					""
+		"Ability5"					"rgr_leap_of_gayness"
 		"Ability6"					""
 		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
 

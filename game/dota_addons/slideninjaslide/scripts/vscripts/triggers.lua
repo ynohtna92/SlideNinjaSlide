@@ -24,7 +24,7 @@ function OnStartTouchIce (trigger)
 		if trigger.activator:HasModifier("modifier_leap_of_faith_datadriven") then
 			trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
 			trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
-		elseif trigger.activator:HasModifier("thaw_aura") then
+		elseif trigger.activator:HasModifier("thaw_aura") or trigger.activator:HasModifier("modifier_leap_of_gayness_datadriven") then
 			if not trigger.activator.thaw then
 				trigger.activator:StopPhysicsSimulation()
 				trigger.activator.thaw = true

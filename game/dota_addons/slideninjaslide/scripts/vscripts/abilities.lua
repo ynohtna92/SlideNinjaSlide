@@ -313,6 +313,94 @@ function BubbleBeamStop( keys )
 	print("BubbleBeamStop")
 end
 
+function Gaynish( keys )
+	GameMode:FleeWolf( keys.caster:GetAbsOrigin(), keys.target)
+end
+
+--[[Author: A_Dizzle
+	Date: 19.11.2015
+	Moves the Hero forward a random distance
+]]
+function LeapOfGayness( keys )
+	local target = keys.target
+	local ability = keys.ability
+	local min = ability:GetLevelSpecialValueFor("min_blink_range", ability:GetLevel() - 1)
+	local max = ability:GetLevelSpecialValueFor("blink_range", ability:GetLevel() - 1)
+
+	local duration = ability:GetLevelSpecialValueFor("duration", ability:GetLevel() - 1)
+	local mid = duration / 2
+	local height = 250
+	local jump = height/(mid/0.03)
+	local time_elapsed = 0
+
+	local connect = target:GetAbsOrigin()
+	local direction = target:GetForwardVector()
+	local distance = math.random(min, max)
+	print(mid, jump, distance)
+	local forward = distance/(duration/0.03)
+	local moved = 0
+	local point = (direction * distance) + connect
+
+	local targetParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_gyrocopter/gyro_guided_missile_target.vpcf", PATTACH_CUSTOMORIGIN, target)
+	ParticleManager:SetParticleControl(targetParticle, 0, point)
+	Timers:CreateTimer(duration, function()
+		StopEffect(target, "particles/units/heroes/hero_gyrocopter/gyro_guided_missile_target.vpcf")
+	end)
+
+	Timers:CreateTimer(0, function()
+		local ground_position = GetGroundPosition(target:GetAbsOrigin() , target)
+		time_elapsed = time_elapsed + 0.03
+		local nextPoint = target:GetAbsOrigin() + (direction * 55)
+		if not GridNav:IsTraversable(nextPoint) or GridNav:IsBlocked(nextPoint) then
+			print('checking')
+			local testPoint1 = target:GetAbsOrigin() + Vector(0,32,0) -- UP
+			local testPoint2 = target:GetAbsOrigin() + Vector(32,0,0) -- Right
+			local testPoint3 = target:GetAbsOrigin() + Vector(0,-32,0) -- Down
+			local testPoint4 = target:GetAbsOrigin() + Vector(-32,0,0) -- Left
+			local newDirection = direction
+			if not GridNav:IsTraversable(testPoint1) or GridNav:IsBlocked(testPoint1) then
+				newDirection = reflection(Vector(0,-1,0), direction)
+			end
+			if not GridNav:IsTraversable(testPoint2) or GridNav:IsBlocked(testPoint2) then
+				newDirection = reflection(Vector(-1,0,0), direction)
+			end
+			if not GridNav:IsTraversable(testPoint3) or GridNav:IsBlocked(testPoint3) then
+				newDirection = reflection(Vector(0,1,0), direction)
+			end
+			if not GridNav:IsTraversable(testPoint4) or GridNav:IsBlocked(testPoint4) then
+				newDirection = reflection(Vector(1,0,0), direction)
+			end
+			if newDirection ~= direction then
+				direction = newDirection
+				print(moved)
+				local newPoint = target:GetAbsOrigin() + newDirection * (distance-moved)
+				newPoint.z = ground_position.z
+				ParticleManager:SetParticleControl(targetParticle, 0, newPoint)
+			end
+		end
+		if time_elapsed < mid then
+			target:SetAbsOrigin(target:GetAbsOrigin() + Vector(0,0,jump) + direction*forward) -- Up
+		else
+			target:SetAbsOrigin(target:GetAbsOrigin() - Vector(0,0,jump) + direction*forward) -- Down
+		end
+		moved = moved + forward
+
+		if target:GetAbsOrigin().z - ground_position.z <= 0 then
+			return nil
+		end
+
+		return 0.03
+	end)
+
+	target:Stop()
+end
+
+function reflection( normal, ray )
+	local reflection = ray - 2*ray:Dot(normal)*normal
+	print(reflection)
+	return reflection
+end
+
 function debug_teleport( keys )
 	print(keys.target_points[1])
 	FindClearSpaceForUnit(keys.caster, keys.target_points[1], true)

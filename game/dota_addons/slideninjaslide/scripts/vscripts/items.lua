@@ -78,6 +78,50 @@ function UltimateGayPotion( event )
 	end
 end
 
+function GayTrapPlant( event )
+	local caster = event.caster
+	local target_point = event.target_points[1]
+	local ability = event.ability
+
+	local modifier_gay_trap = event.modifier_gay_trap
+	local modifier_gay_trap_thinker = event.modifier_gay_trap_thinker
+
+	local activation_time = ability:GetLevelSpecialValueFor("activation_time", 0)
+
+	local gay_trap = CreateUnitByName("npc_gay_trap", target_point, false, nil, nil, caster:GetTeamNumber())
+	gay_trap:SetRenderColor(255, 0, 255)
+	ability:ApplyDataDrivenModifier(caster, gay_trap, modifier_gay_trap, {})
+	ability:ApplyDataDrivenModifier(caster, gay_trap, modifier_gay_trap_thinker, {})
+end
+
+function GayTrapTracker( event )
+	local target = event.target
+
+	local trigger_radius = event.radius
+	local explode_delay = event.activation_time
+
+	local target_team = DOTA_UNIT_TARGET_TEAM_ENEMY
+	local target_type = DOTA_UNIT_TARGET_ALL
+	local target_flag = DOTA_UNIT_TARGET_FLAG_INVULNERABLE
+
+	local units = FindUnitsInRadius(target:GetTeamNumber(), target:GetAbsOrigin(), nil, trigger_radius, target_team, target_type, target_flag, FIND_CLOSEST, false)
+
+	if #units > 0 then
+		Timers:CreateTimer(explode_delay, function()
+			if target:IsAlive() then
+				target:ForceKill(true)
+			end
+		end)
+	end
+end
+
+function GayTrapDestroyAll()
+	local traps = Entities:FindAllByModel("models/heroes/techies/fx_techiesfx_mine.vmdl")
+	for _,v in ipairs(traps) do
+		v:RemoveSelf()
+	end
+end
+
 function UltimateGayPotionUnitStop( event )
 	local unit = event.target
 	unit:Stop()
