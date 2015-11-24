@@ -317,6 +317,34 @@ function Gaynish( keys )
 	GameMode:FleeWolf( keys.caster:GetAbsOrigin(), keys.target)
 end
 
+function DickClap( keys )
+	local ability = keys.ability
+	local radius = ability:GetLevelSpecialValueFor("radius", ability:GetLevel() - 1)
+
+	local target_team = DOTA_UNIT_TARGET_TEAM_ENEMY
+	local target_type = DOTA_UNIT_TARGET_ALL
+	local target_flag = DOTA_UNIT_TARGET_FLAG_INVULNERABLE
+
+	local units = FindUnitsInRadius(keys.caster:GetTeamNumber(), keys.caster:GetAbsOrigin(), nil, radius, target_team, target_type, target_flag, FIND_CLOSEST, false)
+
+	if #units > 0 then
+		for _,v in ipairs(units) do
+			GameMode:FleeWolf( keys.caster:GetAbsOrigin(), v)
+		end
+	end
+end
+
+function BladeFuryFlee( keys )
+	local caster = keys.caster
+	local target = keys.target
+	GameMode:FleeWolf( caster:GetAbsOrigin(), target )
+end
+
+function BladeFuryStop( keys )
+	local caster = keys.caster
+	caster:StopSound("Hero_Juggernaut.BladeFuryStart")
+end
+
 --[[Author: A_Dizzle
 	Date: 19.11.2015
 	Moves the Hero forward a random distance
@@ -352,7 +380,6 @@ function LeapOfGayness( keys )
 		time_elapsed = time_elapsed + 0.03
 		local nextPoint = target:GetAbsOrigin() + (direction * 55)
 		if not GridNav:IsTraversable(nextPoint) or GridNav:IsBlocked(nextPoint) then
-			print('checking')
 			local testPoint1 = target:GetAbsOrigin() + Vector(0,32,0) -- UP
 			local testPoint2 = target:GetAbsOrigin() + Vector(32,0,0) -- Right
 			local testPoint3 = target:GetAbsOrigin() + Vector(0,-32,0) -- Down

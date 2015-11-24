@@ -99,6 +99,10 @@ function Precache( context )
 	--PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
 
 	-- RGR
+	PrecacheResource("particle", "particles/generic_gameplay/generic_hit_blood_flash.vpcf", context)
+	PrecacheResource("particle", "particles/generic_gameplay/generic_hit_blood.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_phantom_assassin/phantom_assassin_crit_impact.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_phantom_assassin/phantom_assassin_crit_impact_bloodstain.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_gyrocopter/gyro_guided_missile_target.vpcf", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts", context)

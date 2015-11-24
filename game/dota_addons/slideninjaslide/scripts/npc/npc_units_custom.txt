@@ -125,7 +125,7 @@
 
 		"Model"			"models/creeps/neutral_creeps/n_creep_ogre_med/n_creep_ogre_med.vmdl"
 		"BaseClass"		"npc_dota_creature"
-		"ModelScale"	"1"
+		"ModelScale"	"0.8"
 		"CanRespawn" 				"1"
 
 		"MinimapIconSize"           "300"
