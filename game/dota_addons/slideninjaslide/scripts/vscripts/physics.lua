@@ -20,7 +20,10 @@ if Physics == nil then
 end
 
 function IsPhysicsUnit(unit)
-  return unit.GetPhysicsVelocity ~= nil
+  if unit then
+    return unit.GetPhysicsVelocity ~= nil
+  end
+  return false
 end
 
 function Physics:new( o )
