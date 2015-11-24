@@ -16,25 +16,10 @@
 
 	"attributes"
 	{
-		// 	RGR Items
-		"item"		"item_lacoste_basic"
-		"item"		"item_lacoste_cavallion"
-		"item"		"item_lacoste_sheldon_lace"
-		"item"		"item_lacoste_megagay_edition"
-		"item"		"item_penis_pump"
-		"item"		"item_penis_pump_deluxe"
-		"item"		"item_bottle_of_estrogen"
-		"item"		"item_bottle_of_androgen"
-		"item"		"item_bottle_of_seamen"
-		"item"		"item_gay_trap"
-		"item"		"item_kamasutra"
-		"item"		"item_kamasutra_deluxe"
-		"item"		"item_rubber"
 	}
 
 	"weapons_armor"
 	{
-		"item"		"item_ultimate_gay_potion"
 	}
 			
 	"misc"
