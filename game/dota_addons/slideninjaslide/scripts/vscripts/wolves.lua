@@ -126,6 +126,15 @@ function GameMode:FleeWolf( point, wolf )
 	end
 end
 
+function GameMode:AttackUnit( unit, wolf )
+	local bloodParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_phantom_assassin/phantom_assassin_crit_impact.vpcf", PATTACH_CUSTOMORIGIN, unit)
+	ParticleManager:SetParticleControl(bloodParticle, 0, unit:GetAbsOrigin() + Vector(0,0,100))
+	ParticleManager:SetParticleControl(bloodParticle, 1, wolf:GetAbsOrigin())
+	ParticleManager:SetParticleControlForward(bloodParticle, 1, (wolf:GetAbsOrigin() - unit:GetAbsOrigin()):Normalized() )
+	wolf:StartGesture(ACT_DOTA_ATTACK)
+	EmitSoundOn( "n_creep_Melee.Attack", wolf )
+end
+
 function GameMode:DestroyAllWolves(  )
 	deleteUnitsInTable( self.wolves )
 end
