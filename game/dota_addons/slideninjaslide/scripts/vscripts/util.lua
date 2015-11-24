@@ -17,6 +17,16 @@ function HasFullInventory( unit )
 	return count == 6
 end
 
+-- Turn unit to face vector point
+function RotateUnitToFace( unit, point )
+	local position = unit:GetAbsOrigin()
+	local forwardVect = unit:GetForwardVector()
+
+	local newForwardVect = (point - position):Normalized()
+	--unit:SetForwardVector(newForwardVect)
+	unit:MoveToPosition(position + newForwardVect * 1)
+end
+
 -- Returns a shallow copy of the passed table.
 function shallowcopy(orig)
 	local orig_type = type(orig)
