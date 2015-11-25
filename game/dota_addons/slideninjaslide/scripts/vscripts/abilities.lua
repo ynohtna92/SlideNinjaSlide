@@ -345,6 +345,77 @@ function BladeFuryStop( keys )
 	caster:StopSound("Hero_Juggernaut.BladeFuryStart")
 end
 
+function DoomStopSound( keys )
+	print('DoomSoundStop')
+	local unit = keys.unit
+	StopSoundEvent("Hero_DoomBringer.Doom", unit)
+end
+
+function EvasionStart( keys )
+	print('EvasionStart')
+	local ability = keys.ability
+	local hero = keys.target
+	local time_to_enabled = ability:GetLevelSpecialValueFor("evasion", ability:GetLevel() - 1)
+	if hero.evasionTimer ~= nil then
+		Timers:RemoveTimer(hero.evasionTimer)
+	end
+	hero.evasionTimer = Timers:CreateTimer(time_to_enabled, function()
+		print('EvasionRenewed')
+		ability:ApplyDataDrivenModifier(hero, hero, keys.modifier, {})
+	end)
+end
+
+-- Triggering Intensifies
+function EvasionTriggered( hero, unit )
+	hero:RemoveModifierByName("modifier_evasion_evade")
+	local evasionParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_templar_assassin/templar_assassin_refract_hit.vpcf", PATTACH_POINT_FOLLOW, hero)
+	ParticleManager:SetParticleControlEnt(evasionParticle, 0, hero, PATTACH_POINT_FOLLOW, "attach_origin", hero:GetAbsOrigin(), true)
+	ParticleManager:SetParticleControlEnt(evasionParticle, 2, hero, PATTACH_POINT_FOLLOW, "attach_origin", hero:GetAbsOrigin(), true)
+	ParticleManager:SetParticleControlForward(evasionParticle, 1, (hero:GetAbsOrigin()-unit:GetAbsOrigin()):Normalized() )
+end
+
+-- This function is called when the unit hits a creep with the chemical rage modifier
+function ChemicalRageOnHit( hero )
+	if (hero:GetStrength()*0.01*hero:GetHealthPercent()) > RandomFloat(0,20) then
+		hero:SetHealth(hero:GetHealth()-RandomFloat(0.01, hero:GetHealth() - 1))
+		return true
+	else
+		return false
+	end
+end
+
+--[[Author: Pizzalol
+	Date: 18.01.2015.
+	Checks if the target is an illusion, if true then it kills it
+	otherwise the target model gets swapped into a frog]]
+function voodoo_start( keys )
+	local target = keys.target
+	local model = keys.model
+
+	if target:IsIllusion() then
+		target:ForceKill(true)
+	else
+		if target.target_model == nil then
+			target.target_model = target:GetModelName()
+		end
+
+		target:SetOriginalModel(model)
+	end
+end
+
+--[[Author: Pizzalol
+	Date: 18.01.2015.
+	Reverts the target model back to what it was]]
+function voodoo_end( keys )
+	local target = keys.target
+
+	-- Checking for errors
+	if target.target_model ~= nil then
+		target:SetModel(target.target_model)
+		target:SetOriginalModel(target.target_model)
+	end
+end
+
 --[[Author: A_Dizzle
 	Date: 19.11.2015
 	Moves the Hero forward a random distance

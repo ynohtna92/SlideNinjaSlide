@@ -6,7 +6,7 @@ Co-Author: Myll
 
 print('[SNS] slide_ninja_slide.lua')
 
-DEBUG = false
+DEBUG = true
 THINK_TIME = 0.1
 
 VERSION = "B221115"
@@ -313,6 +313,19 @@ function GameMode:InitGameMode()
 		self.nMaxRounds = ROUNDS
 		EXP_BONUS_ROUND_WINNER = 500
 		self.gameTheme = 3
+
+		self.itemSpawns = {
+			[1] = "item_bottle_of_seamen",
+			[2] = "item_bottle_of_estrogen",
+			[3] = "item_bottle_of_androgen",
+			[4] = "item_lacoste_basic",
+			[5] = "item_cosmopolitan",
+			[6] = "item_penis_pump",
+			[7] = "item_rubber",
+			[8] = "item_penis_pump_deluxe",
+			[9] = "item_kamasutra",
+			[10] = "item_kamasutra_deluxe",
+		}
 	end
 
 	SpawnPoints = {}
@@ -459,7 +472,7 @@ end
 function GameMode:OnAllPlayersLoaded()
 	print('[SNS] OnAllPlayersLoaded')
 
-	if FORCE_PICKED_HERO == nil then
+	if FORCE_PICKED_HERO == nil and not DEBUG then
 		for _,v in ipairs(self.vUserIds) do
 			PlayerResource:SetHasRandomed(v:GetPlayerID())
 			PlayerResource:SetHasRepicked(v:GetPlayerID())
@@ -692,6 +705,47 @@ function GameMode:PlayerSay(keys)
 		hero:Stop()
 	end
 
+	if args[1] == "-g" then
+		if args[2] ~= nil then
+			local id2 = tonumber(args[2])
+			if not id2 then
+				SendErrorMessage( hero:GetPlayerID(), "#error_syntax_give" )
+				return
+			end
+			local gold = tonumber(args[3])
+			local player = PlayerResource:GetPlayer(id2)
+			if not player then
+				SendErrorMessage( hero:GetPlayerID(), "#error_syntax_give" )
+				return
+			end
+			local hero2 = player:GetAssignedHero()
+			if hero2 and hero:GetTeamNumber() == hero2:GetTeamNumber() then
+				if gold then
+					if gold > 0 and gold <= hero:GetGold() then
+						print('GIVE: '..args[2]..' '..gold)
+						hero:SpendGold( gold, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( gold , false, DOTA_ModifyGold_Unspecified)
+						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
+						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
+					else
+						SendErrorMessage( hero:GetPlayerID(), "#error_not_enough_gold" )
+					end
+				else
+					local all = hero:GetGold()
+					if all > 0 then
+						print('GIVE: '..args[2])
+						hero:SpendGold( all, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( all , false, DOTA_ModifyGold_Unspecified)
+						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
+						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
+					else
+						SendErrorMessage( hero:GetPlayerID(), "#error_not_enough_gold" )
+					end
+				end
+			end
+		end
+	end
+
 	if (string.find(keys.text, "^-toggleanimation$") or string.find(keys.text, "^-ta$")) and not hero.slide then
 		if hero.skateAnimation == "modifier_skatimation_datadriven" then
 			hero.skateAnimation = "modifier_skatimation2_datadriven"
@@ -804,12 +858,32 @@ function GameMode:OnThink()
 						and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") 
 						and not wolf:HasModifier("modifier_item_ultimate_gay_potion")
 						and not wolf:HasModifier("modifier_rgr_gaynish")
+						and not wolf:HasModifier("modifier_hex")
 						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
+						local killHero = true
+						-- Check if we should trigger rgr_evasion or not
+						if hero:HasModifier("modifier_evasion_evade") then
+							killHero = false
+							EvasionTriggered( hero, wolf )
+						end
+						-- Check if chemical rage modifier is on hero and check on hit.
+						if hero:HasModifier("modifier_rgr_chemical_rage") and ChemicalRageOnHit(hero) then
+							killHero = false
+						end
+						-- This will only run for RGR
 						if wolf:IsIdle() and self.gameTheme == 3 then
 							RotateUnitToFace( wolf, hero:GetAbsOrigin() )
-							GameMode:AttackUnit(hero,wolf)
+							GameMode:AttackUnit(hero,wolf,killHero)
 						end
-						GameMode:HeroKilled(hero)
+						if killHero then
+							GameMode:HeroKilled(hero)
+						else
+							-- This is for temp invul
+							hero.isInvuln = true
+							Timers:CreateTimer(0.4, function()
+								hero.isInvuln = false
+							end)
+						end
 					end
 				end
 			end
@@ -1112,9 +1186,7 @@ function GameMode:LevelCompleted( hero )
 				end
 				
 				-- stop moving after ninja teleports
-				if IsPhysicsUnit(hero) then
-					ninja:StartPhysicsSimulation()
-				end
+				ninja:StartPhysicsSimulation()
 				ninja:Stop()
 
 				Timers:CreateTimer(0.1,function()
@@ -1207,16 +1279,16 @@ end
 function GameMode:SpawnItems()
 	local roll = RandomInt(1, 100)
 	local itemToSpawn = ""
-	if roll >= 99 then itemToSpawn = "item_tome_of_power"
-	elseif roll >= 96 then itemToSpawn = "item_tome_of_experience"
-	elseif roll >= 93 then itemToSpawn = "item_ultra_sobi_mask"
-	elseif roll >= 90 then itemToSpawn = "item_socks_of_ultra_speed"
-	elseif roll >= 87 then itemToSpawn = "item_pendant_of_mana"
-	elseif roll >= 74 then itemToSpawn = "item_pendant_of_energy"
-	elseif roll >= 61 then itemToSpawn = "item_sobi_mask2"
-	elseif roll >= 41 then itemToSpawn = "item_boots_of_speed"
-	elseif roll >= 21 then itemToSpawn = "item_potion_of_speed"
-	else itemToSpawn = "item_potion_of_mana"
+	if roll >= 99 then itemToSpawn = self.itemSpawns[10]
+	elseif roll >= 96 then itemToSpawn = self.itemSpawns[9]
+	elseif roll >= 93 then itemToSpawn = self.itemSpawns[8]
+	elseif roll >= 90 then itemToSpawn = self.itemSpawns[7]
+	elseif roll >= 87 then itemToSpawn = self.itemSpawns[6]
+	elseif roll >= 74 then itemToSpawn = self.itemSpawns[5]
+	elseif roll >= 61 then itemToSpawn = self.itemSpawns[4]
+	elseif roll >= 41 then itemToSpawn = self.itemSpawns[3]
+	elseif roll >= 21 then itemToSpawn = self.itemSpawns[2]
+	else itemToSpawn = self.itemSpawns[1]
 	end
 	if DEBUG then
 		print(roll, itemToSpawn)
@@ -1300,9 +1372,7 @@ function GameMode:ChanceRound()
 			end
 
 			-- stop moving after ninja teleports
-			if IsPhysicsUnit(hero) then
-				ninja:StartPhysicsSimulation()
-			end
+			ninja:StartPhysicsSimulation()
 			ninja:Stop()
 
 			ninja:SetForwardVector(Vector(1,0,0))

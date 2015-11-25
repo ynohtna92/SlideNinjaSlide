@@ -222,7 +222,7 @@
 
 		"override_hero"				"npc_dota_hero_phantom_lancer"				// Hero to override
 		"Ability1"					"rgr_impale"								// Ability 1
-		"Ability2"					"rgr_dildo_choke"							// Ability 2
+		"Ability2"					"rgr_sleep"									// Ability 2
 		"Ability3"					"rgr_brilliance_aura"						// Ability 3
 		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
 		"Ability5"					""
@@ -263,8 +263,8 @@
 		"ModelScale"				"0.8"
 
 		"override_hero"				"npc_dota_hero_invoker"						// Hero to override
-		"Ability1"					"rgr_zoophilia"								// Ability 1
-		"Ability2"					"rgr_cock_slap"								// Ability 2
+		"Ability1"					"rgr_hex"									// Ability 1
+		"Ability2"					"rgr_shockwave"								// Ability 2
 		"Ability3"					"rgr_brilliance_aura"						// Ability 3
 		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
 		"Ability5"					""
@@ -305,8 +305,8 @@
 		"ModelScale"				"0.8"
 
 		"override_hero"				"npc_dota_hero_juggernaut"					// Hero to override
-		"Ability1"					"rgr_steroids"								// Ability 1
-		"Ability2"					"rgr_gaystorm"								// Ability 2
+		"Ability1"					"rgr_gaystorm"								// Ability 1
+		"Ability2"					"rgr_steroids"								// Ability 2
 		"Ability3"					"rgr_brilliance_aura"						// Ability 3
 		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
 		"Ability5"					""
@@ -683,8 +683,8 @@
 		"ModelScale"				"0.8"
 
 		"override_hero"				"npc_dota_hero_centaur"						// Hero to override
-		"Ability1"					"rgr_evasion"								// Ability 1
-		"Ability2"					"rgr_gayrage"								// Ability 2
+		"Ability1"					"rgr_purge"									// Ability 1
+		"Ability2"					"rgr_evasion"								// Ability 2
 		"Ability3"					"rgr_brilliance_aura"						// Ability 3
 		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
 		"Ability5"					""

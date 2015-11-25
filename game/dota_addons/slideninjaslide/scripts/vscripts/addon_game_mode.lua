@@ -2,14 +2,15 @@ BASE_MODULES = {
 	'util',
 	'timers',
 	'physics',
-	--colliders_test,
 	'statcollection.init',
 	'music_player',
 	'score_board',
 	'slide_ninja_slide',
 	'wolves',
 	'popups',
+	'notifications',
 	'items',
+	'abilities',
 }
 
 local function load_module(mod_name)
