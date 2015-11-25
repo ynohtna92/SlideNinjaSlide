@@ -14,4 +14,7 @@
 	"slideninjaslide_game_info_additional_header"			"Additional Features:"
 	"slideninjaslide_game_info_ad01"						"The T.U.E timed chase mode can be started by the host at any time using the <span class='command'>-tue</span> commmand."
 	"slideninjaslide_game_info_ad02"						"The more difficult Slide Spongebob Slide mode can be started by the host with the phrase <span class='command'>Who lives in a pineapple under the sea</span>."
+
+	"error_syntax_give"						"Syntax Error: -give [0-9](Player) <gold>(optional)"
+	"error_not_enough_gold"					"Not Enough Gold"
 }
