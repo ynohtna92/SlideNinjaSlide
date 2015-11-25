@@ -6,6 +6,7 @@
 		"item"		"item_bottle_of_seamen"
 		"item"		"item_bottle_of_estrogen"
 		"item"		"item_bottle_of_androgen"
+		"item"		"item_cosmopolitan"
 		"item"		"item_gay_trap"
 		"item"		"item_rubber"
 		"item"		"item_ultimate_gay_potion"
