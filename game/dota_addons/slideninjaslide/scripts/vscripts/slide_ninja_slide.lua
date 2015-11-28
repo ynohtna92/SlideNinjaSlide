@@ -221,7 +221,7 @@ function GameMode:InitGameMode()
 	self.gameHeros = {
 		[1] = {'npc_dota_hero_antimage', 'npc_wolf', 'scripts/music.kv'},
 		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs', 'scripts/music_SB.kv'},
-		[3] = {{'npc_dota_hero_kunkka', 'npc_dota_hero_chaos_knight', 'npc_dota_hero_alchemist', 'npc_dota_hero_omniknight', 'npc_dota_hero_beastmaster', 'npc_dota_hero_tidehunter', 'npc_dota_hero_abaddon', 'npc_dota_hero_ursa', 'npc_dota_hero_keeper_of_the_light', 'npc_dota_hero_juggernaut', 'npc_dota_hero_zuus', 'npc_dota_hero_centaur'}, 'npc_skin_head', 'scripts/music_RGR.kv'},
+		[3] = {{'npc_dota_hero_kunkka', 'npc_dota_hero_chaos_knight', 'npc_dota_hero_alchemist', 'npc_dota_hero_omniknight', 'npc_dota_hero_beastmaster', 'npc_dota_hero_tidehunter', 'npc_dota_hero_abaddon', 'npc_dota_hero_lone_druid', 'npc_dota_hero_keeper_of_the_light', 'npc_dota_hero_juggernaut', 'npc_dota_hero_zuus', 'npc_dota_hero_centaur'}, 'npc_skin_head', 'scripts/music_RGR.kv'},
 	}
 
 	self.itemSpawns = {
@@ -855,10 +855,12 @@ function GameMode:OnThink()
 					if not hero:IsInvulnerable() 
 						and not hero.isInvuln
 						and not hero:HasModifier("modifier_bladestorm")
+						and not hero:HasModifier("modifier_behind_datadriven")
 						and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") 
 						and not wolf:HasModifier("modifier_item_ultimate_gay_potion")
 						and not wolf:HasModifier("modifier_rgr_gaynish")
 						and not wolf:HasModifier("modifier_hex")
+						and not wolf:HasModifier("modifier_rgr_tornado")
 						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						local killHero = true
 						-- Check if we should trigger rgr_evasion or not
@@ -868,6 +870,9 @@ function GameMode:OnThink()
 						end
 						-- Check if chemical rage modifier is on hero and check on hit.
 						if hero:HasModifier("modifier_rgr_chemical_rage") and ChemicalRageOnHit(hero) then
+							killHero = false
+						end
+						if hero:HasModifier("modifier_rgr_sillyness") and not wolf:HasModifier("modifier_rgr_sillyness_target") and SillynessTriggered( hero, wolf ) then
 							killHero = false
 						end
 						-- This will only run for RGR
@@ -1098,21 +1103,6 @@ function GameMode:LevelCompleted( hero )
 	ScoreBoard:ScoreUpdate(hero)
 	--print(GameMode:GetNinja(hero:GetPlayerID()).score)
 
-	-- Attaching a particle to the leading team heroes
-	local existingParticle = hero:Attribute_GetIntValue( "particleID", -1 )
-	if existingParticle == -1 then
-		local particleLeader = ParticleManager:CreateParticle( "particles/leader/leader_overhead.vpcf", PATTACH_OVERHEAD_FOLLOW, hero )
-		ParticleManager:SetParticleControlEnt( particleLeader, PATTACH_OVERHEAD_FOLLOW, hero, PATTACH_OVERHEAD_FOLLOW, "follow_overhead", hero:GetAbsOrigin(), true )
-		hero:Attribute_SetIntValue( "particleID", particleLeader )
-		Timers:CreateTimer(10, function()
-			local particleLeader = hero:Attribute_GetIntValue( "particleID", -1 )
-			if particleLeader ~= -1 then
-				ParticleManager:DestroyParticle( particleLeader, true )
-				hero:DeleteAttribute( "particleID" )
-			end
-		end)
-	end
-
 	-- reward team
 	for i,v in ipairs(self.ninjas) do
 		v:SetGold(v:GetGold() + GOLD_PER_ROUND, false)
@@ -1160,6 +1150,21 @@ function GameMode:LevelCompleted( hero )
 
 	Timers:CreateTimer(3, function()		
 		print('[SNS] Starting Round: ' .. tostring(self.nCurrentRound))
+
+		-- Attaching a particle to the leading team heroes
+		local existingParticle = hero:Attribute_GetIntValue( "particleID", -1 )
+		if existingParticle == -1 then
+			local particleLeader = ParticleManager:CreateParticle( "particles/leader/leader_overhead.vpcf", PATTACH_OVERHEAD_FOLLOW, hero )
+			ParticleManager:SetParticleControlEnt( particleLeader, PATTACH_OVERHEAD_FOLLOW, hero, PATTACH_OVERHEAD_FOLLOW, "follow_overhead", hero:GetAbsOrigin(), true )
+			hero:Attribute_SetIntValue( "particleID", particleLeader )
+			Timers:CreateTimer(10, function()
+				local particleLeader = hero:Attribute_GetIntValue( "particleID", -1 )
+				if particleLeader ~= -1 then
+					ParticleManager:DestroyParticle( particleLeader, true )
+					hero:DeleteAttribute( "particleID" )
+				end
+			end)
+		end
 
 		-- Reset all ninjas
 		for i,v in  ipairs(SpawnPoints) do
