@@ -743,7 +743,7 @@
 	}
 
 	//=================================================================================================================
-	// Bottle of Seamen
+	// Bottle of Estrogen
 	//=================================================================================================================
 	"item_bottle_of_estrogen"
 	{
@@ -813,6 +813,7 @@
 		{
 			"bonus_intellect_modifier"
 			{
+				"IsHidden"		"1"
 				"Attributes"	"MODIFIER_ATTRIBUTE_PERMANENT"
 				"IsBuff"	"1"
 				"TextureName"	"item_bottle_of_estrogen"
@@ -895,6 +896,7 @@
 		{
 			"bonus_strength_modifier"
 			{
+				"IsHidden"		"1"
 				"Attributes"	"MODIFIER_ATTRIBUTE_PERMANENT"
 				"IsBuff"	"1"
 				"TextureName"	"item_bottle_of_androgen"
@@ -1018,7 +1020,7 @@
 			"ApplyModifier"
 			{
 				"Target" "CURSOR_TARGET"
-				"ModifierName" "modifier_item_potion_of_speed"
+				"ModifierName" "modifier_cosmopolitan"
 			}
 			"ApplyModifier"
 			{
@@ -1036,7 +1038,7 @@
 
 		"Modifiers"
 		{
-			"modifier_item_potion_of_speed"
+			"modifier_cosmopolitan"
 			{
 				"TextureName" "item_greater_salve"
 				"EffectName" "particles/generic_gameplay/rune_haste_owner.vpcf"
@@ -1051,7 +1053,7 @@
 					"RemoveModifier"
 					{
 						"Target" "UNIT"
-						"ModifierName" "modifier_item_potion_of_speed"
+						"ModifierName" "modifier_cosmopolitan"
 					}
 				}
 				"OnDestroy"

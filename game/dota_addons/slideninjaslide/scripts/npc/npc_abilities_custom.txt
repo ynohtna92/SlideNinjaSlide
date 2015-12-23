@@ -1810,6 +1810,11 @@
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"70 110 160"
 			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_sec"			"14 22 32"
+			}
 		}
 
 		"OnSpellStart"
@@ -2007,7 +2012,7 @@
 				{
 					"ApplyModifier"
 					{
-						"ModifierName"    "modifier_frost_nova_slow"
+						"ModifierName"    "modifier_rgr_frost_nova_slow"
 						"Target"
 						{
 							"Center"	"TARGET"
@@ -2019,7 +2024,7 @@
 
 					"ApplyModifier"
 					{
-						"ModifierName"    "modifier_frost_nova_slow"
+						"ModifierName"    "modifier_rgr_frost_nova_slow"
 						"Target"
 						{
 							"Center"	"TARGET"
@@ -2042,7 +2047,7 @@
 
 		"Modifiers"
 		{
-			"modifier_frost_nova_slow"
+			"modifier_rgr_frost_nova_slow"
 			{
 				"IsDebuff"		"1"
 
@@ -2834,7 +2839,7 @@
 			"modifier_rgr_chemical_rage"
 			{
 				"IsBuff"	"1"
-				"IsHidden"	"1"
+				"IsHidden"	"0"
 				"Duration"	"%duration"
 
 				"Properties"
@@ -3208,6 +3213,7 @@
 		{
 			"particle" 	"particles/units/heroes/hero_magnataur/magnataur_shockwave.vpcf"
 			"particle"	"particles/units/heroes/hero_magnataur/magnataur_shockwave_cast.vpcf"
+			"particle"	"particles/econ/items/magnataur/shock_of_the_anvil/magnataur_shockanvil.vpcf"
 			"soundfile" "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts"
 		}
 		
@@ -3261,7 +3267,7 @@
 			"LinearProjectile"
 			{
 			    "Target"      	"POINT"
-			    "EffectName" 	"particles/units/heroes/hero_magnataur/magnataur_shockwave.vpcf"
+			    "EffectName" 	"particles/econ/items/magnataur/shock_of_the_anvil/magnataur_shockanvil.vpcf"
 			    "MoveSpeed"   	"%shock_speed"
 			    "StartRadius"   "%shock_width"
 			    "StartPosition" "attach_attack1"
@@ -4837,6 +4843,147 @@
 			"particle"	"particles/units/heroes/hero_lone_druid/lone_druid_bear_spawn.vpcf"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lone_druid.vsndevts"
 			"model"		"models/heroes/lone_druid/spirit_bear.vmdl"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Deepthroat
+	//=================================================================================================================
+	"rgr_devour"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"doom_bringer_devour"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"150"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"100.0 60.0 20.0"
+
+		"AbilityManaCost"				"125"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"delay"				"3 2 1"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_per_second"	"25"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts"
+			"particle"			"particles/units/heroes/hero_doom_bringer/doom_bringer_devour.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_devour_datadriven"
+				"Target" 		"CASTER"
+				"Duration"		"%delay"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_devour_datadriven"
+			{
+				"IsDebuff"	"0"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"			"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnDestroy"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_DoomBringer.DevourCast"
+						"Target" 		"CASTER"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"Devour"
+					}				
+				}
+			}
+
+			"modifier_devour_eaten"
+			{
+				"IsDebuff"	"0"
+				"OnDeath"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"DevourUnitEnd"
+					}
+				}
+			}
+
+			"modifier_devour_eaten_target"
+			{
+				"IsDebuff"	"1"
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_PURE"
+						"Damage"		"%damage_per_second"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_UNSELECTABLE" 	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"DevourUnit"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"RemoveModifier"
+					{
+						"ModifierName" 	"modifier_devour_eaten"
+						"Target"		"CASTER"
+					}
+					"FireSound"
+					{
+						"EffectName"	"Hero_DoomBringer.DevourCast"
+						"Target" 		"CASTER"
+					}
+				}
+			}
 		}
 	}
 }

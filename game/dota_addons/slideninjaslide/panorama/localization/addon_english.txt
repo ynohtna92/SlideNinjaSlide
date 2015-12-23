@@ -1,6 +1,8 @@
 "addon"
 {
 	"addonname"										"Slide Ninja Slide"
+	"MusicPlayerTitle"								"MUSIC:"
+	"addon_game_name"			"Slide Ninja Slide"
 	"slideninjaslide_game_info_header_objective"			"Objective:"
 	"slideninjaslide_brief_description"					"Make it through 4 rounds of increasing difficulty with the support of your allies to win the game!"
 	"slideninjaslide_game_info_header_how_to_play"		"How To Play:"

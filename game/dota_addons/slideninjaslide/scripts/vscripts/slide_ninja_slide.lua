@@ -108,6 +108,9 @@ function GameMode:InitGameMode()
 	end
 	print('[SNS] GameRules set')
 
+	-- Filters
+	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(GameMode, "FilterExecuteOrder"), self)
+
 	-- Hooks
 	ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), self)
 	ListenToGameEvent('player_chat', Dynamic_Wrap(GameMode, 'PlayerSay'), self)
@@ -373,14 +376,14 @@ function GameMode:HeroInit( hero )
   local pID = hero:GetPlayerID()
   self.vPlayerIDToHero[pID] = hero
   if self.vPlayers[pID] ~= nil then
-    return
+	return
   end
   self.vPlayers[pID] = pID
   --print('TeamNumber: '..hero:GetTeamNumber())
   if hero:GetTeamNumber() == DOTA_TEAM_GOODGUYS then
-    table.insert(self.vRadiant, pID)
+	table.insert(self.vRadiant, pID)
   elseif hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
-    table.insert(self.vDire, pID)
+	table.insert(self.vDire, pID)
   end
 end
 
@@ -861,6 +864,7 @@ function GameMode:OnThink()
 						and not wolf:HasModifier("modifier_rgr_gaynish")
 						and not wolf:HasModifier("modifier_hex")
 						and not wolf:HasModifier("modifier_rgr_tornado")
+						and not wolf:HasModifier("modifier_devour_eaten_target")
 						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
 						local killHero = true
 						-- Check if we should trigger rgr_evasion or not
@@ -1116,7 +1120,18 @@ function GameMode:LevelCompleted( hero )
 			duration = 3.0
 		}
 		FireGameEvent("show_center_message",msg)
-		Timers:CreateTimer(3, function()
+		local delay = 3
+
+		if GetMapName() == "run_gay_run" then
+			delay = 15
+			MusicPlayer:ChangePlaylist("scripts/music_RGR_END.kv")
+			for i,v  in ipairs(self.vUserIds) do
+				print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
+				v:UpdateMusicPlaylist( )
+			end
+		end
+
+		Timers:CreateTimer(delay, function()
 			GameRules:SetGameWinner( DOTA_TEAM_GOODGUYS )
 			GameRules:SetSafeToLeave( true )
 		end)
@@ -1906,6 +1921,82 @@ function GameMode:SetupGuards()
 	end
 end
 
+
+ORDERS = {
+	[0] = "DOTA_UNIT_ORDER_NONE",
+	[1] = "DOTA_UNIT_ORDER_MOVE_TO_POSITION",
+	[2] = "DOTA_UNIT_ORDER_MOVE_TO_TARGET",
+	[3] = "DOTA_UNIT_ORDER_ATTACK_MOVE",
+	[4] = "DOTA_UNIT_ORDER_ATTACK_TARGET",
+	[5] = "DOTA_UNIT_ORDER_CAST_POSITION",
+	[6] = "DOTA_UNIT_ORDER_CAST_TARGET",
+	[7] = "DOTA_UNIT_ORDER_CAST_TARGET_TREE",
+	[8] = "DOTA_UNIT_ORDER_CAST_NO_TARGET",
+	[9] = "DOTA_UNIT_ORDER_CAST_TOGGLE",
+	[10] = "DOTA_UNIT_ORDER_HOLD_POSITION",
+	[11] = "DOTA_UNIT_ORDER_TRAIN_ABILITY",
+	[12] = "DOTA_UNIT_ORDER_DROP_ITEM",
+	[13] = "DOTA_UNIT_ORDER_GIVE_ITEM",
+	[14] = "DOTA_UNIT_ORDER_PICKUP_ITEM",
+	[15] = "DOTA_UNIT_ORDER_PICKUP_RUNE",
+	[16] = "DOTA_UNIT_ORDER_PURCHASE_ITEM",
+	[17] = "DOTA_UNIT_ORDER_SELL_ITEM",
+	[18] = "DOTA_UNIT_ORDER_DISASSEMBLE_ITEM",
+	[19] = "DOTA_UNIT_ORDER_MOVE_ITEM",
+	[20] = "DOTA_UNIT_ORDER_CAST_TOGGLE_AUTO",
+	[21] = "DOTA_UNIT_ORDER_STOP",
+	[22] = "DOTA_UNIT_ORDER_TAUNT",
+	[23] = "DOTA_UNIT_ORDER_BUYBACK",
+	[24] = "DOTA_UNIT_ORDER_GLYPH",
+	[25] = "DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH",
+	[26] = "DOTA_UNIT_ORDER_CAST_RUNE",
+	[27] = "DOTA_UNIT_ORDER_PING_ABILITY",
+	[28] = "DOTA_UNIT_ORDER_MOVE_TO_DIRECTION",
+}
+
+function GameMode:FilterExecuteOrder( filterTable )
+	--[[
+	print("-----------------------------------------")
+	for k, v in pairs( filterTable ) do
+		print("Order: " .. k .. " " .. tostring(v) )
+	end
+	]]
+
+	local units = filterTable["units"]
+	local order_type = filterTable["order_type"]
+	local issuer = filterTable["issuer_player_id_const"]
+	local abilityIndex = filterTable["entindex_ability"]
+	local targetIndex = filterTable["entindex_target"]
+	local queue = tobool(filterTable["queue"])
+	local x = tonumber(filterTable["position_x"])
+	local y = tonumber(filterTable["position_y"])
+	local z = tonumber(filterTable["position_z"])
+	local point = Vector(x,y,z)
+
+	-- Skip Prevents order loops
+	local unit = EntIndexToHScript(units["0"])
+	if unit and unit.skip then
+		unit.skip = false
+		return true
+	end
+
+	if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
+		if unit.slide then
+			unit.lastOrder = { UnitIndex = units["0"], OrderType = order_type, Position = point, TargetIndex = targetIndex, AbilityIndex = abilityIndex, Queue = queue}
+		end
+	elseif order_type == DOTA_UNIT_ORDER_CAST_TARGET then
+		if unit.slide then
+			unit.lastOrder = { UnitIndex = units["0"], OrderType = order_type, TargetIndex = targetIndex, AbilityIndex = abilityIndex, Queue = queue}
+		end
+	else
+		if unit.lastOrder then
+			unit.lastOrder = nil
+		end
+	end
+
+	return true
+end
+
 function GetVersion()
-    return VERSION
+	return VERSION
 end

@@ -639,6 +639,49 @@ function SillynessTriggered( hero, unit )
 	end
 end
 
+function Devour( keys )
+	local caster = keys.caster
+	local fv = caster:GetForwardVector()
+	local devour_point = caster:GetAbsOrigin() + fv * 100
+	local radius = 100
+
+	local units = FindUnitsInRadius(caster:GetTeamNumber(), devour_point, nil, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_BASIC, DOTA_UNIT_TARGET_FLAG_INVULNERABLE, FIND_CLOSEST, false)
+	
+	RemoveSkateAnimation( caster )
+	caster:StartGesture(ACT_DOTA_CAST_ABILITY_1)
+
+	if #units > 0 then
+		for _,unit in pairs(units) do
+			local target = unit -- Closest
+			if target:IsAlive() then
+				PrintTable(target)
+				local devourParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_doom_bringer/doom_bringer_devour.vpcf", PATTACH_POINT_FOLLOW, caster)
+				ParticleManager:SetParticleControlEnt(devourParticle, 0, target, PATTACH_POINT_FOLLOW, "attach_origin", target:GetAbsOrigin(), true)
+				ParticleManager:SetParticleControlEnt(devourParticle, 1, caster, PATTACH_POINT_FOLLOW, "attach_origin", caster:GetAbsOrigin(), true)
+				keys.ability:ApplyDataDrivenModifier(caster, caster, "modifier_devour_eaten", {})
+				keys.ability:ApplyDataDrivenModifier(caster, target, "modifier_devour_eaten_target", {})
+				keys.ability.devourUnit = target
+				return
+			end
+		end
+	end
+end
+
+function DevourUnit( keys )
+	keys.target:AddNoDraw()
+end
+
+function DevourUnitEnd( keys )
+	local unit = keys.ability.devourUnit
+	local caster = keys.caster
+	if unit then
+		keys.ability.devourUnit:RemoveNoDraw()
+		keys.ability.devourUnit:RemoveModifierByName("modifier_devour_eaten_target")
+		FindClearSpaceForUnit(unit, caster:GetAbsOrigin(), true)
+		unit:Stop()
+	end
+end
+
 -- Store Hawk target to give to hawk unit when it spawns
 function HawkStoreTarget( keys )
 	local target = keys.target

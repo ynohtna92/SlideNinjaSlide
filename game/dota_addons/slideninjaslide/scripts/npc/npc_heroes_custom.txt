@@ -599,7 +599,7 @@
 		"ModelScale"				"0.8"
 
 		"override_hero"				"npc_dota_hero_tidehunter"					// Hero to override
-		"Ability1"					"rgr_deepthroat"							// Ability 1
+		"Ability1"					"rgr_devour"								// Ability 1
 		"Ability2"					"rgr_ensnare"								// Ability 2
 		"Ability3"					"rgr_brilliance_aura"						// Ability 3
 		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
@@ -677,7 +677,7 @@
 	//=================================================================================================================
 	// HERO: Results of an Unspeakable Act RGR
 	//=================================================================================================================
-	"npc_hero_jockey"
+	"npc_hero_unspeakable_act"
 	{
 		"AbilityLayout"				"4"
 		"ModelScale"				"0.8"
