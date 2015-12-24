@@ -14,9 +14,9 @@
 		"Ability1"					"antimage_leap_of_faith"					// Ability 1
 		"Ability2"					"antimage_thaw"								// Ability 2
 		"Ability3"					"antimage_entangling_roots"					// Ability 3
-		"Ability4"					"antimage_brilliance_aura"					// Ability 4
+		"Ability4"					"rgr_acid_bomb"					// Ability 4
 		"Ability5"					""
-		"Ability6"					""
+		"Ability6"					"antimage_brilliance_aura"
 		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
 
 		// Attack
@@ -75,6 +75,636 @@
 		"AttributeIntelligenceGain"	"2.6"										// Intelligence bonus per level.
 		"AttributeBaseAgility"		"30"										// Base agility
 		"AttributeAgilityGain"		"1.5"										// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Gayladin RGR
+	//=================================================================================================================
+	"npc_hero_gayladin"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_omniknight"					// Hero to override
+		"Ability1"					"rgr_rubber"								// Ability 1
+		"Ability2"					"rgr_dick_clap"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"22"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"19"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"21"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Archgay RGR
+	//=================================================================================================================
+	"npc_hero_archgay"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_chen"						// Hero to override
+		"Ability1"					"rgr_horse_bukkake"							// Ability 1
+		"Ability2"					"rgr_mr_wetskin"							// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"18"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"22"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"22"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Midget RGR
+	//=================================================================================================================
+	"npc_hero_midget"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_zuus"						// Hero to override
+		"Ability1"					"rgr_storm_bolt"							// Ability 1
+		"Ability2"					"rgr_gaynish"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"22"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"21"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Aryan Superhuman Closet Gay RGR
+	//=================================================================================================================
+	"npc_hero_aryan"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_phantom_lancer"				// Hero to override
+		"Ability1"					"rgr_impale"								// Ability 1
+		"Ability2"					"rgr_sleep"									// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"21"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"19"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"22"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Princess RGR
+	//=================================================================================================================
+	"npc_hero_princess"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_invoker"						// Hero to override
+		"Ability1"					"rgr_hex"									// Ability 1
+		"Ability2"					"rgr_shockwave"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"19"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"21"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"20"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Geyblade RGR
+	//=================================================================================================================
+	"npc_hero_geyblade"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_juggernaut"					// Hero to override
+		"Ability1"					"rgr_gaystorm"								// Ability 1
+		"Ability2"					"rgr_steroids"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"21"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"22"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Keeper of the Gay RGR
+	//=================================================================================================================
+	"npc_hero_kotg"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_keeper_of_the_light"			// Hero to override
+		"Ability1"					"rgr_entangling_roots"						// Ability 1
+		"Ability2"					"rgr_cyclone"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"18"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"23"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"21"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Alchemist RGR
+	//=================================================================================================================
+	"npc_hero_alchemist"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_alchemist"					// Hero to override
+		"Ability1"					"rgr_acid_bomb"								// Ability 1
+		"Ability2"					"rgr_chemical_rage"							// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"23"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"22"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"17"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Gaylord RGR
+	//=================================================================================================================
+	"npc_hero_gaylord"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_abaddon"						// Hero to override
+		"Ability1"					"rgr_howl_of_gayness"						// Ability 1
+		"Ability2"					"rgr_doom"									// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"24"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"21"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"16"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Homosexual Batman RGR
+	//=================================================================================================================
+	"npc_hero_batman"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_beastmaster"					// Hero to override
+		"Ability1"					"rgr_summon_hawk"									// Ability 1
+		"Ability2"					"rgr_summon_quilbeast"						// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"25"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"21"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Captain Jack RGR
+	//=================================================================================================================
+	"npc_hero_captain_jack"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_kunkka"						// Hero to override
+		"Ability1"					"rgr_ghostship"								// Ability 1
+		"Ability2"					"rgr_vacuum"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"22"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"21"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Pedobear RGR
+	//=================================================================================================================
+	"npc_hero_pedobear"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_lone_druid"					// Hero to override
+		"Ability1"					"rgr_sillyness"								// Ability 1
+		"Ability2"					"rgr_behind"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"23"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"17"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"22"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Troll RGR
+	//=================================================================================================================
+	"npc_hero_troll"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_tidehunter"					// Hero to override
+		"Ability1"					"rgr_devour"								// Ability 1
+		"Ability2"					"rgr_ensnare"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"23"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"17"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"22"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Knob Jockey RGR
+	//=================================================================================================================
+	"npc_hero_jockey"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_chaos_knight"				// Hero to override
+		"Ability1"					"rgr_golden_shower"							// Ability 1
+		"Ability2"					"rgr_necro"									// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"25"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"19"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
+
+		// Movement
+		//------------------------------------------------------------------------------------------------------------
+
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"									// Speed.
+		"MovementTurnRate"			"0.35"									// Turning rate.
+
+		"VisionNighttimeRange"		"1800"									// Range of vision at night time.
+	}
+
+	//=================================================================================================================
+	// HERO: Results of an Unspeakable Act RGR
+	//=================================================================================================================
+	"npc_hero_unspeakable_act"
+	{
+		"AbilityLayout"				"4"
+		"ModelScale"				"0.8"
+
+		"override_hero"				"npc_dota_hero_centaur"						// Hero to override
+		"Ability1"					"rgr_purge"									// Ability 1
+		"Ability2"					"rgr_evasion"								// Ability 2
+		"Ability3"					"rgr_brilliance_aura"						// Ability 3
+		"Ability4"					"rgr_leap_of_gayness"						// Ability 4
+		"Ability5"					""
+		"Ability6"					""
+		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
+
+		// Attack
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+
+		// Attributes
+		//-----------------------------------------------------------------------------------------------------------
+
+		"AttributeBaseStrength"		"24"										// Base strength
+		"AttributeStrengthGain"		"3"											// Strength bonus per level.
+		"AttributeBaseIntelligence"	"20"										// Base intelligence
+		"AttributeIntelligenceGain"	"3"											// Intelligence bonus per level.
+		"AttributeBaseAgility"		"19"										// Base agility
+		"AttributeAgilityGain"		"3"											// Agility bonus per level.
 
 		// Movement
 		//------------------------------------------------------------------------------------------------------------

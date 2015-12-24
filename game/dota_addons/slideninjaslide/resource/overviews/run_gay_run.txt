@@ -1,0 +1,8 @@
+run_gay_run
+{
+	material materials/overviews/run_gay_run.vmat
+	pos_x -3812
+	pos_y 3712
+	scale 7.250
+}
+

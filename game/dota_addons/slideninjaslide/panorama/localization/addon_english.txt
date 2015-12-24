@@ -1,6 +1,8 @@
 "addon"
 {
 	"addonname"										"Slide Ninja Slide"
+	"MusicPlayerTitle"								"MUSIC:"
+	"addon_game_name"			"Slide Ninja Slide"
 	"slideninjaslide_game_info_header_objective"			"Objective:"
 	"slideninjaslide_brief_description"					"Make it through 4 rounds of increasing difficulty with the support of your allies to win the game!"
 	"slideninjaslide_game_info_header_how_to_play"		"How To Play:"
@@ -14,4 +16,7 @@
 	"slideninjaslide_game_info_additional_header"			"Additional Features:"
 	"slideninjaslide_game_info_ad01"						"The T.U.E timed chase mode can be started by the host at any time using the <span class='command'>-tue</span> commmand."
 	"slideninjaslide_game_info_ad02"						"The more difficult Slide Spongebob Slide mode can be started by the host with the phrase <span class='command'>Who lives in a pineapple under the sea</span>."
+
+	"error_syntax_give"						"Syntax Error: -give [0-9](Player) <gold>(optional)"
+	"error_not_enough_gold"					"Not Enough Gold"
 }

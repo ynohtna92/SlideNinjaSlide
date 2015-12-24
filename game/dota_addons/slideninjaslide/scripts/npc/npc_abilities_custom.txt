@@ -328,7 +328,7 @@
 
 		"BaseClass"						"ability_datadriven"
 		"AbilityTextureName"			"jakiro_liquid_fire"		
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 
@@ -338,7 +338,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 
 		"AbilityCastRange"				"1000"
-		"AbilityCastPoint"				"0.4"
+		"AbilityCastPoint"				"0.0"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -894,7 +894,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bubble_speed"				"50"
+				"bubble_speed"				"450"
 			}
 			"03"
 			{
@@ -1059,6 +1059,3934 @@
 					"MODIFIER_STATE_NO_UNIT_COLLISION"	"MODIFIER_STATE_VALUE_ENABLED"
 					"MODIFIER_STATE_NO_HEALTH_BAR"		"MODIFIER_STATE_VALUE_ENABLED"
 					"MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY"		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+//---------------
+// BEGIN RGR
+//---------------
+	//=================================================================================================================
+	// Basic: Cock Ring
+	//=================================================================================================================
+	"rgr_brilliance_aura"
+	{
+		"ID"							"6010"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"rattletrap_power_cogs"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE | DOTA_ABILITY_BEHAVIOR_AURA"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"MaxLevel"						"3"
+		
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"Modifiers"
+		{
+			"Aura_Modifier_RGR"
+			{
+				//"EffectName"		"particles/items_fx/aura_shivas.vpcf"
+				//"EffectAttachType" 	"follow_origin"
+				"Passive" "1"
+				"IsHidden" "1"
+				"Aura" "Aura_Mana_Regen_RGR"
+				"Aura_Radius" "%radius"
+				"Aura_Teams" "DOTA_UNIT_TARGET_TEAM_BOTH"
+				"Aura_Types" "DOTA_UNIT_TARGET_HERO"
+			}
+
+			"Aura_Mana_Regen_RGR"
+			{
+				"IsDebuff" "0"
+				"IsPurgable" "0"
+				"Properties"
+				{
+					 "MODIFIER_PROPERTY_MANA_REGEN_CONSTANT" "%mana_regen"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_regen"				"0.75 1.5 2.25"
+			}
+		}
+
+		"precache"
+		{
+			"particle"	"particles/items_fx/aura_shivas.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Basic: Leap of Gayness
+	//=================================================================================================================
+	"rgr_leap_of_gayness"
+	{
+		"ID"							"6011"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"slark_pounce"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4 0.4 0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"3.0"
+		"AbilityCooldown"				"30.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName" 	"modifier_leap_of_gayness_datadriven"
+				"Target"		"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_leap_of_gayness_datadriven"
+			{
+				"Duration"		"%AbilityDuration"
+				"IsDebuff"		"0"
+				"IsHidden"		"0"
+				"OverrideAnimation" "ACT_DOTA_ATTACK"
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"LeapOfGayness"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_centaur/centaur_warstomp.vpcf"
+						"EffectAttachType" 	"follow_origin"
+						"EffectRadius"		"255"
+						"Target" 			"CASTER"
+						"ControlPoints"
+						{
+							"01"	"255 0 255"
+						}
+					}
+
+					"FireSound"
+					{
+						"Target"		"CASTER"
+						"EffectName"	"Hero_Centaur.HoofStomp"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_ROOTED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE"	"0.11"
+				}
+			}
+		}
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"min_blink_range"			"0 100 200"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"blink_range"				"300 600 900"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"3"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_warstomp.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Gaynish
+	//=================================================================================================================
+	"rgr_gaynish"
+	{
+		"ID"							"6012"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"pugna_decrepify"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4 0.4 0.4"
+		"AbilityCastRange"				"800"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"8.0 15.0 22.0"
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75 60 50"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_rgr_gaynish"
+			}
+			"FireSound"
+			{
+				"Target"		"UNIT"
+				"EffectName"	"Hero_Pugna.Decrepify"
+
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"Gaynish"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_gaynish"
+			{
+				"IsDebuff"				"1"
+				"StatusEffectName"			"particles/status_fx/status_effect_ghost.vpcf"
+				"StatusEffectPriority" "15"
+				"EffectName"				"particles/items_fx/ghost.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"Duration"				"%duration"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MAGICAL_RESISTANCE_DECREPIFY_UNIQUE" "%bonus_spell_damage_pct"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" "%bonus_movement_speed" 
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_ATTACK_IMMUNE"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"8 15 22"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"-50"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_spell_damage_pct"	"-66"
+			}
+		}
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_pugna/pugna_decrepify.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Rubber
+	//=================================================================================================================
+	"rgr_rubber"
+	{
+		"ID"							"6013"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"omniknight_repel"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"30.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"125"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"Target" "CASTER"
+				"EffectName" "DOTA_Item.BlackKingBar.Activate"
+			}
+			"ApplyModifier"
+			{
+				"Target"		"CASTER"
+				"ModifierName"	"modifier_rgr_rubber"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_rubber"
+			{
+				"EffectName"	"particles/items_fx/black_king_bar_avatar.vpcf"
+				"EffectAttachType" "follow_origin"
+				"Duration"		"%buff_duration"
+				"States"
+				{
+					"MODIFIER_STATE_INVULNERABLE" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"1 3 5"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Dick Clap
+	//=================================================================================================================
+	"rgr_dick_clap"
+	{
+		"ID"							"6015"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"brewmaster_thunder_clap"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"11.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"90"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Brewmaster.ThunderClap"
+				"Target" 		"CASTER"
+			}
+			"FireEffect"
+			{
+				"EffectName"		"particles/units/heroes/hero_brewmaster/brewmaster_thunder_clap.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"EffectRadius"		"%radius"
+				"Target"			"CASTER"
+			}
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_dick_clap"
+				"Target"
+				{
+					"Center"	"CASTER"
+					"Radius"	"%radius"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%buff_duration"
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"DickClap"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_dick_clap"
+			{
+				"Passive"			"0"
+				"IsHidden"			"0"
+				"IsDebuff"			"1"
+		
+				"EffectName"		"particles/units/heroes/hero_brewmaster/brewmaster_thunder_clap_debuff.vpcf"
+				"EffectAttachType"	"follow_origin"
+
+				"StatusEffectName"		"particles/status_fx/status_effect_brewmaster_thunder_clap.vpcf"
+				"StatusEffectPriority"	"10"
+		
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" "%bonus_movement_speed"
+				}
+
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Brewmaster.ThunderClap.Target"
+						"Target"		"TARGET"
+					}			
+				}		
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"5 7 9"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_movement_speed"	"-50 -70 -90"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"800"
+			}
+		}
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_brewmaster/brewmaster_thunder_clap.vpcf"
+			"particle"  "particles/units/heroes/hero_brewmaster/brewmaster_thunder_clap_debuff.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_brewmaster.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Storm Bolt
+	//=================================================================================================================
+	"rgr_storm_bolt"
+	{
+		"ID"							"6016"
+
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"sven_storm_bolt"
+		"MaxLevel"						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"600"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"30.0"
+
+		"AbilityManaCost"				"75"
+		"AbilityDamage"					"200 300 400"
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bolt_speed"			"750"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"stun_hero_duration"	"3.0"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"stun_creep_duration"	"5.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"vision_radius"			"225"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"200 300 400"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_sven.vsndevts"
+			"particle"			"particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+			"particle"			"particles/units/heroes/hero_sven/sven_storm_bolt_projectile_explosion.vpcf"
+			"particle"			"particles/generic_gameplay/generic_stunned.vpcf"
+		}
+
+		"OnSpellStart"
+		{
+			"TrackingProjectile"
+			{
+				"Target"           	"TARGET"
+				"EffectName"       	"particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+				"Dodgeable"        	"1"
+				"ProvidesVision"   	"1"
+				"VisionRadius"		"%vision_radius"
+				"MoveSpeed"        	"%bolt_speed"
+				"SourceAttachment"  "DOTA_PROJECTILE_ATTACHMENT_ATTACK_1"
+			}
+
+			"FireSound"
+			{
+				"EffectName"		"Hero_Sven.StormBolt"
+				"Target"			"CASTER"
+			}
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"FireSound"
+			{
+				"EffectName"		"Hero_Sven.StormBoltImpact"
+				"Target"			"TARGET"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"		"particles/units/heroes/hero_sven/sven_storm_bolt_projectile_explosion.vpcf"
+				"EffectAttachType"	"attach_origin"
+				"Target"			"TARGET"
+				"ControlPointEntities"
+				{
+					"TARGET"	"attach_origin"
+					"TARGET"	"attach_origin"
+					"TARGET"	"attach_origin"
+					"TARGET"	"attach_origin"	//CP3 has a child explosion origin
+				}
+			}
+
+			"Damage"
+			{
+				"Target"		"TARGET"
+				"Type"			"DAMAGE_TYPE_MAGICAL"
+				"Damage"		"%AbilityDamage"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_storm_bolt"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Types"		"DOTA_UNIT_TARGET_HERO"
+				}
+				"Duration"		"%stun_hero_duration"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_storm_bolt"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%stun_creep_duration"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_storm_bolt"
+			{
+				"IsDebuff"		"1"
+				"Duration"		"%stun_hero_duration"
+				"OverrideAnimation"	"ACT_DOTA_DISABLED"
+
+				"EffectName"		"particles/generic_gameplay/generic_stunned.vpcf"
+				"EffectAttachType"	"follow_overhead"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Viagra Boost
+	//=================================================================================================================
+	"rgr_viagra_boost"
+	{
+		"ID"							"6017"
+
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"sven_warcry"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AURA | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitTargetTeam" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+
+		"AbilityCastRange"    			"100"
+
+		"precache"
+		{
+			"particle"	"particles/custom/aura_endurance.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"move_speed_bonus"		"15 30 45"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"attack_speed_bonus"	"5 10 15"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"100"
+			}
+		}
+		"Modifiers"
+		{
+			"modifier_endurance_aura"
+			{
+				"EffectName"		"particles/custom/aura_endurance.vpcf"
+				"EffectAttachType" 	"follow_origin"
+
+				"Passive" 			"1"
+				"IsHidden" 			"1"
+				"IsBuff"			"1"
+
+				"Aura" 				"modifier_endurance_aura_effect"
+				"Aura_Radius" 		"%radius"
+				"Aura_Teams" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"Aura_Types" 		"DOTA_UNIT_TARGET_ALL"
+			}
+			"modifier_endurance_aura_effect"
+			{
+				"IsBuff"				"1"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_speed_bonus"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"  "%move_speed_bonus"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Roidrage
+	//=================================================================================================================
+	"rgr_gaystorm"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"huskar_berserkers_blood"
+		"MaxLevel"						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_BUILDING"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+
+		"AbilityCastRange"				"100"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"55.0"
+
+		"AbilityManaCost"				"155"
+		"AbilityDamage"					"110"
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_juggernaut.vsndevts"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"bladestorm_damage_tick"	"0.2"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bladestorm_radius"			"100"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"3.0 4.0 5.0"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"70 110 160"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_sec"			"14 22 32"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_bladestorm"
+				"Target" 		"CASTER"
+				"Duration"		"%duration"
+			}	
+		}
+
+		"Modifiers"
+		{
+			"modifier_bladestorm"
+			{	
+				"OverrideAnimation"     	"ACT_DOTA_OVERRIDE_ABILITY_1"
+				"States"
+				{
+					"MODIFIER_STATE_MAGIC_IMMUNE"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_SILENCED"			"MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"        "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
+						"EffectAttachType"  "follow_origin"
+						"Target"            "CASTER"
+						"ControlPoints"
+						{
+							"05"	"%bladestorm_radius 0 0"
+						}					
+					}
+					"FireSound"
+					{
+						"EffectName"	"Hero_Juggernaut.BladeFuryStart"
+						"Target" 		"CASTER"
+					}			
+				}
+				
+				"ThinkInterval"  "%bladestorm_damage_tick"
+				"OnIntervalThink"
+				{
+					"ActOnTargets"
+					{
+						"Target"
+						{
+							"Center"  	"CASTER"
+							"Radius" 	"%bladestorm_radius"
+							"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+							"Types" 	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+						}
+					
+						"Action"    
+						{
+							"Damage"
+							{
+								"Target"		"TARGET"
+								"Type"			"DAMAGE_TYPE_MAGICAL"
+								"Damage"		"%damage * %bladestorm_damage_tick"
+							}
+
+							"FireSound"
+							{
+								"EffectName"	"Hero_Juggernaut.BladeFury.Impact"
+								"Target" 		"TARGET"
+							}
+
+							"RunScript"
+							{
+								"ScriptFile"	"scripts/vscripts/abilities.lua"
+								"Function"		"BladeFuryFlee"
+								"Target"		"TARGET"
+							}
+						}
+					}	
+				}
+
+				"OnDestroy"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Juggernaut.BladeFuryStop"
+						"Target" 		"CASTER"
+					}
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"BladeFuryStop"
+					}
+				}
+			}
+		}	
+	}
+
+	//=================================================================================================================
+	// Hero: Mr. Wetskin Contest
+	//=================================================================================================================
+	"rgr_mr_wetskin"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"lich_frost_nova"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+
+		"AbilityCastRange"				"800"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"15.0"
+
+		"AbilityManaCost"				"125"
+		"AbilityDamage"					"175 325 475"
+
+		"AoERadius"						"200"
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_lich/lich_frost_nova.vpcf"
+			"particle"	"particles/status_fx/status_effect_frost_lich.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_lich.vsndevts"
+		}
+		
+		"AbilitySpecial"
+		{			
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"200"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"slow_movement_speed"	"-30"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"slow_attack_speed"		"-20"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"aoe_damage"			"0"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"slow_hero_duration"	"2 3 4"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"slow_creep_duration"	"6 8 10"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireEffect"
+			{
+				"EffectName"		"particles/units/heroes/hero_lich/lich_frost_nova.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"Target"			"TARGET"
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Ability.FrostNova"
+				"Target"		"TARGET"
+			}
+
+			"Damage"
+			{
+				"Type"		"DAMAGE_TYPE_MAGICAL"
+				"Target"	"TARGET"
+				"Damage"	"%AbilityDamage"
+			}
+
+			"ActOnTargets"
+			{
+				"Target"
+				{
+					"Center"  				"TARGET"
+					"Radius" 				"%radius"
+					"Teams" 				"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types" 				"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				}
+
+				"Action"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName"    "modifier_rgr_frost_nova_slow"
+						"Target"
+						{
+							"Center"	"TARGET"
+							"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+							"Types"		"DOTA_UNIT_TARGET_HERO"
+						}
+						"Duration"		"%slow_hero_duration"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"    "modifier_rgr_frost_nova_slow"
+						"Target"
+						{
+							"Center"	"TARGET"
+							"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+							"Types"		"DOTA_UNIT_TARGET_BASIC"
+						}
+						"Duration"		"%slow_creep_duration"
+					}
+
+					"Damage"
+					{
+						"Type"		"DAMAGE_TYPE_MAGICAL"
+						"Target"	"TARGET"
+						"Damage"	"%aoe_damage"
+					}
+
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_frost_nova_slow"
+			{
+				"IsDebuff"		"1"
+
+				"StatusEffectName"		"particles/status_fx/status_effect_frost_lich.vpcf"
+				"StatusEffectPriority"	"10"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%slow_movement_speed"
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%slow_attack_speed"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Impale
+	//=================================================================================================================
+	"rgr_impale"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"lion_impale"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"700"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"25.0"
+
+		"AbilityManaCost"				"75"
+		"AbilityDamage"					"0"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"width"				"250"
+			}
+			"02"
+			{	
+				"var_type"			"FIELD_FLOAT"
+				"hero_duration"		"1 2 3"
+			}
+			"02"
+			{	
+				"var_type"			"FIELD_FLOAT"
+				"creep_duration"	"5 7 9"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"length"			"600"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"speed"				"1600"
+			}
+			// Extra variables
+			"05"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"air_time"			"0.52"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"				"soundevents/game_sounds_heroes/game_sounds_nyx_assassin.vsndevts"
+			"particle"				"particles/units/heroes/hero_nyx_assassin/nyx_assassin_impale.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"Target"			"CASTER"
+				"EffectName"		"Hero_NyxAssassin.Impale"
+			}
+		
+			"LinearProjectile"
+			{
+				"Target"			"POINT"
+				"EffectName"		"particles/units/heroes/hero_nyx_assassin/nyx_assassin_impale.vpcf"
+				"StartRadius"		"%width"
+				"EndRadius"			"%width"
+				"MoveSpeed"			"%speed"
+				"TargetTeams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"TargetTypes"		"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+				"TargetFlags"		"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+				"FixedDistance"		"%length"
+				"ProvidesVision"	"0"
+				"HasFrontalCone"	"0"
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"			"0"
+		
+			"FireSound"
+			{
+				"Target"			"TARGET"
+				"EffectName"		"Hero_NyxAssassin.Impale.Target" 
+			}
+		
+			"RemoveModifier"
+			{
+				"Target"			"TARGET"
+				"ModifierName"		"modifier_knockback"
+			}
+			
+			"Knockback"
+			{
+				"Target"			"TARGET"
+				"Center"			"CASTER"
+				"Distance"			"0"
+				"Duration"			"%air_time"
+				"Height"			"200"
+				"IsFixedDistance"	"1"
+			}
+			
+			"ApplyModifier"
+			{
+				"ModifierName"    "modifier_impale"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_HERO"
+				}
+				"Duration"		"%hero_duration"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"    "modifier_impale"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%creep_duration"
+			}
+			
+			"DelayedAction"
+			{
+				"Delay"				"%air_time"
+				"Action"
+				{
+					"FireSound"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"Hero_NyxAssassin.Impale.TargetLand" 
+					}
+				
+					"Damage"
+					{
+						"Target"			"TARGET"
+						"Damage"			"%AbilityDamage"
+						"Type"				"DAMAGE_TYPE_MAGICAL"
+					}
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_impale"
+			{
+				"IsDebuff"	"1"
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED" "MODIFIER_STATE_VALUE_ENABLED"			
+				}
+				"OverrideAnimation"	"ACT_DOTA_DISABLED"
+				"EffectName"		"particles/generic_gameplay/generic_stunned.vpcf"
+				"EffectAttachType"	"follow_overhead"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Dildochoke
+	//=================================================================================================================
+	"rgr_sleep"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"bane_nightmare"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"800"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"6.0"
+
+		"AbilityManaCost"				"100 75 50"
+		"AbilityDamage"					"75 130 200"
+
+		"precache"
+		{
+			"particle"	"particles/newplayer_fx/npx_sleeping.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bane.vsndevts"
+		}
+			
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"hero_duration"		"5 10 15"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"creep_duration"	"20 40 60"
+			}
+		}
+			
+		"OnSpellStart"
+		{
+			"FireSound"				
+			{
+				"EffectName"	"Hero_Bane.Nightmare" 
+				"Target"		"TARGET"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"    "modifier_sleep"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_HERO"
+				}
+				"Duration"		"%hero_duration"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"    "modifier_sleep"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%creep_duration"
+			}
+		}
+		
+		"Modifiers"
+		{
+			"modifier_sleep"
+			{
+				"IsDebuff"	"1"
+
+				"EffectName"		"particles/newplayer_fx/npx_sleeping.vpcf"
+				"EffectAttachType" "follow_overhead"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"				"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NIGHTMARED"				"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_LOW_ATTACK_PRIORITY" 	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OverrideAnimation"		"ACT_DOTA_DISABLED"
+
+				"OnTakeDamage"
+				{
+					"RemoveModifier"
+					{
+						"Target"		"UNIT"
+						"ModifierName"	"modifier_sleep"
+					}					
+				}			
+			}
+		}		
+	}
+
+	//=================================================================================================================
+	// HERO: BDSM Chains
+	//=================================================================================================================
+	"rgr_entangling_roots"
+	{
+		"ID"							"6002"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"lone_druid_spirit_bear_entangle"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"800"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_entangling_roots"
+			}
+			"FireSound"
+			{
+				"Target" "TARGET"
+				"EffectName" "Hero_Treant.Overgrowth.Cast"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_entangling_roots"
+			{
+				"IsDebuff"		"1"
+				"TextureName"	"lone_druid_spirit_bear_entangle"
+				"EffectName" "particles/units/heroes/hero_lone_druid/lone_druid_bear_entangle_body.vpcf"
+				"EffectAttachType" "attach_hitloc"
+				"Duration"		"%duration"
+				"States"
+				{
+					"MODIFIER_STATE_ROOTED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"ThinkInterval"	"%tick"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Type"	"DAMAGE_TYPE_MAGICAL"
+						"Damage"	"%damage_per_sec"
+						"Target"	"TARGET"
+					}
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"9 24 36"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_sec"			"15 15 25"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"tick"						"1.0"
+			}
+		}
+
+		"precache"
+		{
+			"particle"				"particles/units/heroes/hero_lone_druid/lone_druid_bear_entangle_body.vpcf"
+			"soundfile"				"soundevents/game_sounds_heroes/game_sounds_treant.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Gayness
+	//=================================================================================================================
+	"rgr_evasion"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"templar_assassin_refraction"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"		"FIELD_INTEGER"
+				"evasion"		"45 30 15"
+			}
+		}
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_templar_assassin/templar_assassin_refraction.vpcf"
+			"particle" 	"particles/units/heroes/hero_templar_assassin/templar_assassin_refract_hit.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_templar_assassin.vsndevts"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_medusa.vsndevts"
+		}
+
+		"Modifiers"
+		{
+			"modifier_evasion"
+			{
+				"IsHidden"	"1"
+				"Passive"	"1"
+
+				"OnCreated"
+				{
+					"ApplyModifier"
+					{
+						"Target"		"CASTER"
+						"ModifierName"	"modifier_evasion_evade"
+					}
+				}
+			}
+
+			"modifier_evasion_evade"
+			{
+				"IsDebuff"	"0"
+
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"Target"		"CASTER"
+						"EffectName"	"Hero_Medusa.ManaShield.On"
+					}
+
+					"FireEffect"
+					{
+						"Target"		"CASTER"
+						"EffectName"	"particles/units/heroes/hero_templar_assassin/templar_assassin_refraction.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"FireSound"
+					{
+						"Target"		"CASTER"
+						"EffectName"	"Hero_TemplarAssassin.Refraction.Absorb"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"EvasionStart"
+						"modifier"		"modifier_evasion_evade"
+						"Target"		"CASTER"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Bukkake Bomb
+	//=================================================================================================================
+	"rgr_acid_bomb"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"alchemist_acid_spray"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_ALCHEMIST_CONCOCTION_THROW"
+
+		"AbilityCastRange"				"700"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"15.0"
+
+		"AbilityManaCost"				"75"
+
+		"AOERadius"						"%radius"
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_witchdoctor/witchdoctor_cask.vpcf"
+			"particle"  "particles/units/heroes/hero_witchdoctor/witchdoctor_cask_explosion_flash.vpcf"
+			"particle"	"particles/units/heroes/hero_witchdoctor/witchdoctor_maledict_aoe.vpcf"
+			"particle"	"particles/status_fx/status_effect_maledict.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_alchemist.vsndevts"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"armor_reduction"	"0"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"duration"			"15"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_per_second"	"5 10 15"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"200"
+			}
+			"05"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"projectile_speed"	"900"
+			}
+			"06"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"movement_speed"	"10"
+			}
+			"07"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"primary_damage_per_second"		"15 30 45"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"TrackingProjectile"
+			{
+				"Target"           	"TARGET"
+				"EffectName"		"particles/units/heroes/hero_witchdoctor/witchdoctor_cask.vpcf"
+				"Dodgeable"			"1"
+				"ProvidesVision"	"0"
+				"MoveSpeed"        	"%projectile_speed"
+				"SourceAttachment"	"DOTA_PROJECTILE_ATTACHMENT_ATTACK_3"
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Hero_Alchemist.UnstableConcoction.Throw"
+				"Target" 		"TARGET"
+			}		
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"	"1"
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_witchdoctor/witchdoctor_maledict_aoe.vpcf"
+				"EffectAttachType"  "follow_origin"
+				"EffectRadius"		"%radius"
+				"Target"            "TARGET"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_witchdoctor/witchdoctor_cask_explosion_flash.vpcf"
+				"EffectAttachType"  "follow_origin"
+				"Target"            "TARGET"
+				"ControlPointEntities"
+				{
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"
+				}
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Hero_Alchemist.UnstableConcoction.Stun"
+				"Target" 		"TARGET"
+			}
+			
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_acid_bomb_primary"
+				"Target"		"TARGET"
+				"Duration"		"%duration"
+			}
+		
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_acid_bomb"
+				"Target"
+				{
+					"Center"  	"TARGET"
+					"Radius" 	"%radius"
+					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types" 	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%duration"
+			}
+
+			"RemoveModifier"
+			{
+				"ModifierName"	"modifier_acid_bomb"
+				"Target"		"TARGET"
+			}				
+		}
+
+		"Modifiers"
+		{
+			"modifier_acid_bomb_primary"
+			{
+				"IsDebuff"			"1"
+		
+				"StatusEffectName"		"particles/status_fx/status_effect_maledict.vpcf"
+				"StatusEffectPriority"	"10"
+		
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%movement_speed"
+					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS" "%armor_reduction"
+				}		
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%primary_damage_per_second"
+					}
+
+					"FireEffect"
+					{
+						"EffectName"        "particles/msg_fx/msg_poison.vpcf"
+						"EffectAttachType"  "follow_overhead"
+						"Target"            "TARGET"
+						"ControlPoints"
+						{
+							"01"	"9 %primary_damage_per_second 6"
+							"02"	"1 3 0"
+							"03"	"170 0 250"
+						}
+					}
+				}
+			}
+			"modifier_acid_bomb"
+			{
+				"IsDebuff"			"1"
+		
+				"StatusEffectName"		"particles/status_fx/status_effect_maledict.vpcf"
+				"StatusEffectPriority"	"10"
+		
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%movement_speed"
+					"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS" "%armor_reduction"
+				}		
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%damage_per_second"
+					}
+
+					"FireEffect"
+					{
+						"EffectName"        "particles/msg_fx/msg_poison.vpcf"
+						"EffectAttachType"  "follow_overhead"
+						"Target"            "TARGET"
+						"ControlPoints"
+						{
+							"01"	"9 %damage_per_second 6"
+							"02"	"1 3 0"
+							"03"	"170 0 250"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Slave Rage
+	//=================================================================================================================
+	"rgr_chemical_rage"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"alchemist_chemical_rage"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_ALCHEMIST_CHEMICAL_RAGE_START"
+
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"30.0"
+
+		"AbilityManaCost"				"50"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"10.0 15.0 20.0"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"transformation_time"		"0.35"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"bonus_movespeed_percent"	"20 30 50"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"bonus_attack_speed"		"25 75 125"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_alchemist.vsndevts"
+			"particle"	"particles/status_fx/status_effect_chemical_rage.vpcf"
+			"particle"	"particles/units/heroes/hero_alchemist/alchemist_chemical_rage.vpcf"
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Alchemist.ChemicalRage.Cast"
+				"Target"		"CASTER"
+			}
+
+			// Applying the dota modifier controls the new animations sounds and body
+			// The modifier_alchemist_chemical_rage tooltip needs to be adjusted to ignore AbilitySpecials we don't need
+			// base_attack_time bonus_health bonus_health_regen bonus_mana_regen bonus_movespeed
+			// And instead use our bonus_movespeed_percent and bonus_attack_speed
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_alchemist_chemical_rage_transform"
+				"Target"		"CASTER"
+				"Duration"		"%transformation_time"
+			}
+
+			// Extra Modifier with what we need to add for the custom ability
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_rgr_chemical_rage"
+				"Target"		"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			
+			"modifier_rgr_chemical_rage"
+			{
+				"IsBuff"	"1"
+				"IsHidden"	"0"
+				"Duration"	"%duration"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%bonus_attack_speed"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%bonus_movespeed_percent"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Analbolic Steroids
+	//=================================================================================================================
+	"rgr_steroids"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"alchemist_unstable_concoction_throw"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"30.0"
+
+		"AbilityManaCost"				"50"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"5.0 15.0 25.0"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"bonus_movespeed_percent"	"100"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_sven.vsndevts"
+			"particle"	"particles/units/heroes/hero_spirit_breaker/spirit_breaker_charge_target.vpcf"
+			"particle"	"particles/units/heroes/hero_sven/sven_spell_warcry.vpcf"
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Sven.WarCry"
+				"Target"		"CASTER"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"	"particles/units/heroes/hero_sven/sven_spell_warcry.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"Target"		"CASTER"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_rgr_steroids"
+				"Target"		"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			
+			"modifier_rgr_steroids"
+			{
+				"IsBuff"	"1"
+				"EffectName" "particles/generic_gameplay/rune_haste_owner.vpcf"
+				"Duration"	"%duration"
+
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"	"particles/units/heroes/hero_spirit_breaker/spirit_breaker_charge_target.vpcf"
+						"EffectAttachType"	"follow_overhead"
+						"Target"		"TARGET"
+					}
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%bonus_movespeed_percent"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Gayym
+	//=================================================================================================================
+	"rgr_doom"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"doom_bringer_doom"
+		"MaxLevel"						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_SPAWN"
+
+		"AbilityCastRange"				"650"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"35.0"
+
+		"AbilityManaCost"				"75"
+
+		"precache"
+		{
+			"particle"  "particles/units/heroes/hero_doom_bringer/doom_bringer_doom.vpcf"
+			"particle"  "particles/units/heroes/hero_doom_bringer/doom_bringer_lvl_death.vpcf"
+			"particle" 	"particles/econ/items/doom/doom_f2p_death_effect/doom_bringer_f2p_death.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts"
+			"model"		"models/heroes/doom/doom.vmdl"
+
+			// Doom Guard
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts"		
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_brewmaster.vsndevts"
+
+			"particle" 	"particles/units/heroes/hero_pugna/pugna_decrepify.vpcf"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_warstomp.vpcf"
+			"particle"  "particles/units/heroes/hero_brewmaster/brewmaster_cyclone.vpcf"
+			
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_per_second"		"10 17 24"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_doom"
+				"Target" 		"TARGET"
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Hero_DoomBringer.Doom"
+				"Target" 		"TARGET"
+			}
+			
+		}
+		
+		"Modifiers"
+		{
+			"modifier_doom"
+			{
+				"IsDebuff"			"1"
+		
+				"EffectName"		"particles/units/heroes/hero_doom_bringer/doom_bringer_doom.vpcf"
+				"EffectAttachType"	"follow_origin"
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%damage_per_second"
+					}			
+				}
+				
+				"OnDeath"
+				{
+					"RemoveModifier"
+					{
+						"ModifierName"	"modifier_doom"
+						"Target"		"UNIT"
+					}
+
+					"FireSound"
+					{
+						"EffectName"	"Hero_DoomBringer.LvlDeath"
+						"Target"
+						{
+							"Center" 	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"DoomStopSound"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Zoophilia
+	//=================================================================================================================
+	"rgr_hex"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"lion_voodoo"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"500"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"60.0"
+
+		"AOERadius"						"%radius"
+
+		"AbilityManaCost"				"150"
+
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_lion.vsndevts"
+			"particle"			"particles/units/heroes/hero_lion/lion_spell_voodoo.vpcf"
+			"model"				"models/props_gameplay/frog.vmdl"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"3 5 7"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"250"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"movespeed"					"100"
+			}
+		}
+
+		"OnSpellStart"
+		{	
+			"FireSound"
+			{
+				"EffectName"	"Hero_Lion.Hex.Target"
+				"Target"		"CASTER"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_hex"
+				"Target"
+				{
+					"Center"	"POINT"
+					"Radius" 	"%radius"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%duration"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_hex"
+			{
+				"IsDebuff"	"1"
+				"Duration"	"%duration"
+
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Lion.Hex.Target"
+						"Target"		"TARGET"
+					}
+
+					"FireSound"
+					{
+						"EffectName"	"Hero_Lion.Voodoo"
+						"Target"		"TARGET"
+					}
+
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_lion/lion_spell_voodoo.vpcf"
+						"EffectAttachType"	"follow_origin"
+						"Target"			"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"voodoo_start"
+						"model"			"models/props_gameplay/frog.vmdl"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Lion.Voodoo"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"voodoo_end"
+					}
+				}
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE"		"%movespeed"
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_DISARMED"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_MUTED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_HEXED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_EVADE_DISABLED"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_BLOCK_DISABLED"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Cockslap
+	//=================================================================================================================
+	"rgr_shockwave"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"magnataur_shockwave"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_5"
+
+		"AbilityCastRange"				"700"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"30.0 25.0 20.0"
+
+		"AbilityManaCost"				"100"
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_magnataur/magnataur_shockwave.vpcf"
+			"particle"	"particles/units/heroes/hero_magnataur/magnataur_shockwave_cast.vpcf"
+			"particle"	"particles/econ/items/magnataur/shock_of_the_anvil/magnataur_shockanvil.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"shock_speed"			"900"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"shock_width"			"200"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"shock_distance"		"300 600 900"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"shock_vision"			"300"
+			}
+		}
+
+		"OnAbilityPhaseStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_shockwave_hidden_cast"
+				"Target"		"CASTER"
+			}
+		}
+
+		"OnSpellStart"
+		{	
+			"FireSound"
+			{
+				"EffectName"		"Hero_Magnataur.ShockWave.Cast"
+				"Target"			"CASTER"
+			}
+
+			"FireSound"
+			{
+				"EffectName"		"Hero_Magnataur.ShockWave.Particle"
+				"Target"			"CASTER"
+			}
+
+			"LinearProjectile"
+			{
+			    "Target"      	"POINT"
+			    "EffectName" 	"particles/econ/items/magnataur/shock_of_the_anvil/magnataur_shockanvil.vpcf"
+			    "MoveSpeed"   	"%shock_speed"
+			    "StartRadius"   "%shock_width"
+			    "StartPosition" "attach_attack1"
+			    "EndRadius"     "%shock_width"
+			    "FixedDistance" "%shock_distance"
+			    "TargetTeams"   "DOTA_UNIT_TARGET_TEAM_ENEMY"
+			    "TargetTypes"   "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+			    "TargetFlags"   "DOTA_UNIT_TARGET_FLAG_NONE"
+			    "HasFrontalCone" "0"
+			    "ProvidesVision" "1"
+			    "VisionRadius" 	"%shock_vision"
+			}
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"		"0"
+
+			"Knockback"
+			{
+				"Target"			"TARGET"
+				"Center"			"POINT"
+				"Distance"			"400"
+				"Duration"			"1"
+				"Height"			"0"
+				"IsFixedDistance"	"1"
+				"ShouldStun"		"0"
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Hero_Magnataur.ShockWave.Target"
+				"Target"		"TARGET"
+			}			
+		}
+
+		"Modifiers"
+		{
+			"modifier_shockwave_hidden_cast"
+			{
+				"IsHidden"	"1"
+				"Duration"	"0.5"
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_magnataur/magnataur_shockwave_cast.vpcf"
+						"EffectAttachType" 	"attach_attack1"
+						"Target" 			"CASTER"
+						"ControlPointEntities"
+						{
+							"CASTER"		"attach_attack1"
+							"CASTER"		"attach_attack1"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Powerpleasure
+	//=================================================================================================================
+	"rgr_purge"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"zuus_arc_lightning"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"700"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"5.0"
+
+		"AbilityManaCost"				"80"
+		"AbilityDamage"					"10 20 30"
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_zuus/zuus_static_field.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_zuus.vsndevts"
+		}
+			
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"creep_duration"	"10 20 30"
+			}
+		}
+			
+		"OnSpellStart"
+		{
+			"FireSound"				
+			{
+				"EffectName"	"Hero_Zuus.ArcLightning.Cast" 
+				"Target"		"TARGET"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"		"particles/units/heroes/hero_zuus/zuus_static_field.vpcf"
+				"EffectAttachType"	"follow_hitloc"
+				"Target"			"TARGET"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"    "modifier_purge"
+				"Target"
+				{
+					"Center"	"TARGET"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%creep_duration"
+			}
+		}
+		
+		"Modifiers"
+		{
+			"modifier_purge"
+			{
+				"IsDebuff"	"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"				"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_LOW_ATTACK_PRIORITY" 	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OverrideAnimation"		"ACT_DOTA_DISABLED"		
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%AbilityDamage"
+					}
+
+					"FireEffect"
+					{
+						"EffectName"        "particles/units/heroes/hero_zuus/zuus_static_field.vpcf"
+						"EffectAttachType"  "follow_hitloc"
+						"Target"            "TARGET"
+					}
+
+					"FireSound"
+					{
+						"EffectName"		"Hero_Zuus.ArcLightning.Target"
+						"Target"			"TARGET"
+					}
+				}
+			}
+		}		
+	}
+
+	//=================================================================================================================
+	// HERO: Web Fetish
+	//=================================================================================================================
+	"rgr_ensnare"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"dark_troll_warlord_ensnare"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"MaxLevel"						"3"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"500"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"15.0 11.0 7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"50 30 10"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_rgr_ensnare"
+			}
+			"FireSound"
+			{
+				"Target" "TARGET"
+				"EffectName" "n_creep_TrollWarlord.Ensnare"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_ensnare"
+			{
+				"IsDebuff"		"1"
+				"EffectName"	"particles/neutral_fx/dark_troll_ensnare.vpcf"
+				"EffectAttachType" "attach_hitloc"
+				"Duration"		"%duration"
+				"States"
+				{
+					"MODIFIER_STATE_ROOTED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"15 25 35"
+			}
+		}
+
+		"precache"
+		{
+			"particle"				"particles/neutral_fx/dark_troll_ensnare.vpcf"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Howl of Gayness
+	//=================================================================================================================
+	"rgr_howl_of_gayness"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"lycan_howl"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"MaxLevel"						"3"
+
+		"AOERadius"						"%radius"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"15.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"90"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Lycan.Howl"
+				"Target" 		"CASTER"
+			}
+			"FireEffect"
+			{
+				"EffectName"	"particles/units/heroes/hero_lycan/lycan_howl_cast.vpcf"
+				"EffectAttachType"	"start_at_customorigin"
+				
+				"ControlPointEntities"
+				{
+					"CASTER"	"attach_origin"
+					"CASTER"	"attach_hitloc"
+					"CASTER"	"attach_hitloc"
+				}
+			}
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_howl_of_gayness"
+				"Target"
+				{
+					"Center"	"CASTER"
+					"Radius"	"%radius"
+					"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"		"DOTA_UNIT_TARGET_BASIC"
+				}
+				"Duration"		"%duration"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_howl_of_gayness"
+			{
+				"IsHidden"			"0"
+				"IsDebuff"			"1"
+		
+				"EffectName"		"particles/units/heroes/hero_siren/naga_siren_song_debuff.vpcf"
+				"EffectAttachType"	"follow_origin"
+		
+				"OverrideAnimation"		"ACT_DOTA_DISABLED"
+
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"		"particles/generic_gameplay/generic_stunned_old.vpcf"
+						"EffectAttachType"	"follow_origin"
+						"Target"		"TARGET"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"				"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_LOW_ATTACK_PRIORITY" 	"MODIFIER_STATE_VALUE_ENABLED"
+				}		
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"duration"				"4 7 10"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"400 500 600"
+			}
+		}
+
+		"precache"
+		{
+			"particle" 	"particles/units/heroes/hero_lycan/lycan_howl_cast.vpcf"
+			"particle"  "particles/units/heroes/hero_siren/naga_siren_song_debuff.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_lycan.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Blowjob
+	//=================================================================================================================
+	"rgr_cyclone"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"brewmaster_storm_cyclone"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"600"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"15.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"75"
+
+		// Ability Actions
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "TARGET"
+				"ModifierName" "modifier_rgr_tornado"
+			}
+			"FireSound"
+			{
+				"Target" "TARGET"
+				"EffectName" "DOTA_Item.Cyclone.Activate"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_tornado"
+			{
+				"IsDebuff"		"1"
+				"Duration"		"%duration"
+
+				"OverrideAnimation"		"ACT_DOTA_FLAIL"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED" "MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_FLYING"				"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_UNIT_COLLISION"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_brewmaster/brewmaster_cyclone.vpcf"
+						"EffectAttachType"	"world_origin"
+						"Target"			"TARGET"
+						"ControlPointEntities"
+						{
+							"TARGET" "attach_origin"
+							"TARGET" "attach_origin"
+						}
+					}
+					"FireSound"
+					{
+						"Target"		"TARGET"
+						"EffectName"	"Brewmaster_Storm.Cyclone"
+					}
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"CycloneUnitStart"
+						"Target"		"TARGET"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"CycloneStopSound"
+					}
+				}
+			}
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"10 17 24"
+			}
+		}
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_brewmaster/brewmaster_cyclone.vpcf"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_brewmaster.vsndevts"
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Loveboat
+	//=================================================================================================================
+	"rgr_ghostship"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_DIRECTIONAL | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"MaxLevel"						"3"
+		"AbilityTextureName"			"kunkka_ghostship"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"0.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"30.00"
+
+		// Damage.
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"150 225 300"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"150"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"tooltip_delay"				"3.07"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ghostship_distance"		"1000"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ghostship_width"			"200"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"stun_duration"				"1.4"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ghostship_speed"			"650 650 650"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_radius"				"150 200 250"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"						"soundevents/game_sounds_heroes/game_sounds_kunkka.vsndevts"
+			"particle"						"particles/units/heroes/hero_kunkka/kunkka_ghostship_marker.vpcf"
+			"particle"						"particles/units/heroes/hero_kunkka/kunkka_ghost_ship.vpcf"
+			"particle"						"particles/units/heroes/hero_tidehunter/tidehunter_gush_splash_water.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"Target"					"CASTER"
+				"EffectName"				"Ability.Ghostship.bell"
+			}
+		
+			"FireSound"
+			{
+				"Target"					"CASTER"
+				"EffectName"				"Ability.Ghostship"
+			}
+		
+			"RunScript"
+			{
+				"ScriptFile"				"scripts/vscripts/abilities.lua"
+				"Function"					"ghostship_start_traverse"
+				"Target"					"POINT"
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"					"0"
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_tidehunter/tidehunter_gush_splash_water.vpcf"
+				"EffectAttachType"  "follow_hitloc"
+				"Target"            "TARGET"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Summon Gaybeast
+	//=================================================================================================================
+	"rgr_summon_quilbeast"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"beastmaster_call_of_the_wild_boar"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"25.0"
+
+		"AbilityManaCost"				"150"
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_beastmaster/beastmaster_call_boar.vpcf"
+			"particle"	"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
+			"particle"	"particles/units/heroes/hero_beastmaster/beastmaster_boar_attack.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_beastmaster.vsndevts"
+			"model"		"models/heroes/beastmaster/beastmaster_beast.vmdl"
+
+			// Sub Abilities
+			"particle"  "particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
+			"particle"  "particles/units/heroes/hero_ogre_magi/ogre_magi_bloodlust_buff.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"200"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"			"200 350 500"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"duration"				"30"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Beastmaster.Call.Boar"
+				"Target"		"CASTER"
+			}
+
+			"SpawnUnit"
+			{
+				"UnitName"			"npc_beastmaster_quilbeast"
+				"Target"
+				{
+					"Center"				"CASTER"
+					"ScriptSelectPoints"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"GetFrontPoint"
+						"Target"		"CASTER"
+						"Count"			"1"
+					}
+				}
+
+				"UnitCount"			"1"
+				"Duration"			"%duration"
+
+				"GrantsGold"		"0"
+				"GrantsXP"			"0"
+
+				// This makes sure units never get stuck
+				"OnSpawn"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_phased"
+						"Target"		"TARGET"
+						"Duration"		"0.03"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_beastmaster_boar"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"SetUnitsMoveForward"
+						"Target"		"TARGET"
+					}
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_beastmaster_boar"
+			{
+				"IsHidden"		"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_DOMINATED"		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"FireEffect"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"particles/units/heroes/hero_beastmaster/beastmaster_call_boar.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"AttackClosestTarget"
+						"Target"		"TARGET"
+					}
+				}
+
+				"OnDeath"
+				{
+					"FireEffect"
+					{
+						"Target"			
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+						"EffectName"		"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+					
+					"FireSound"
+					{
+						"Target"			
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+						"EffectName"	"Hero_Beastmaster_Boar.Death"
+					}
+				}
+			}
+		}
+	}
+
+	"rgr_quilbeast_suicide"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_MECHANICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"AbilityTextureName"			"techies_suicide"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"		"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"		
+			"particle"		"particles/units/heroes/hero_techies/techies_suicide_base.vpcf"
+		}
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"80"
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"100"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"200 350 500"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Techies.Suicide"
+				"Target" 		"CASTER"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_techies/techies_suicide_base.vpcf"
+				"EffectAttachType"  "follow_origin"
+				"Target"            "CASTER"
+			}
+
+			"ActOnTargets"
+			{
+				"Target"
+				{
+					"Center"  	"CASTER"
+					"Radius" 	"%radius"
+					"Teams" 	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types" 	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_MECHANICAL"
+					"Flags"     "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+				}
+			
+				"Action"    
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"QuilbeastSuicideDamage"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"BladeFuryFlee"
+					}
+				}
+			}
+
+			"DelayedAction"
+			{
+				"Delay"     "0.03"
+				"Action"    
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"QuilbeastSuicide"
+					}
+				}
+			}	
+		}
+	}
+
+	//=================================================================================================================
+	// HERO: Summon Analhawk
+	//=================================================================================================================
+	"rgr_summon_hawk"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"beastmaster_call_of_the_wild_hawk"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+
+		"AbilityCastRange"				"99999"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"35.0"
+
+		"AbilityManaCost"				"75"
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_beastmaster/beastmaster_call_bird.vpcf"
+			"particle"	"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_beastmaster.vsndevts"
+			"model"		"models/heroes/beastmaster/beastmaster_bird.mdl"
+
+			// Sub Abilities
+			"particle"  "particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
+			"particle"  "particles/units/heroes/hero_ogre_magi/ogre_magi_bloodlust_buff.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"200"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"duration"				"180"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bird_damage"			"10 20 30"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bird_1_count"			"1 0 0"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bird_2_count"			"0 1 0"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bird_3_count"			"0 0 1"
+			}
+		}
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Beastmaster.Call.Hawk"
+				"Target"		"CASTER"
+			}
+
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"HawkStoreTarget"
+				"Target"		"TARGET"
+			}
+
+			"SpawnUnit"
+			{
+				"UnitName"			"npc_beastmaster_hawk"
+				"Target"
+				{
+					"Center"				"CASTER"
+					"ScriptSelectPoints"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"GetFrontPoint"
+						"Target"		"CASTER"
+						"Count"			"1"
+					}
+				}
+
+				"UnitCount"			"%bird_1_count"
+				"Duration"			"%duration"
+
+				"GrantsGold"		"0"
+				"GrantsXP"			"0"
+
+				// This makes sure units never get stuck
+				"OnSpawn"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_phased"
+						"Target"		"TARGET"
+						"Duration"		"0.03"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_beastmaster_hawk"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"SetUnitsMoveForward"
+						"Target"		"TARGET"
+					}
+				}
+			}
+			"SpawnUnit"
+			{
+				"UnitName"			"npc_beastmaster_hawk_2"
+				"Target"
+				{
+					"Center"				"CASTER"
+					"ScriptSelectPoints"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"GetFrontPoint"
+						"Target"		"CASTER"
+						"Count"			"1"
+					}
+				}
+
+				"UnitCount"			"%bird_2_count"
+				"Duration"			"%duration"
+
+				"GrantsGold"		"0"
+				"GrantsXP"			"0"
+
+				// This makes sure units never get stuck
+				"OnSpawn"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_phased"
+						"Target"		"TARGET"
+						"Duration"		"0.03"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_beastmaster_hawk"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"SetUnitsMoveForward"
+						"Target"		"TARGET"
+					}
+				}
+			}
+			"SpawnUnit"
+			{
+				"UnitName"			"npc_beastmaster_hawk_3"
+				"Target"
+				{
+					"Center"				"CASTER"
+					"ScriptSelectPoints"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"GetFrontPoint"
+						"Target"		"CASTER"
+						"Count"			"1"
+					}
+				}
+
+				"UnitCount"			"%bird_3_count"
+				"Duration"			"%duration"
+
+				"GrantsGold"		"0"
+				"GrantsXP"			"0"
+
+				// This makes sure units never get stuck
+				"OnSpawn"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_phased"
+						"Target"		"TARGET"
+						"Duration"		"0.03"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_beastmaster_hawk"
+						"Target"		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"SetUnitsMoveForward"
+						"Target"		"TARGET"
+					}
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_beastmaster_hawk"
+			{
+				"IsHidden"		"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_DOMINATED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_UNSELECTABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"FireEffect"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"particles/units/heroes/hero_beastmaster/beastmaster_call_bird.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"HawkAttack"
+						"Target"		"TARGET"
+					}
+				}
+
+				"OnAttackLanded"
+				{
+					"FireSound"
+					{
+						"EffectName"	"n_creep_Ranged.Attack"
+						"Target"		"TARGET"
+					}
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"HawkAttackFlee"
+					}
+				}
+
+				"OnDeath"
+				{
+					"FireEffect"
+					{
+						"Target"			
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+						"EffectName"		"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+					
+					"FireSound"
+					{
+						"Target"			
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+						"EffectName"	"Hero_Beastmaster_Hawk.Death"
+					}
+				}
+
+				"ThinkInterval" "0.5"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"HawkTargetCheck"
+					}
+				}
+
+				"OnKill"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"HawkTargetKilled"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Suck Cock
+	//=================================================================================================================
+	"rgr_vacuum"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"dark_seer_vacuum"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"15.0"
+
+		"AbilityManaCost"				"75"
+		"AbilityDamage"					"0"
+
+		"AOERadius"						"%radius"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"200 250 300"
+			}
+			"02"
+			{	
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"3 4 5"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_dark_seer.vsndevts"
+			"particle"			"particles/units/heroes/hero_dark_seer/dark_seer_vacuum.vpcf"
+			"particle"			"particles/units/heroes/hero_dark_seer/dark_seer_vacuum_fallback_mid.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_dark_seer/dark_seer_vacuum.vpcf"
+				"EffectAttachType"  "start_at_customorigin"
+				"TargetPoint"       "POINT"
+
+				"ControlPoints"
+				{
+					"01"	"%radius 0 0"
+				}
+			}
+
+			"CreateThinker"
+			{
+				"ModifierName"	"modifier_vacuum_thinker_datadriven"
+				"Target" 		"POINT"
+			}
+
+			"DelayedAction"
+			{
+				"Delay"				"%duration"
+				"Action"
+				{
+					"FireEffect"
+					{
+						"EffectName"        "particles/units/heroes/hero_dark_seer/dark_seer_vacuum_fallback_mid.vpcf"
+						"EffectAttachType"  "start_at_customorigin"
+						"TargetPoint"       "POINT"
+
+						"ControlPoints"
+						{
+							"01"	"%radius 0 0"
+						}
+					}
+				}
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_vacuum_thinker_datadriven"
+			{
+				"Duration"		"%duration"
+
+				"OnCreated"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Dark_Seer.Vacuum"
+						"Target" 		"TARGET"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"VacuumStart"
+					}
+				}
+
+				"ThinkInterval"  "0.03"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"Vacuum"
+						"vacuum_modifier"	"modifier_vacuum_datadriven"
+					}
+				}
+			}
+
+			"modifier_vacuum_datadriven"
+			{
+				"IsPurgable"	"0"
+
+				"OverrideAnimation"     "ACT_DOTA_FLAIL"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"			"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_UNIT_COLLISION"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Take from Behind
+	//=================================================================================================================
+	"rgr_behind"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"riki_blink_strike"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"20.0"
+
+		"AbilityManaCost"				"90"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_per_second"	"30 50 70"
+			}
+			"02"
+			{	
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"5.3"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_riki.vsndevts"
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_lone_druid.vsndevts"
+			"particle"			"particles/units/heroes/hero_riki/riki_blink_strike.vpcf"
+			"particle"			"particles/units/heroes/hero_riki/riki_backstab_hit_blood.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Riki.Blink_Strike"
+				"Target" 		"CASTER"
+			}
+			"FireSound"
+			{
+				"EffectName"	"Hero_LoneDruid.BattleCry"
+				"Target" 		"CASTER"
+			}
+			"RunScript"
+			{
+				"ScriptFile"	"scripts/vscripts/abilities.lua"
+				"Function"		"BehindStart"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_behind_datadriven"
+				"Target" 		"CASTER"
+				"Duration"		"%duration"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_behind_target_datadriven"
+				"Target" 		"TARGET"
+				"Duration"		"%duration"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_behind_datadriven"
+			{
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"			"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+
+			"modifier_behind_target_datadriven"
+			{
+				"IsPurgable"	"0"
+
+				"OverrideAnimation"     "ACT_DOTA_DISABLED"
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"BehindAttack"
+					}
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_PHYSICAL"
+						"Damage"		"%damage_per_second"
+					}
+
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_riki/riki_backstab_hit_blood.vpcf"
+						"EffectAttachType"	"follow_hitloc"
+						"Target"			"TARGET"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"			"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Sillyness
+	//=================================================================================================================
+	"rgr_sillyness"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"lone_druid_true_form"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"MaxLevel"						"3"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"65.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"175"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_LoneDruid.TrueForm.Cast"
+				"Target"		"CASTER"
+			}
+			"ApplyModifier"
+			{
+				"Target"		"CASTER"
+				"ModifierName"	"modifier_rgr_true_form_transform"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_rgr_true_form_transform"
+			{
+				"IsHidden"	"1"
+				"Duration"	"%transformation_time"
+
+				"OverrideAnimation"	"ACT_DOTA_OVERRIDE_ABILITY_3"
+
+				"OnDestroy"
+				{
+					"ApplyModifier"
+					{
+						"ModifierName" 	"modifier_rgr_sillyness"
+						"Target"		"CASTER"
+					}
+				}
+			}
+			"modifier_rgr_sillyness"
+			{
+				"Duration"		"%buff_duration"
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/abilities.lua"
+						"Function"				"TrueFormStart"
+						"model"					"models/heroes/lone_druid/spirit_bear.vmdl"
+					}
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/abilities.lua"
+						"Function"				"HideWearables"
+					}
+					"FireEffect"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"particles/units/heroes/hero_lone_druid/lone_druid_bear_spawn.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"FireEffect"
+					{
+						"Target"			"TARGET"
+						"EffectName"		"particles/units/heroes/hero_lone_druid/lone_druid_bear_spawn.vpcf"
+						"EffectAttachType"	"follow_origin"
+					}
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/abilities.lua"
+						"Function"				"TrueFormEnd"
+					}
+					"RunScript"
+					{
+						"ScriptFile"			"scripts/vscripts/abilities.lua"
+						"Function"				"ShowWearables"
+					}
+				}
+			}
+			"modifier_rgr_sillyness_target"
+			{
+				"IsDebuff"		"1"
+				"Duration"		"%buff_duration"
+				"EffectName"	"particles/units/heroes/hero_ursa/ursa_fury_swipes_debuff.vpcf"
+				"EffectAttachType" "follow_overhead"
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"5"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_taken"			"250"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"100 175 250"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"transformation_time"		"0.5"
+			}
+		}
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_ursa/ursa_fury_swipes_debuff.vpcf"
+			"particle"	"particles/units/heroes/hero_lone_druid/lone_druid_bear_spawn.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lone_druid.vsndevts"
+			"model"		"models/heroes/lone_druid/spirit_bear.vmdl"
+		}
+	}
+
+	//=================================================================================================================
+	// Hero: Deepthroat
+	//=================================================================================================================
+	"rgr_devour"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"doom_bringer_devour"
+		"MaxLevel" 						"3"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+
+		"AbilityCastRange"				"150"
+		"AbilityCastPoint"				"0.0"
+		"AbilityCooldown"				"100.0 60.0 20.0"
+
+		"AbilityManaCost"				"125"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"delay"				"3 2 1"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_per_second"	"25"
+			}
+		}
+		
+		// Data driven
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts"
+			"particle"			"particles/units/heroes/hero_doom_bringer/doom_bringer_devour.vpcf"
+		}
+		
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_devour_datadriven"
+				"Target" 		"CASTER"
+				"Duration"		"%delay"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_devour_datadriven"
+			{
+				"IsDebuff"	"0"
+
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED"			"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnDestroy"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_DoomBringer.DevourCast"
+						"Target" 		"CASTER"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"Devour"
+					}				
+				}
+			}
+
+			"modifier_devour_eaten"
+			{
+				"IsDebuff"	"0"
+				"OnDeath"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"DevourUnitEnd"
+					}
+				}
+			}
+
+			"modifier_devour_eaten_target"
+			{
+				"IsDebuff"	"1"
+
+				"ThinkInterval"  "1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_PURE"
+						"Damage"		"%damage_per_second"
+					}
+				}
+
+				"States"
+				{
+					"MODIFIER_STATE_UNSELECTABLE" 	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"DevourUnit"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"RemoveModifier"
+					{
+						"ModifierName" 	"modifier_devour_eaten"
+						"Target"		"CASTER"
+					}
+					"FireSound"
+					{
+						"EffectName"	"Hero_DoomBringer.DevourCast"
+						"Target" 		"CASTER"
+					}
 				}
 			}
 		}

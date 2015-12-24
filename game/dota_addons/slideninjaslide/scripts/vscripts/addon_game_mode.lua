@@ -2,12 +2,15 @@ BASE_MODULES = {
 	'util',
 	'timers',
 	'physics',
-	--colliders_test,
 	'statcollection.init',
 	'music_player',
 	'score_board',
 	'slide_ninja_slide',
 	'wolves',
+	'popups',
+	'notifications',
+	'items',
+	'abilities',
 }
 
 local function load_module(mod_name)
@@ -95,6 +98,15 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_roshan_halloween.vsndevts", context)
 	--PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
+
+	-- RGR
+	PrecacheResource("particle", "particles/generic_gameplay/generic_hit_blood_flash.vpcf", context)
+	PrecacheResource("particle", "particles/generic_gameplay/generic_hit_blood.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_phantom_assassin/phantom_assassin_crit_impact.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_phantom_assassin/phantom_assassin_crit_impact_bloodstain.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_gyrocopter/gyro_guided_missile_target.vpcf", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_techies.vsndevts", context)
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_pugna.vsndevts", context)
 end
 
 -- Create the game mode when we activate

@@ -356,41 +356,26 @@
 
 		"OnSpellStart"
 		{
-			"ApplyModifier"
+			"RunScript"
 			{
-				"Target" "CURSOR_TARGET"
-				"ModifierName" "modifier_item_greater_clarity"
+				"Target"		"TARGET"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"ReplenishMana"
+				"mana_amount"	"%mana_amount"
 			}
 			"FireSound"
 			{
 				"Target" "UNIT"
-				"EffectName" "DOTA_Item.ClarityPotion.Activate"
+				"EffectName" "DOTA_Item.MagicWand.Activate"
+			}
+			"FireEffect"
+			{
+				"Target"			"TARGET"
+				"EffectName"		"particles/items3_fx/mango_active.vpcf"
+				"EffectAttachType"	"follow_origin"
 			}
 			"SpendCharge"
 			{}
-		}
-
-		"Modifiers"
-		{
-			"modifier_item_greater_clarity"
-			{
-				"TextureName" "item_greater_clarity"
-				"EffectName" "particles/items_fx/healing_clarity.vpcf"
-				"EffectAttachType" "follow_origin"
-				"Duration" "%buff_duration"
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_MANA_REGEN_CONSTANT" "%mana_per_tick"
-				}
-				"OnTakeDamage"
-				{
-					"RemoveModifier"
-					{
-						"Target" "UNIT"
-						"ModifierName" "modifier_item_greater_clarity"
-					}
-				}
-			}
 		}
 
 		// Special	
@@ -400,17 +385,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"buff_duration"			"3"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"total_mana"			"150"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"mana_per_tick"			"50"  // %total_mana / %buff_duration
+				"mana_amount"			"150"
 			}
 		}
 	}
@@ -427,12 +402,20 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_necronomicon_3"
+		"Model"							"models/props_gameplay/red_box.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
 
 		"OnSpellStart"
 		{
+			"RunScript"
+			{
+				"Target"		"UNIT"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"PowerUpLevel"
+			}
 			"SpendCharge"
 			{}
 		}
@@ -461,12 +444,21 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_necronomicon_2"
+		"Model"							"models/props_gameplay/red_box.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
 
 		"OnSpellStart"
 		{
+			"RunScript"
+			{
+				"Target"		"UNIT"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"PowerUpExp"
+				"experience"	"%experience"
+			}
 			"SpendCharge"
 			{}
 		}
@@ -481,6 +473,17 @@
 		"ItemPermanent"					"0"
 		"ItemInitialCharges"			"1"
 		"ItemPurchasable"				"0"
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"experience"			"150"
+			}
+		}
 	}
 
 	//=================================================================================================================
@@ -513,6 +516,1054 @@
 				"IsHidden"					"1"
 				"OverrideAnimation"			"ACT_DOTA_FLAIL"
 			}
+			"modifier_hide_hero_datadriven"
+			{
+				"IsHidden"					"1"
+
+				"States"
+				{
+					"MODIFIER_STATE_UNSELECTABLE" 	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_STUNNED"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_OUT_OF_GAME"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"	"MODIFIER_STATE_VALUE_ENABLED"
+				}
+
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"HideHero"
+					}
+				}
+
+				"OnDestroy"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/abilities.lua"
+						"Function"		"ShowHero"
+					}
+				}
+			}
 		}  
+	}
+
+	//=================================================================================================================
+	// BEGIN RUN GAY RUN ITEMS
+	//=================================================================================================================	
+	//=================================================================================================================
+	// LaCoste Basic
+	//=================================================================================================================
+	"item_lacoste_basic"
+	{
+		"ID"							"1110"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_boots"
+		"Model"							"models/props_gameplay/boots_of_speed.vmdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"150"
+		"ItemShopTags"					"move_speed"
+		"ItemQuality"					"component"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_movement_speed"		"60"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// LaCoste Cavallion
+	//=================================================================================================================
+	"item_lacoste_cavallion"
+	{
+		"ID"							"1111"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_boots"
+		"AbilityTextureName"			"item_lacoste_cavallion"
+		"Model"							"models/props_gameplay/boots_of_speed.vmdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"300"
+		"ItemShopTags"					"move_speed"
+		"ItemQuality"					"common"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"100"
+			}
+		}
+	}
+
+	"item_recipe_lacoste_cavallion"
+	{
+		"ID" "1123"
+		"BaseClass"			"item_datadriven"
+		"Model"				"models/props_gameplay/recipe.vmdl"
+		"ItemRecipe"		"1" //destroyed after combine
+		"ItemCost"			"150" //if its 0, it will combine without needing a recipe.
+		"ItemResult"		"item_lacoste_cavallion" //the result of combining the ItemRequirements
+		"ItemRequirements"
+		{
+			"01"	"item_lacoste_basic;"
+		}
+	}
+
+	//=================================================================================================================
+	// LaCoste Sheldon Lace
+	//=================================================================================================================
+	"item_lacoste_sheldon_lace"
+	{
+		"ID"							"1109"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_boots"
+		"AbilityTextureName"			"item_lacoste_sheldon_lace"
+		"Model"							"models/props_gameplay/boots_of_speed.vmdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"450"
+		"ItemShopTags"					"move_speed"
+		"ItemQuality"					"rare"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"140"
+			}
+		}
+	}
+
+	"item_recipe_lacoste_sheldon_lace"
+	{
+		"ID" "1124"
+		"BaseClass"			"item_datadriven"
+		"Model"				"models/props_gameplay/recipe.vmdl"
+		"ItemRecipe"		"1" //destroyed after combine
+		"ItemCost"			"150" //if its 0, it will combine without needing a recipe.
+		"ItemResult"		"item_lacoste_sheldon_lace" //the result of combining the ItemRequirements
+		"ItemRequirements"
+		{
+			"01"	"item_lacoste_cavallion;"
+		}
+	}
+
+	//=================================================================================================================
+	// LaCoste MegaGay Edition
+	//=================================================================================================================
+	"item_lacoste_megagay_edition"
+	{
+		"ID"							"1108"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_boots"
+		"AbilityTextureName"			"item_travel_boots"
+		"Model"							"models/props_gameplay/boots_of_speed.vmdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"600"
+		"ItemShopTags"					"move_speed"
+		"ItemQuality"					"epic"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"300"
+			}
+		}
+	}
+
+	"item_recipe_lacoste_megagay_edition"
+	{
+		"ID" "1125"
+		"BaseClass"			"item_datadriven"
+		"Model"				"models/props_gameplay/recipe.vmdl"
+		"ItemRecipe"		"1" //destroyed after combine
+		"ItemCost"			"150" //if its 0, it will combine without needing a recipe.
+		"ItemResult"		"item_lacoste_megagay_edition" //the result of combining the ItemRequirements
+		"ItemRequirements"
+		{
+			"01"	"item_lacoste_sheldon_lace;"
+		}
+	}
+
+	//=================================================================================================================
+	// Bottle of Estrogen
+	//=================================================================================================================
+	"item_bottle_of_estrogen"
+	{
+		"ID"							"1112"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_smoke_of_deceit"
+		"Model"							"models/props_gameplay/smoke.vmdl" 
+		"Effect"						"particles/generic_gameplay/dropped_item.vpcf"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"50"
+		"ItemShopTags"					"int;consumable"
+		"ItemQuality"					"component"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemStackable"					"5"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_stat"			"3"
+			}
+		}
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"			"scripts/vscripts/items.lua"
+				"Function"				"IntellectBonusUsed"
+				"bonus_stat"			"%bonus_stat"
+			}
+			"FireSound"
+			{
+				"EffectName"			"DOTA_Item.Refresher.Activate"
+				"Target"				"CASTER"
+			}
+			"FireEffect"
+			{
+				"Target" "CASTER"
+				"EffectName"		"particles/items2_fx/shivas_guard_impact.vpcf"
+				"EffectAttachType" 	"follow_overhead"
+			}
+			"FireEffect"
+			{
+				"Target" "CASTER"
+				"EffectName"		"particles/units/heroes/hero_dragon_knight/dragon_knight_transform_blue.vpcf"
+				"EffectAttachType" 	"follow_origin"
+			}
+			"SpendCharge"
+			{}
+		}
+		"Modifiers"
+		{
+			"bonus_intellect_modifier"
+			{
+				"IsHidden"		"1"
+				"Attributes"	"MODIFIER_ATTRIBUTE_PERMANENT"
+				"IsBuff"	"1"
+				"TextureName"	"item_bottle_of_estrogen"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_STATS_INTELLECT_BONUS"	"1"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Bottle of Androgen
+	//=================================================================================================================
+	"item_bottle_of_androgen"
+	{
+		"ID"							"1113"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_clarity"
+		"Model"							"models/props_gameplay/bottle_rejuvenation.vmdl" 
+		"Effect"						"particles/generic_gameplay/dropped_item.vpcf"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"50"
+		"ItemShopTags"					"str;consumable"
+		"ItemQuality"					"component"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemStackable"					"5"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_stat"			"3"
+			}
+		}
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"			"scripts/vscripts/items.lua"
+				"Function"				"StrengthBonusUsed"
+				"bonus_stat"			"%bonus_stat"
+			}
+			"FireSound"
+			{
+				"EffectName"			"DOTA_Item.Refresher.Activate"
+				"Target"				"CASTER"
+			}
+			"FireEffect"
+			{
+				"Target" "CASTER"
+				"EffectName"		"particles/items2_fx/shivas_guard_impact.vpcf"
+				"EffectAttachType" 	"follow_overhead"
+			}
+			"FireEffect"
+			{
+				"Target" "CASTER"
+				"EffectName"		"particles/units/heroes/hero_dragon_knight/dragon_knight_transform_blue.vpcf"
+				"EffectAttachType" 	"follow_origin"
+			}
+			"SpendCharge"
+			{}
+		}
+		"Modifiers"
+		{
+			"bonus_strength_modifier"
+			{
+				"IsHidden"		"1"
+				"Attributes"	"MODIFIER_ATTRIBUTE_PERMANENT"
+				"IsBuff"	"1"
+				"TextureName"	"item_bottle_of_androgen"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_STATS_STRENGTH_BONUS"	"1"
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Penis Pump
+	//=================================================================================================================
+	"item_penis_pump"
+	{
+		"ID"							"1114"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_sobi_mask"
+		"AbilityTextureName"			"item_soul_ring"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"200"
+		"ItemShopTags"					"boost_mana;mana_pool"
+		"ItemQuality"					"component"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_mana_regen"			"50"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Penis Pump Deluxe
+	//=================================================================================================================
+	"item_penis_pump_deluxe"
+	{
+		"ID"							"1115"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"BaseClass"						"item_sobi_mask"
+		"AbilityTextureName"			"item_pers"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"450"
+		"ItemShopTags"					"boost_mana;mana_pool"
+		"ItemQuality"					"rare"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPurchasable"				"1"
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_mana_regen"			"100"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Cosmopolitan
+	//=================================================================================================================
+	"item_cosmopolitan"
+	{
+		"ID"							"1116"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_potion_of_speed"
+		"Model"							"models/props_gameplay/salve_red.mdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"100"
+		"AbilityCastPoint"				"0.0"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"75"
+		"ItemShopTags"					"move_speed;consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+
+		"OnSpellStart"
+		{
+			"ApplyModifier"
+			{
+				"Target" "CURSOR_TARGET"
+				"ModifierName" "modifier_cosmopolitan"
+			}
+			"ApplyModifier"
+			{
+				"Target" "CURSOR_TARGET"
+				"ModifierName"	"modifier_bloodseeker_thirst"
+			}
+			"FireSound"
+			{
+				"Target" "UNIT"
+				"EffectName" "DOTA_Item.HealingSalve.Activate"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		"Modifiers"
+		{
+			"modifier_cosmopolitan"
+			{
+				"TextureName" "item_greater_salve"
+				"EffectName" "particles/generic_gameplay/rune_haste_owner.vpcf"
+				"EffectAttachType" "follow_origin"
+				"Duration" "%buff_duration"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" "%bonus_movement_pct"
+				}
+				"OnTakeDamage"
+				{
+					"RemoveModifier"
+					{
+						"Target" "UNIT"
+						"ModifierName" "modifier_cosmopolitan"
+					}
+				}
+				"OnDestroy"
+				{
+					"RemoveModifier"
+					{
+						"Target" "Unit"
+						"ModifierName"	"modifier_bloodseeker_thirst"
+					}
+				}
+			}
+		}
+		
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"45"
+			}			
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_movement_pct"	"60"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Bottle of Seamen
+	//=================================================================================================================
+	"item_bottle_of_seamen"
+	{
+		"ID"							"1117"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_potion_of_mana"
+		"Model"							"models/props_gameplay/salve_blue.mdl"
+
+		// Stats		
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"100"
+		"AbilityCastPoint"				"0.0"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"100"
+		"ItemShopTags"					"move_speed;consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"Target"		"TARGET"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"ReplenishMana"
+				"mana_amount"	"%mana_amount"
+			}
+			"FireSound"
+			{
+				"Target" "UNIT"
+				"EffectName" "DOTA_Item.MagicWand.Activate"
+			}
+			"FireEffect"
+			{
+				"Target"			"TARGET"
+				"EffectName"		"particles/items3_fx/mango_active.vpcf"
+				"EffectAttachType"	"follow_origin"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"mana_amount"			"150"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// KaMaSutRa Deluxe
+	//=================================================================================================================
+	"item_kamasutra_deluxe"
+	{
+		"ID"							"1118"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_necronomicon_3"
+		"Model"							"models/props_gameplay/red_box.vmdl"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"Target"		"UNIT"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"PowerUpLevel"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"500"
+		"ItemShopTags"					"level;exp;consumable"
+		"ItemQuality"					"rare"
+		"ItemStackable"					"5"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"0"
+	}
+
+	//=================================================================================================================
+	// KaMaSutRa
+	//=================================================================================================================
+	"item_kamasutra"
+	{
+		"ID"							"1119"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_necronomicon_2"
+		"Model"							"models/props_gameplay/red_box.vmdl"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCastOnPickup"				"1"
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"Target"		"UNIT"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"PowerUpExp"
+				"experience"	"%experience"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"250"
+		"ItemShopTags"					"level;exp;consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"experience"			"100"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Rubber
+	//=================================================================================================================
+	"item_rubber"
+	{
+		"ID"							"1120"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_ring_of_protection"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"300"
+		"ItemShopTags"					"invul;consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"Target" "UNIT"
+				"EffectName" "DOTA_Item.BlackKingBar.Activate"
+			}
+			"ApplyModifier"
+			{
+				"Target"		"UNIT"
+				"ModifierName"	"modifier_item_rubber"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		"Modifiers"
+		{
+			"modifier_item_rubber"
+			{
+				"TextureName"	"item_rubber"
+				"EffectName"	"particles/items_fx/black_king_bar_avatar.vpcf"
+				"EffectAttachType" "follow_origin"
+				"Duration"		"%buff_duration"
+				"States"
+				{
+					"MODIFIER_STATE_INVULNERABLE" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"4"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Gay Trap
+	//=================================================================================================================
+	"item_gay_trap"
+	{
+		"ID"							"1121"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUniDamageType"			""
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_gay_trap"
+		"AOERadius"						"%radius"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+
+		"AbilityCastRange"				"200"
+		"AbilityCastPoint"				"0.0"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"250"
+		"ItemShopTags"					"damage;consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemDeclarations"				"DECLARE_PURCHASES_TO_SPECTATORS"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"3"
+		"ItemPurchasable"				"1"
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Hero_Techies.LandMine.Plant"
+				"Target" 		"CASTER"
+			}
+			"RunScript"
+			{
+				"ScriptFile"		"scripts/vscripts/items.lua"
+				"Function"			"GayTrapPlant"
+				"Target"			"POINT"
+				"modifier_gay_trap"	"modifier_land_mine_datadriven"
+				"modifier_gay_trap_thinker"	"modifier_land_mine_thinker"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		"Modifiers"
+		{
+			"modifier_land_mine_datadriven"
+			{
+				"IsHidden"		"1"
+				"IsPurgable"	"0"
+
+				"OnDeath"
+				{
+					"FireSound"
+					{
+						"EffectName"	"Hero_Techies.LandMine.Detonate"
+						"Target"
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+					}
+					"FireEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf"
+						"EffectAttachType"	"follow_hitloc"
+						"Target"
+						{
+							"Center"	"UNIT"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
+						}
+					}
+
+					"ActOnTargets"
+					{
+						"Target"
+						{
+							"Center"	"UNIT"
+							"Radius"	"%radius"
+							"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+							"Types"		"DOTA_UNIT_TARGET_ALL"
+							"Flags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+						}
+						"Action"
+						{
+							"Damage"
+							{
+								"Target"
+								{
+									"Center"	"TARGET"
+									"Flags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+								}
+								"Type"			"DAMAGE_TYPE_PHYSICAL"
+								"Damage"		"%damage"
+							}
+						}
+					}
+				}
+				"States"
+				{
+					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"
+					"MODIFIER_STATE_NO_HEALTH_BAR"			"MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_DISABLE_TURNING"		"1"
+				}
+			}
+			"modifier_land_mine_thinker"
+			{
+				"IsHidden"		"1"
+				"IsPurgable"	"0"
+
+				"EffectName"		"particles/units/heroes/hero_techies/techies_land_mine.vpcf"
+				"EffectAttachType"	"follow_origin"
+				"ThinkInterval"		"0.1"
+
+				"OnIntervalThink"
+				{
+					"RunScript"
+					{
+						"ScriptFile"	"scripts/vscripts/items.lua"
+						"Function"		"GayTrapTracker"
+						"radius"		"%activation_radius"
+						"activation_time"	"%activation_time"
+					}
+				}
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"200"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"activation_radius"		"100"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"250"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"activation_time"		"0.01"
+			}
+		}
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"		"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"		
+			"particle"		"particles/units/heroes/hero_techies/techies_land_mine.vpcf"
+			"particle"		"particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf"
+			"model"			"models/heroes/techies/fx_techiesfx_mine.vmdl"	
+		}
+	}
+
+	//=================================================================================================================
+	// Ultimate Gay Potion
+	//=================================================================================================================
+	"item_ultimate_gay_potion"
+	{
+		"ID"							"1122"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"BaseClass"						"item_datadriven"
+		"AbilityTextureName"			"item_ultimate_gay_potion"
+		"Model"							"models/props_gameplay/bottle_blue.vmdl"
+
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"500"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"5"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE_STACKING"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"1"
+		"ItemPurchasable"				"1"
+
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"Target"		"UNIT"
+				"ScriptFile"	"scripts/vscripts/items.lua"
+				"Function"		"UltimateGayPotion"
+				"duration"		"%buff_duration"
+			}
+			"SpendCharge"
+			{}
+		}
+
+		"Modifiers"
+		{
+			"modifier_item_ultimate_gay_potion"
+			{
+				"TextureName"		"item_ultimate_gay_potion"
+				"EffectName"		"particles/generic_gameplay/generic_sleep.vpcf"
+				"EffectAttachType"	"follow_overhead"
+				"Duration"			"%buff_duration"
+				"States"
+				{
+					"MODIFIER_STATE_STUNNED" "MODIFIER_STATE_VALUE_ENABLED"
+				}
+				"OnDestroy"
+				{
+					"RunScript"
+					{
+						"Target"		"UNIT"
+						"ScriptFile"	"scripts/vscripts/items.lua"
+						"Function"		"UltimateGayPotionUnitStop"
+					}
+				}
+			}
+		}
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"buff_duration"			"15"
+			}
+		}
 	}
 }

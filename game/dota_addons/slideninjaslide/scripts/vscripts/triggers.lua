@@ -24,7 +24,7 @@ function OnStartTouchIce (trigger)
 		if trigger.activator:HasModifier("modifier_leap_of_faith_datadriven") then
 			trigger.activator:SetPhysicsVelocity(Vector(0,0,0))
 			trigger.activator:SetPhysicsAcceleration(Vector(0,0,0))
-		elseif trigger.activator:HasModifier("thaw_aura") then
+		elseif trigger.activator:HasModifier("thaw_aura") or trigger.activator:HasModifier("modifier_leap_of_gayness_datadriven") or trigger.activator:HasModifier("modifier_behind_datadriven") or trigger.activator:HasModifier("modifier_devour_datadriven") then
 			if not trigger.activator.thaw then
 				trigger.activator:StopPhysicsSimulation()
 				trigger.activator.thaw = true
@@ -54,6 +54,21 @@ function OnStartTouchIce (trigger)
 				trigger.activator:Stop()
 				trigger.activator.slideNumber = 0
 			else
+				if trigger.activator.lastOrder then
+					local ability = EntIndexToHScript(trigger.activator.lastOrder["AbilityIndex"])
+					if ability then
+						local abilityName = ability:GetAbilityName()
+						local abil = trigger.activator:FindAbilityByName(abilityName)
+						if abil == nil or abil:IsFullyCastable() then
+							ExecuteOrderFromTable(trigger.activator.lastOrder)
+						else
+							trigger.activator.lastOrder = nil
+							print("Clear lastOrder")
+						end
+					else
+						trigger.activator.lastOrder = nil
+					end
+				end
 				trigger.activator.slideNumber = trigger.activator.slideNumber + 1
 			end
 		end

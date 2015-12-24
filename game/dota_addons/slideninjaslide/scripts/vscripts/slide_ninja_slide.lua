@@ -1,5 +1,5 @@
 --[[
-Last modified: 21/10/2015
+Last modified: 24/12/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -9,7 +9,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B211015"
+VERSION = "B241215"
 
 ROUNDS = 4
 LIVES = 3
@@ -108,10 +108,14 @@ function GameMode:InitGameMode()
 	end
 	print('[SNS] GameRules set')
 
+	-- Filters
+	GameRules:GetGameModeEntity():SetExecuteOrderFilter(Dynamic_Wrap(GameMode, "FilterExecuteOrder"), self)
+
 	-- Hooks
 	ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), self)
 	ListenToGameEvent('player_chat', Dynamic_Wrap(GameMode, 'PlayerSay'), self)
 	ListenToGameEvent('player_connect', Dynamic_Wrap(GameMode, 'PlayerConnect'), self)
+	ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), self)
 	ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
 	ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), self)
 	ListenToGameEvent('dota_player_used_ability', Dynamic_Wrap(GameMode, 'OnAbilityUsed'), self)
@@ -159,7 +163,8 @@ function GameMode:InitGameMode()
 	self.noReset = false -- Used to run things that should only be run once per player EVER!
 	self.noChance = false -- Toggle game chances
 	self.nDeaths = 0 -- Total deaths from all ninjas
-	
+	self.bSlide = true -- Toggle slide or run mode
+
 	-- T.U.E Mode
 	self.bTue = false 
 	self.tueUnit = nil
@@ -176,6 +181,7 @@ function GameMode:InitGameMode()
 	self.vUserIds = {}
 	self.vUserIdToPly = {}
 	self.vPlayerIDToHero = {}
+	self.bSeenWaitForPlayers = false
 
 	-- PLAYER COLORS
 	self.m_TeamColors = {}
@@ -218,6 +224,20 @@ function GameMode:InitGameMode()
 	self.gameHeros = {
 		[1] = {'npc_dota_hero_antimage', 'npc_wolf', 'scripts/music.kv'},
 		[2] = {'npc_dota_hero_rattletrap', 'npc_mr_krabs', 'scripts/music_SB.kv'},
+		[3] = {{'npc_dota_hero_kunkka', 'npc_dota_hero_chaos_knight', 'npc_dota_hero_alchemist', 'npc_dota_hero_omniknight', 'npc_dota_hero_beastmaster', 'npc_dota_hero_tidehunter', 'npc_dota_hero_abaddon', 'npc_dota_hero_lone_druid', 'npc_dota_hero_keeper_of_the_light', 'npc_dota_hero_juggernaut', 'npc_dota_hero_zuus', 'npc_dota_hero_centaur'}, 'npc_skin_head', 'scripts/music_RGR.kv'},
+	}
+
+	self.itemSpawns = {
+		[1] = "item_potion_of_mana",
+		[2] = "item_potion_of_speed",
+		[3] = "item_boots_of_speed",
+		[4] = "item_sobi_mask2",
+		[5] = "item_pendant_of_energy",
+		[6] = "item_pendant_of_mana",
+		[7] = "item_socks_of_ultra_speed",
+		[8] = "item_ultra_sobi_mask",
+		[9] = "item_tome_of_experience",
+		[10] = "item_tome_of_power",
 	}
 
 	--[[ Scoreborad updater
@@ -289,6 +309,28 @@ function GameMode:InitGameMode()
 
 	self.walls = Entities:FindAllByName("wall") -- TUE MODE
 
+	-- RGR
+	if GetMapName() == "run_gay_run" then
+		FORCE_PICKED_HERO = nil
+		ROUNDS = 3
+		self.nMaxRounds = ROUNDS
+		EXP_BONUS_ROUND_WINNER = 500
+		self.gameTheme = 3
+
+		self.itemSpawns = {
+			[1] = "item_bottle_of_seamen",
+			[2] = "item_bottle_of_estrogen",
+			[3] = "item_bottle_of_androgen",
+			[4] = "item_lacoste_basic",
+			[5] = "item_cosmopolitan",
+			[6] = "item_penis_pump",
+			[7] = "item_rubber",
+			[8] = "item_penis_pump_deluxe",
+			[9] = "item_kamasutra",
+			[10] = "item_kamasutra_deluxe",
+		}
+	end
+
 	SpawnPoints = {}
 	local goodguys = Entities:FindAllByClassname("info_player_start_goodguys")
 	local badguys = Entities:FindAllByClassname("info_player_start_badguys")
@@ -307,8 +349,11 @@ function GameMode:InitGameMode()
 		return self:OnThink()
 	end)
 
-	MusicPlayer:Init("scripts/music.kv") 
+	MusicPlayer:Init(self.gameHeros[self.gameTheme][3]) 
 	ScoreBoard:Init()
+
+	-- Don't end the game if everyone is unassigned
+	SendToServerConsole("dota_surrender_on_disconnect 0")
 
 	print('[SNS] Loading complete!')
 end
@@ -334,14 +379,14 @@ function GameMode:HeroInit( hero )
   local pID = hero:GetPlayerID()
   self.vPlayerIDToHero[pID] = hero
   if self.vPlayers[pID] ~= nil then
-    return
+	return
   end
   self.vPlayers[pID] = pID
   --print('TeamNumber: '..hero:GetTeamNumber())
   if hero:GetTeamNumber() == DOTA_TEAM_GOODGUYS then
-    table.insert(self.vRadiant, pID)
+	table.insert(self.vRadiant, pID)
   elseif hero:GetTeamNumber() == DOTA_TEAM_BADGUYS then
-    table.insert(self.vDire, pID)
+	table.insert(self.vDire, pID)
   end
 end
 
@@ -414,13 +459,42 @@ function GameMode:OnConnectFull(keys)
 	end
 end
 
+-- The overall game state has changed
+function GameMode:OnGameRulesStateChange(keys)
+	print('[SNS] OnGameRulesStateChange')
+	local newState = GameRules:State_Get()
+	print('State: '..newState)
+	if newState == DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
+		self.bSeenWaitForPlayers = true
+	elseif newState == DOTA_GAMERULES_STATE_INIT then
+		--Timers:RemoveTimer("alljointimer")
+	elseif newState == DOTA_GAMERULES_STATE_HERO_SELECTION then
+		--GameMode:PostLoadPrecache()
+		GameMode:OnAllPlayersLoaded()
+	end
+end
+
+-- This function is called once when all players in the game have finished loading
+function GameMode:OnAllPlayersLoaded()
+	print('[SNS] OnAllPlayersLoaded')
+
+	if FORCE_PICKED_HERO == nil and not DEBUG then
+		for _,v in ipairs(self.vUserIds) do
+			PlayerResource:SetHasRandomed(v:GetPlayerID())
+			PlayerResource:SetHasRepicked(v:GetPlayerID())
+			v:MakeRandomHeroSelection()
+		end
+	end
+end
+
 -- An NPC has spawned somewhere in game.  This includes heroes
 function GameMode:OnNPCSpawned(keys)
 	--print("[SNS] NPC Spawned")
 	--PrintTable(keys)
 	local npc = EntIndexToHScript(keys.entindex)
 
-	if npc:IsRealHero() and ((npc:GetClassname() == "npc_dota_hero_antimage") or (npc:GetClassname() == "npc_dota_hero_rattletrap")) then
+	-- Our heroes
+	if npc:IsRealHero() then
 		Timers:CreateTimer(.4, function()
 			if npc.isNinja ~= nil and npc.isNinja == false then
 				-- we're using a dummy
@@ -447,7 +521,7 @@ end
 -- An item was picked up by a player
 function GameMode:OnItemPickedUp( keys )
 	print ( '[SNS] OnItemPickedUp: ' .. keys.itemname )
-	--PrintTable(keys)
+	PrintTable(keys)
 
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
 	local itemEntity = keys.itemEnt
@@ -456,28 +530,12 @@ function GameMode:OnItemPickedUp( keys )
 	end
 	local player = PlayerResource:GetPlayer(keys.PlayerID)
 	local itemname = keys.itemname
-
-	if itemname == "item_tome_of_experience" then
-		-- Remove item from inventory
-		for i=0,11 do
-			local item = hero:GetItemInSlot(i)
-			if item then
-				if item:GetAbilityName() == itemname then
-					print('Adding xp to '.. keys.PlayerID)
-					-- Remove item to prevent double spending
-					hero:RemoveItem(item)
-					hero:AddExperience(150, false, false)
-				end
-			end
-		end
-	end
 end
 
 -- An item was purchased by a player
 function GameMode:OnItemPurchased( keys )
 	print ( '[SNS] OnItemPurchased: ' .. keys.itemname )
 	PrintTable(keys)
-
 	-- The playerID of the hero who is buying something
 	local player = EntIndexToHScript(keys.PlayerID)
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
@@ -487,20 +545,6 @@ function GameMode:OnItemPurchased( keys )
 
 	-- The cost of the item purchased
 	local itemcost = keys.itemcost
-
-	if itemName == "item_tome_of_power" then
-		-- Remove item from inventory
-		for i=0,11 do
-			local item = hero:GetItemInSlot(i)
-			if item then
-				if item:GetAbilityName() == itemName then
-					-- Remove item to prevent double spending
-					hero:RemoveItem(item)
-					hero:HeroLevelUp(true)
-				end
-			end
-		end
-	end
 end
 
 -- An ability was used by a player
@@ -512,12 +556,10 @@ function GameMode:OnAbilityUsed( keys )
 	local abilityname = keys.abilityname
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
 
-	if abilityname == "item_tome_of_power" then
-		hero:HeroLevelUp(true)
-	end
-
-	if abilityname == "item_tome_of_experience" then
-		hero:AddExperience(150, false, false)
+	-- Prevents double usage on ice.
+	if abilityname == "item_gay_trap" or abilityname == "item_cosmopolitan" or abilityname == "item_bottle_of_seamen" or abilityname == "item_potion_of_mana" or abilityname == "item_potion_of_speed" then
+		print("clearOrder")
+		hero.lastOrder = nil
 	end
 end
 
@@ -672,6 +714,48 @@ function GameMode:PlayerSay(keys)
 
 	if string.find(keys.text, "^-unstuck$") then
 		FindClearSpaceForUnit(hero, hero:GetAbsOrigin(), true)
+		hero:Stop()
+	end
+
+	if args[1] == "-g" then
+		if args[2] ~= nil then
+			local id2 = tonumber(args[2])
+			if not id2 then
+				SendErrorMessage( hero:GetPlayerID(), "#error_syntax_give" )
+				return
+			end
+			local gold = tonumber(args[3])
+			local player = PlayerResource:GetPlayer(id2)
+			if not player then
+				SendErrorMessage( hero:GetPlayerID(), "#error_syntax_give" )
+				return
+			end
+			local hero2 = player:GetAssignedHero()
+			if hero2 and hero:GetTeamNumber() == hero2:GetTeamNumber() then
+				if gold then
+					if gold > 0 and gold <= hero:GetGold() then
+						print('GIVE: '..args[2]..' '..gold)
+						hero:SpendGold( gold, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( gold , false, DOTA_ModifyGold_Unspecified)
+						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
+						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
+					else
+						SendErrorMessage( hero:GetPlayerID(), "#error_not_enough_gold" )
+					end
+				else
+					local all = hero:GetGold()
+					if all > 0 then
+						print('GIVE: '..args[2])
+						hero:SpendGold( all, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( all , false, DOTA_ModifyGold_Unspecified)
+						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
+						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
+					else
+						SendErrorMessage( hero:GetPlayerID(), "#error_not_enough_gold" )
+					end
+				end
+			end
+		end
 	end
 
 	if (string.find(keys.text, "^-toggleanimation$") or string.find(keys.text, "^-ta$")) and not hero.slide then
@@ -728,6 +812,11 @@ function GameMode:PlayerSay(keys)
 	end
 
 	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and plyID == GetListenServerHost():GetPlayerID() then
+		if GetMapName() == "run_gay_run" then
+			GameRules:SendCustomMessage("This mode only works on the Slide Ninja Slide map.", 0, 0)
+			return
+		end
+
 		GameRules:SendCustomMessage("SPONGEBOB SQUAREPANTS!", 0, 0)
 		SendToServerConsole( "dota_combine_models 0" )
 		--SendToServerConsole( "dota_wearables_clientside 1" )
@@ -780,8 +869,44 @@ function GameMode:OnThink()
 
 			if hero.nearbyWolves ~= {} then
 				for i,wolf in ipairs(hero.nearbyWolves) do
-					if not hero:IsInvulnerable() and not hero.isInvuln and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
-						GameMode:HeroKilled(hero)
+					if not hero:IsInvulnerable() 
+						and not hero.isInvuln
+						and not hero:HasModifier("modifier_bladestorm")
+						and not hero:HasModifier("modifier_behind_datadriven")
+						and not wolf:HasModifier("modifier_tue_bubble_beam_projectile_datadriven") 
+						and not wolf:HasModifier("modifier_item_ultimate_gay_potion")
+						and not wolf:HasModifier("modifier_rgr_gaynish")
+						and not wolf:HasModifier("modifier_hex")
+						and not wolf:HasModifier("modifier_rgr_tornado")
+						and not wolf:HasModifier("modifier_devour_eaten_target")
+						and circleCircleCollision(hero:GetAbsOrigin(), wolf:GetAbsOrigin(), hero:GetPaddedCollisionRadius(), wolf:GetPaddedCollisionRadius()) then
+						local killHero = true
+						-- Check if we should trigger rgr_evasion or not
+						if hero:HasModifier("modifier_evasion_evade") then
+							killHero = false
+							EvasionTriggered( hero, wolf )
+						end
+						-- Check if chemical rage modifier is on hero and check on hit.
+						if hero:HasModifier("modifier_rgr_chemical_rage") and ChemicalRageOnHit(hero) then
+							killHero = false
+						end
+						if hero:HasModifier("modifier_rgr_sillyness") and not wolf:HasModifier("modifier_rgr_sillyness_target") and SillynessTriggered( hero, wolf ) then
+							killHero = false
+						end
+						-- This will only run for RGR
+						if wolf:IsIdle() and self.gameTheme == 3 then
+							RotateUnitToFace( wolf, hero:GetAbsOrigin() )
+							GameMode:AttackUnit(hero,wolf,killHero)
+						end
+						if killHero then
+							GameMode:HeroKilled(hero)
+						else
+							-- This is for temp invul
+							hero.isInvuln = true
+							Timers:CreateTimer(0.4, function()
+								hero.isInvuln = false
+							end)
+						end
 					end
 				end
 			end
@@ -851,9 +976,10 @@ function GameMode:HeroKilled( hero )
 
 	-- Reimburse gold lost to death
 	--hero:SetGold(hero:GetGold() + hero:GetDeathGoldCost(), false)
+	if IsPhysicsUnit(hero) then
+		hero:StopPhysicsSimulation()
+	end
 
-	hero:StopPhysicsSimulation()
- 
 	-- Update score
 	hero.score = hero.score - 1
 
@@ -910,7 +1036,9 @@ function GameMode:HeroRevivied( hero , reviver)
 	--PlayerResource:SetCameraTarget(hero:GetPlayerID(), hero)
 
 	-- prevent hero from moving
-	hero:SetPhysicsVelocity(Vector(0,0,0))
+	if IsPhysicsUnit(hero) then
+		hero:SetPhysicsVelocity(Vector(0,0,0))
+	end
 	hero:SetForwardVector(reviver:GetForwardVector())
 
 	local count = 0
@@ -928,7 +1056,9 @@ function GameMode:HeroRevivied( hero , reviver)
 			Timers:CreateTimer(1.5,function()
 				ParticleManager:DestroyParticle(particle, true)
 			end)
-			hero:StartPhysicsSimulation()
+			if IsPhysicsUnit(hero) then
+				hero:StartPhysicsSimulation()
+			end
 			hero:Stop()
 			return nil
 		end
@@ -975,21 +1105,10 @@ function GameMode:LevelCompleted( hero )
 	GameRules:GetGameModeEntity():SetTopBarTeamValue ( DOTA_TEAM_GOODGUYS, self.nCurrentRound )
 	CustomGameEventManager:Send_ServerToAllClients("SetTopBarScoreValue", { teamId = DOTA_TEAM_GOODGUYS, teamScore = self.nCurrentRound } )
 
-	if self.nCurrentRound > self.nMaxRounds then
-		print("[SNS] The Players have won the game! Starting finishing sequence.")
-		GameRules:SendCustomMessage("#slideninjaslide_levelcomplete", 0, 0)
-		local msg = {
-			message = "#slideninjaslide_won",
-			duration = 3.0
-		}
-		FireGameEvent("show_center_message",msg)
-		Timers:CreateTimer(3, function()
-			GameRules:SetGameWinner( DOTA_TEAM_GOODGUYS )
-			GameRules:SetSafeToLeave( true )
-		end)
-		self:EndMessage()
-		return
-	end
+	local teleportParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_flash.vpcf", PATTACH_CUSTOMORIGIN, hero )
+	ParticleManager:SetParticleControl( teleportParticle, 0, hero:GetAbsOrigin() )
+	ParticleManager:ReleaseParticleIndex(teleportParticle)
+	GiveUnitDataDrivenModifier(hero, hero, "modifier_hide_hero_datadriven", -1)
 
 	print(hero:GetPlayerID())
 	-- commend the player who completed the level.
@@ -1002,24 +1121,41 @@ function GameMode:LevelCompleted( hero )
 	ScoreBoard:ScoreUpdate(hero)
 	--print(GameMode:GetNinja(hero:GetPlayerID()).score)
 
-	-- Attaching a particle to the leading team heroes
-	local existingParticle = hero:Attribute_GetIntValue( "particleID", -1 )
-	if existingParticle == -1 then
-		local particleLeader = ParticleManager:CreateParticle( "particles/leader/leader_overhead.vpcf", PATTACH_OVERHEAD_FOLLOW, hero )
-		ParticleManager:SetParticleControlEnt( particleLeader, PATTACH_OVERHEAD_FOLLOW, hero, PATTACH_OVERHEAD_FOLLOW, "follow_overhead", hero:GetAbsOrigin(), true )
-		hero:Attribute_SetIntValue( "particleID", particleLeader )
-		Timers:CreateTimer(5, function()
-			local particleLeader = hero:Attribute_GetIntValue( "particleID", -1 )
-			if particleLeader ~= -1 then
-				ParticleManager:DestroyParticle( particleLeader, true )
-				hero:DeleteAttribute( "particleID" )
-			end
-		end)
-	end
-
 	-- reward team
 	for i,v in ipairs(self.ninjas) do
 		v:SetGold(v:GetGold() + GOLD_PER_ROUND, false)
+
+		if GetMapName() == "run_gay_run" then
+			local kappaPride = ParticleManager:CreateParticleForPlayer("particles/screen/kappapride.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
+			print('kappa')
+		end
+	end
+
+	if self.nCurrentRound > self.nMaxRounds then
+		print("[SNS] The Players have won the game! Starting finishing sequence.")
+		GameRules:SendCustomMessage("#slideninjaslide_levelcomplete", 0, 0)
+		local msg = {
+			message = "#slideninjaslide_won",
+			duration = 3.0
+		}
+		FireGameEvent("show_center_message",msg)
+		local delay = 3
+
+		if GetMapName() == "run_gay_run" then
+			delay = 15
+			MusicPlayer:ChangePlaylist("scripts/music_RGR_END.kv")
+			for i,v  in ipairs(self.vUserIds) do
+				print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
+				v:UpdateMusicPlaylist( )
+			end
+		end
+
+		Timers:CreateTimer(delay, function()
+			GameRules:SetGameWinner( DOTA_TEAM_GOODGUYS )
+			GameRules:SetSafeToLeave( true )
+		end)
+		self:EndMessage()
+		return
 	end
 
 	-- Display round complete messege
@@ -1028,89 +1164,129 @@ function GameMode:LevelCompleted( hero )
 		duration = 3.0
 	}
 	FireGameEvent("show_center_message",msg)
-	print('[SNS] Starting Round: ' .. tostring(self.nCurrentRound))
 
-	-- Reset all ninjas
-	for i,v in  ipairs(SpawnPoints) do
+	-- Set camera and hide all ninjas
+	for i,v in ipairs(SpawnPoints) do
 		local ninja = self.ninjas[i]
 		if ninja ~= nil then
-
-			-- revive dead ninjas
-			if not ninja:IsAlive() then
-				ninja:RespawnHero(false, false, false)
+			if (hero:GetPlayerID() ~= ninja.id) then
+				PlayerResource:SetCameraTarget( ninja.id , hero)
+				Timers:CreateTimer(0.2, function()
+					PlayerResource:SetCameraTarget( ninja.id , nil)
+				end)
+				local teleportParticle = ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_flash.vpcf", PATTACH_CUSTOMORIGIN, ninja )
+				ParticleManager:SetParticleControl( teleportParticle, 0, ninja:GetAbsOrigin() )
+				ParticleManager:ReleaseParticleIndex(teleportParticle)
+				GiveUnitDataDrivenModifier(ninja, ninja, "modifier_hide_hero_datadriven", -1)
 			end
-			if not ninja:IsAlive() then
-				ninja:RespawnHero(false, false, false)
-			end
+		end
+	end
 
-			FindClearSpaceForUnit(ninja, v, true)
-			FindClearSpaceForUnit(ninja, v, false)
+	Timers:CreateTimer(3, function()		
+		print('[SNS] Starting Round: ' .. tostring(self.nCurrentRound))
 
-			-- reset camera pos
-			if ninja.player and not ninja.player:IsNull() then
-				ninja.player:SetAbsOrigin(v)
-			end
-			
-			-- stop moving after ninja teleports
-			ninja:StartPhysicsSimulation()
-			ninja:Stop()
-
-			Timers:CreateTimer(0.1,function()
-				if ninja ~= nil then
-					ninja:Stop()
-					ninja:SetForwardVector(Vector(1,0,0))
+		-- Attaching a particle to the leading team heroes
+		local existingParticle = hero:Attribute_GetIntValue( "particleID", -1 )
+		if existingParticle == -1 then
+			local particleLeader = ParticleManager:CreateParticle( "particles/leader/leader_overhead.vpcf", PATTACH_OVERHEAD_FOLLOW, hero )
+			ParticleManager:SetParticleControlEnt( particleLeader, PATTACH_OVERHEAD_FOLLOW, hero, PATTACH_OVERHEAD_FOLLOW, "follow_overhead", hero:GetAbsOrigin(), true )
+			hero:Attribute_SetIntValue( "particleID", particleLeader )
+			Timers:CreateTimer(10, function()
+				local particleLeader = hero:Attribute_GetIntValue( "particleID", -1 )
+				if particleLeader ~= -1 then
+					ParticleManager:DestroyParticle( particleLeader, true )
+					hero:DeleteAttribute( "particleID" )
 				end
 			end)
+		end
 
-			-- respawn effects
-			--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
-			local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, ninja)
-			-- delete spawn effects after 1.5s
-			Timers:CreateTimer(1.5,function()
-				ParticleManager:DestroyParticle(particle, true)
+		-- Reset all ninjas
+		for i,v in  ipairs(SpawnPoints) do
+			local ninja = self.ninjas[i]
+			if ninja ~= nil then
+
+				-- Remove hide hero modifier	
+				ninja:RemoveModifierByName("modifier_hide_hero_datadriven")
+
+				-- revive dead ninjas
+				if not ninja:IsAlive() then
+					ninja:RespawnHero(false, false, false)
+				end
+				if not ninja:IsAlive() then
+					ninja:RespawnHero(false, false, false)
+				end
+
+				FindClearSpaceForUnit(ninja, v, true)
+				FindClearSpaceForUnit(ninja, v, false)
+
+				-- reset camera pos
+				if ninja.player and not ninja.player:IsNull() then
+					ninja.player:SetAbsOrigin(v)
+				end
+				
+				-- stop moving after ninja teleports
+				ninja:StartPhysicsSimulation()
+				ninja:Stop()
+
+				Timers:CreateTimer(0.1,function()
+					if ninja ~= nil then
+						ninja:Stop()
+						ninja:SetForwardVector(Vector(1,0,0))
+					end
+				end)			
+
+				PlayerResource:SetCameraTarget(ninja.id, ninja)
+				Timers:CreateTimer(0.2, function()
+					PlayerResource:SetCameraTarget(ninja.id, nil)
+				end)
+
+				-- respawn effects
+				--EmitSoundOnClient("Hero_Omniknight.GuardianAngel.Cast", ninja:GetPlayerOwner())
+				local particle = ParticleManager:CreateParticle("particles/units/heroes/hero_omniknight/omniknight_guardian_angel_ally.vpcf", PATTACH_ABSORIGIN, ninja)
+				-- delete spawn effects after 1.5s
+				Timers:CreateTimer(1.5,function()
+					ParticleManager:DestroyParticle(particle, true)
+				end)
+			end
+		end
+
+		if self.bTue then
+			self:TueNewRound()
+		end
+
+		-- Delay by one tick
+		Timers:CreateTimer( function()
+				EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
 			end)
+
+		-- clear all zones.
+		for i,v in ipairs(self.ninjas) do
+			for i2,v2 in ipairs(v.zonesVisited) do
+				v.zonesVisited[i2] = false
+			end
+			v.lastZone = 0
 		end
-	end
 
-	if self.bTue then
-		self:TueNewRound()
-	end
+		GameMode:ReviveAllWolves()
+		
+		-- Move the wolves in true zones only (reduce lag)
+		for i=1,15 do
+			self.wolvesToMove[i] = false
+		end
+		GameMode:CreateWolvesNextRound()
+		self.wolvesToMove[1] = true
+		GameMode:MoveWolvesInActiveZones()
 
-	-- Delay by one tick
-	Timers:CreateTimer( function()
-			EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
-
-			-- Reset Camera of all players
-			SendToConsole("dota_camera_center")
+		-- Display new round message
+		-- short pause before this text appears.
+		Timers:CreateTimer(5, function()
+			local msg = {
+				message = "ROUND " .. self.nCurrentRound,
+				duration = 3.0
+			}
+			FireGameEvent("show_center_message",msg)
+			GameRules:SendCustomMessage(self.roundMessages[self.nCurrentRound], 0, 0)
 		end)
-
-	-- clear all zones.
-	for i,v in ipairs(self.ninjas) do
-		for i2,v2 in ipairs(v.zonesVisited) do
-			v.zonesVisited[i2] = false
-		end
-		v.lastZone = 0
-	end
-
-	GameMode:ReviveAllWolves()
-	
-	-- Move the wolves in true zones only (reduce lag)
-	for i=1,15 do
-		self.wolvesToMove[i] = false
-	end
-	GameMode:CreateWolvesNextRound()
-	self.wolvesToMove[1] = true
-	GameMode:MoveWolvesInActiveZones()
-
-	-- Display new round message
-	-- short pause before this text appears.
-	Timers:CreateTimer(5, function()
-		local msg = {
-			message = "ROUND " .. self.nCurrentRound,
-			duration = 3.0
-		}
-		FireGameEvent("show_center_message",msg)
-		GameRules:SendCustomMessage(self.roundMessages[self.nCurrentRound], 0, 0)
 	end)
 end
 
@@ -1142,16 +1318,16 @@ end
 function GameMode:SpawnItems()
 	local roll = RandomInt(1, 100)
 	local itemToSpawn = ""
-	if roll >= 99 then itemToSpawn = "item_tome_of_power"
-	elseif roll >= 96 then itemToSpawn = "item_tome_of_experience"
-	elseif roll >= 93 then itemToSpawn = "item_ultra_sobi_mask"
-	elseif roll >= 90 then itemToSpawn = "item_socks_of_ultra_speed"
-	elseif roll >= 87 then itemToSpawn = "item_pendant_of_mana"
-	elseif roll >= 74 then itemToSpawn = "item_pendant_of_energy"
-	elseif roll >= 61 then itemToSpawn = "item_sobi_mask2"
-	elseif roll >= 41 then itemToSpawn = "item_boots_of_speed"
-	elseif roll >= 21 then itemToSpawn = "item_potion_of_speed"
-	else itemToSpawn = "item_potion_of_mana"
+	if roll >= 99 then itemToSpawn = self.itemSpawns[10]
+	elseif roll >= 96 then itemToSpawn = self.itemSpawns[9]
+	elseif roll >= 93 then itemToSpawn = self.itemSpawns[8]
+	elseif roll >= 90 then itemToSpawn = self.itemSpawns[7]
+	elseif roll >= 87 then itemToSpawn = self.itemSpawns[6]
+	elseif roll >= 74 then itemToSpawn = self.itemSpawns[5]
+	elseif roll >= 61 then itemToSpawn = self.itemSpawns[4]
+	elseif roll >= 41 then itemToSpawn = self.itemSpawns[3]
+	elseif roll >= 21 then itemToSpawn = self.itemSpawns[2]
+	else itemToSpawn = self.itemSpawns[1]
 	end
 	if DEBUG then
 		print(roll, itemToSpawn)
@@ -1182,6 +1358,9 @@ function GameMode:SpawnItems()
 	local droppedItem = CreateItemOnPositionSync(Vector(x, y, 256), newItem)
 	droppedItem.isDroppedItem = true
 	droppedItem.itemName = itemToSpawn
+	if (self.gameTheme == 3) then
+		droppedItem:SetRenderColor(255, 0, 255)
+	end
 end
 
 -- Called when all heros haved died, providing additional chances to try again
@@ -1218,6 +1397,10 @@ function GameMode:ChanceRound()
 
 			-- revive dead ninjas
 			if not ninja:IsAlive() then
+				if ninja.halo ~= nil then
+					ParticleManager:DestroyParticle(ninja.halo, true)
+					ninja.halo = nil
+				end
 				ninja:RespawnHero(false, false, false)
 			end
 
@@ -1244,9 +1427,6 @@ function GameMode:ChanceRound()
 	end
 
 	EmitSoundOn("Hero_Omniknight.GuardianAngel.Cast", self.start)
-
-	-- Reset Camera of all players
-	SendToConsole("dota_camera_center")
 
 	-- clear all zones.
 	for i,v in ipairs(self.ninjas) do
@@ -1305,8 +1485,12 @@ function GameMode:ResetGame()
 				Timers:RemoveTimer(ninja.haloTimer)
 			end
 			local oldHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
+			local heroName = self.gameHeros[self.gameTheme][1]
+			if GetMapName() == "run_gay_run" then
+				heroName = oldHero:GetUnitName()
+			end
 			self:StopSoundForce( oldHero )
-			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
+			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, heroName, 0, 0)
 			UTIL_Remove( oldHero )
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 
@@ -1326,9 +1510,6 @@ function GameMode:ResetGame()
 			end
 		end
 	end
-
-	-- Reset Camera of all players
-	SendToConsole("dota_camera_center")
 
 	self.nCurrentRound = 1
 	self.livesUsed = 0
@@ -1356,6 +1537,9 @@ function GameMode:ResetGame()
 			v:RemoveSelf()
 		end
 	end
+	-- Clear Item/Ability Entities
+	GayTrapDestroyAll()
+
 	self.wolves = {}
 	self.wolvesHeaven = {}
 
@@ -1514,8 +1698,8 @@ function GameMode:TueChase(  )
 				EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", v)
 				v:ForceKill(false)
 			elseif v.isNinja and not v:IsInvulnerable() and not v.isInvuln and v:IsAlive() then
-				local damage_indicator = ParticleManager:CreateParticle("particles/generic_gameplay/screen_damage_indicator.vpcf", PATTACH_EYES_FOLLOW, v)
-				local splat = ParticleManager:CreateParticle("particles/screen/splat_screen.vpcf", PATTACH_EYES_FOLLOW, v)
+				local damage_indicator = ParticleManager:CreateParticleForPlayer("particles/generic_gameplay/screen_damage_indicator.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
+				local splat = ParticleManager:CreateParticleForPlayer("particles/screen/splat_screen.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
 				EmitGlobalSound("SlideNinjaSlide.ArtilleryCorpseExplodeDeath1")
 				self:HeroKilled(v)
 			end
@@ -1619,13 +1803,16 @@ function GameMode:InitialiseNinja(hero)
 				end
 			end)
 		end
-		Physics:Unit(hero)
-		hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
-		hero:SetGroundBehavior (PHYSICS_GROUND_ABOVE)
-		hero:AdaptiveNavGridLookahead (true)
-		hero:SetPhysicsBoundingRadius(0)
+		if self.bSlide then
+			-- Physics
+			Physics:Unit(hero)
+			hero:SetNavCollisionType (PHYSICS_NAV_SLIDE)
+			hero:SetGroundBehavior (PHYSICS_GROUND_ABOVE)
+			hero:AdaptiveNavGridLookahead (true)
+			hero:SetPhysicsBoundingRadius(0)
 
-		hero:Hibernate(false)
+			hero:Hibernate(false)
+		end
 
 		hero.score = 0
 		hero.zonesVisited = {}
@@ -1753,6 +1940,82 @@ function GameMode:SetupGuards()
 	end
 end
 
+
+ORDERS = {
+	[0] = "DOTA_UNIT_ORDER_NONE",
+	[1] = "DOTA_UNIT_ORDER_MOVE_TO_POSITION",
+	[2] = "DOTA_UNIT_ORDER_MOVE_TO_TARGET",
+	[3] = "DOTA_UNIT_ORDER_ATTACK_MOVE",
+	[4] = "DOTA_UNIT_ORDER_ATTACK_TARGET",
+	[5] = "DOTA_UNIT_ORDER_CAST_POSITION",
+	[6] = "DOTA_UNIT_ORDER_CAST_TARGET",
+	[7] = "DOTA_UNIT_ORDER_CAST_TARGET_TREE",
+	[8] = "DOTA_UNIT_ORDER_CAST_NO_TARGET",
+	[9] = "DOTA_UNIT_ORDER_CAST_TOGGLE",
+	[10] = "DOTA_UNIT_ORDER_HOLD_POSITION",
+	[11] = "DOTA_UNIT_ORDER_TRAIN_ABILITY",
+	[12] = "DOTA_UNIT_ORDER_DROP_ITEM",
+	[13] = "DOTA_UNIT_ORDER_GIVE_ITEM",
+	[14] = "DOTA_UNIT_ORDER_PICKUP_ITEM",
+	[15] = "DOTA_UNIT_ORDER_PICKUP_RUNE",
+	[16] = "DOTA_UNIT_ORDER_PURCHASE_ITEM",
+	[17] = "DOTA_UNIT_ORDER_SELL_ITEM",
+	[18] = "DOTA_UNIT_ORDER_DISASSEMBLE_ITEM",
+	[19] = "DOTA_UNIT_ORDER_MOVE_ITEM",
+	[20] = "DOTA_UNIT_ORDER_CAST_TOGGLE_AUTO",
+	[21] = "DOTA_UNIT_ORDER_STOP",
+	[22] = "DOTA_UNIT_ORDER_TAUNT",
+	[23] = "DOTA_UNIT_ORDER_BUYBACK",
+	[24] = "DOTA_UNIT_ORDER_GLYPH",
+	[25] = "DOTA_UNIT_ORDER_EJECT_ITEM_FROM_STASH",
+	[26] = "DOTA_UNIT_ORDER_CAST_RUNE",
+	[27] = "DOTA_UNIT_ORDER_PING_ABILITY",
+	[28] = "DOTA_UNIT_ORDER_MOVE_TO_DIRECTION",
+}
+
+function GameMode:FilterExecuteOrder( filterTable )
+	--[[
+	print("-----------------------------------------")
+	for k, v in pairs( filterTable ) do
+		print("Order: " .. k .. " " .. tostring(v) )
+	end
+	]]
+
+	local units = filterTable["units"]
+	local order_type = filterTable["order_type"]
+	local issuer = filterTable["issuer_player_id_const"]
+	local abilityIndex = filterTable["entindex_ability"]
+	local targetIndex = filterTable["entindex_target"]
+	local queue = tobool(filterTable["queue"])
+	local x = tonumber(filterTable["position_x"])
+	local y = tonumber(filterTable["position_y"])
+	local z = tonumber(filterTable["position_z"])
+	local point = Vector(x,y,z)
+
+	-- Skip Prevents order loops
+	local unit = EntIndexToHScript(units["0"])
+	if unit and unit.skip then
+		unit.skip = false
+		return true
+	end
+
+	if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
+		if unit.slide then
+			unit.lastOrder = { UnitIndex = units["0"], OrderType = order_type, Position = point, TargetIndex = targetIndex, AbilityIndex = abilityIndex, Queue = queue}
+		end
+	elseif order_type == DOTA_UNIT_ORDER_CAST_TARGET then
+		if unit.slide then
+			unit.lastOrder = { UnitIndex = units["0"], OrderType = order_type, TargetIndex = targetIndex, AbilityIndex = abilityIndex, Queue = queue}
+		end
+	else
+		if unit.lastOrder then
+			unit.lastOrder = nil
+		end
+	end
+
+	return true
+end
+
 function GetVersion()
-    return VERSION
+	return VERSION
 end

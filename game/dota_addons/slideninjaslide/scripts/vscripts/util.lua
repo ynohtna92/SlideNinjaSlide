@@ -6,6 +6,12 @@ function GiveUnitDataDrivenModifier(source, target, modifier,dur)
     item:RemoveSelf()
 end
 
+function SendErrorMessage( pID, string )
+	Notifications:ClearBottom(pID)
+	Notifications:Bottom(pID, {text=string, style={color='#E62020'}, duration=2})
+	EmitSoundOnClient("General.Cancel", PlayerResource:GetPlayer(pID))
+end
+
 function HasFullInventory( unit )
 	local count = 0
 	for i=0,5 do
@@ -15,6 +21,16 @@ function HasFullInventory( unit )
 		end
 	end
 	return count == 6
+end
+
+-- Turn unit to face vector point
+function RotateUnitToFace( unit, point )
+	local position = unit:GetAbsOrigin()
+	local forwardVect = unit:GetForwardVector()
+
+	local newForwardVect = (point - position):Normalized()
+	--unit:SetForwardVector(newForwardVect)
+	unit:MoveToPosition(position + newForwardVect * 1)
 end
 
 -- Returns a shallow copy of the passed table.

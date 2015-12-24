@@ -5,7 +5,23 @@
 
 "CustomHeroList"
 {
-	"npc_dota_hero_antimage" "1"
-//	"npc_dota_hero_rattletrap"	"1"
-//	"npc_dota_hero_terrorblade" "1"
+//	"npc_dota_hero_antimage" "1" // slide_ninja_slide map default
+//	"npc_dota_hero_rattletrap"	"1" // Spongebob mode
+
+// Run Gay Run Heroes
+	"npc_dota_hero_omniknight"	"1"
+//	"npc_dota_hero_chen"		"1"
+	"npc_dota_hero_zuus"		"1"
+	"npc_dota_hero_phantom_lancer" "1"
+	"npc_dota_hero_invoker"		"1"
+	"npc_dota_hero_juggernaut"	"1"
+	"npc_dota_hero_keeper_of_the_light"	"1"
+	"npc_dota_hero_alchemist"		"1"
+	"npc_dota_hero_abaddon"			"1"
+	"npc_dota_hero_beastmaster"		"1"
+	"npc_dota_hero_kunkka"			"1"
+	"npc_dota_hero_lone_druid"		"1"
+	"npc_dota_hero_tidehunter"		"1"
+//	"npc_dota_hero_chaos_knight"	"1"
+	"npc_dota_hero_centaur"			"1"
 }
