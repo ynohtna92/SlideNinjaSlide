@@ -530,6 +530,41 @@ function GameMode:OnItemPickedUp( keys )
 	end
 	local player = PlayerResource:GetPlayer(keys.PlayerID)
 	local itemname = keys.itemname
+
+	if itemname == "item_lacoste_basic" then
+		local base = nil
+		for i=0,5 do
+			local item = hero:GetItemInSlot(i)
+			if item then
+				local itemName = item:GetName()
+				if itemName == "item_lacoste_basic" then
+					if base and base:GetName() == "item_lacoste_basic" then
+						hero:RemoveItem(base)
+						hero:RemoveItem(item)
+						local newItem = CreateItem("item_lacoste_cavallion", nil, nil)
+						newItem:SetPurchaseTime(0)
+						hero:AddItem(newItem)
+						return
+					end
+					base = item
+				elseif itemName == "item_lacoste_cavallion" then
+					hero:RemoveItem(itemEntity)
+					hero:RemoveItem(item)
+					local newItem = CreateItem("item_lacoste_sheldon_lace", nil, nil)
+					newItem:SetPurchaseTime(0)
+					hero:AddItem(newItem)
+					return
+				elseif itemName == "item_lacoste_sheldon_lace" then
+					hero:RemoveItem(itemEntity)
+					hero:RemoveItem(item)
+					local newItem = CreateItem("item_lacoste_megagay_edition", nil, nil)
+					newItem:SetPurchaseTime(0)
+					hero:AddItem(newItem)
+					return
+				end
+			end
+		end
+	end
 end
 
 -- An item was purchased by a player
