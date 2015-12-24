@@ -14,9 +14,9 @@
 		"Ability1"					"antimage_leap_of_faith"					// Ability 1
 		"Ability2"					"antimage_thaw"								// Ability 2
 		"Ability3"					"antimage_entangling_roots"					// Ability 3
-		"Ability4"					"rgr_acid_bomb"					// Ability 4
+		"Ability4"					"antimage_brilliance_aura"					// Ability 4
 		"Ability5"					""
-		"Ability6"					"antimage_brilliance_aura"
+		"Ability6"					""
 		"Ability7"					"antimage_iceskates"						// Hidden Abilities onwards
 
 		// Attack
