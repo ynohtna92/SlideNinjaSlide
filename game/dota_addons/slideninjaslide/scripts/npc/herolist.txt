@@ -10,7 +10,7 @@
 
 // Run Gay Run Heroes
 	"npc_dota_hero_omniknight"	"1"
-	"npc_dota_hero_chen"		"1"
+//	"npc_dota_hero_chen"		"1"
 	"npc_dota_hero_zuus"		"1"
 	"npc_dota_hero_phantom_lancer" "1"
 	"npc_dota_hero_invoker"		"1"
@@ -22,6 +22,6 @@
 	"npc_dota_hero_kunkka"			"1"
 	"npc_dota_hero_lone_druid"		"1"
 	"npc_dota_hero_tidehunter"		"1"
-	"npc_dota_hero_chaos_knight"	"1"
+//	"npc_dota_hero_chaos_knight"	"1"
 	"npc_dota_hero_centaur"			"1"
 }

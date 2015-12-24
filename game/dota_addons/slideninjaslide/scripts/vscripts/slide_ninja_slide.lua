@@ -1,15 +1,15 @@
 --[[
-Last modified: 22/11/2015
+Last modified: 24/12/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
 
 print('[SNS] slide_ninja_slide.lua')
 
-DEBUG = true
+DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B221115"
+VERSION = "B241215"
 
 ROUNDS = 4
 LIVES = 3
@@ -352,6 +352,9 @@ function GameMode:InitGameMode()
 	MusicPlayer:Init(self.gameHeros[self.gameTheme][3]) 
 	ScoreBoard:Init()
 
+	-- Don't end the game if everyone is unassigned
+	SendToServerConsole("dota_surrender_on_disconnect 0")
+
 	print('[SNS] Loading complete!')
 end
 
@@ -552,6 +555,12 @@ function GameMode:OnAbilityUsed( keys )
 	local player = EntIndexToHScript(keys.PlayerID)
 	local abilityname = keys.abilityname
 	local hero = PlayerResource:GetSelectedHeroEntity( keys.PlayerID )
+
+	-- Prevents double usage on ice.
+	if abilityname == "item_gay_trap" or abilityname == "item_cosmopolitan" or abilityname == "item_bottle_of_seamen" or abilityname == "item_potion_of_mana" or abilityname == "item_potion_of_speed" then
+		print("clearOrder")
+		hero.lastOrder = nil
+	end
 end
 
 --[[
@@ -803,6 +812,11 @@ function GameMode:PlayerSay(keys)
 	end
 
 	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and plyID == GetListenServerHost():GetPlayerID() then
+		if GetMapName() == "run_gay_run" then
+			GameRules:SendCustomMessage("This mode only works on the Slide Ninja Slide map.", 0, 0)
+			return
+		end
+
 		GameRules:SendCustomMessage("SPONGEBOB SQUAREPANTS!", 0, 0)
 		SendToServerConsole( "dota_combine_models 0" )
 		--SendToServerConsole( "dota_wearables_clientside 1" )
@@ -1110,6 +1124,11 @@ function GameMode:LevelCompleted( hero )
 	-- reward team
 	for i,v in ipairs(self.ninjas) do
 		v:SetGold(v:GetGold() + GOLD_PER_ROUND, false)
+
+		if GetMapName() == "run_gay_run" then
+			local kappaPride = ParticleManager:CreateParticleForPlayer("particles/screen/kappapride.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
+			print('kappa')
+		end
 	end
 
 	if self.nCurrentRound > self.nMaxRounds then
@@ -1466,8 +1485,12 @@ function GameMode:ResetGame()
 				Timers:RemoveTimer(ninja.haloTimer)
 			end
 			local oldHero = PlayerResource:GetSelectedHeroEntity( ninja.id )
+			local heroName = self.gameHeros[self.gameTheme][1]
+			if GetMapName() == "run_gay_run" then
+				heroName = oldHero:GetUnitName()
+			end
 			self:StopSoundForce( oldHero )
-			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, self.gameHeros[self.gameTheme][1], 0, 0)
+			local newHero = PlayerResource:ReplaceHeroWith(ninja.id, heroName, 0, 0)
 			UTIL_Remove( oldHero )
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 
@@ -1675,8 +1698,8 @@ function GameMode:TueChase(  )
 				EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", v)
 				v:ForceKill(false)
 			elseif v.isNinja and not v:IsInvulnerable() and not v.isInvuln and v:IsAlive() then
-				local damage_indicator = ParticleManager:CreateParticle("particles/generic_gameplay/screen_damage_indicator.vpcf", PATTACH_EYES_FOLLOW, v)
-				local splat = ParticleManager:CreateParticle("particles/screen/splat_screen.vpcf", PATTACH_EYES_FOLLOW, v)
+				local damage_indicator = ParticleManager:CreateParticleForPlayer("particles/generic_gameplay/screen_damage_indicator.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
+				local splat = ParticleManager:CreateParticleForPlayer("particles/screen/splat_screen.vpcf", PATTACH_EYES_FOLLOW, v, PlayerResource:GetPlayer(v:GetPlayerID()))
 				EmitGlobalSound("SlideNinjaSlide.ArtilleryCorpseExplodeDeath1")
 				self:HeroKilled(v)
 			end
@@ -1720,10 +1743,6 @@ function GameMode:TueEnd(  )
 		print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
 		v:UpdateMusicPlaylist( )
 	end
-end
-
-function GameMode:RGRHeroSelector()
-
 end
 
 function GameMode:EndMessage(  )

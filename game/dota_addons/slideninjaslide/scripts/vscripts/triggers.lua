@@ -56,13 +56,17 @@ function OnStartTouchIce (trigger)
 			else
 				if trigger.activator.lastOrder then
 					local ability = EntIndexToHScript(trigger.activator.lastOrder["AbilityIndex"])
-					local abilityName = ability:GetAbilityName()
-					local abil = trigger.activator:FindAbilityByName(abilityName)
-					if abil:IsFullyCastable() then
-						ExecuteOrderFromTable(trigger.activator.lastOrder)
+					if ability then
+						local abilityName = ability:GetAbilityName()
+						local abil = trigger.activator:FindAbilityByName(abilityName)
+						if abil == nil or abil:IsFullyCastable() then
+							ExecuteOrderFromTable(trigger.activator.lastOrder)
+						else
+							trigger.activator.lastOrder = nil
+							print("Clear lastOrder")
+						end
 					else
 						trigger.activator.lastOrder = nil
-						print("Clear lastOrder")
 					end
 				end
 				trigger.activator.slideNumber = trigger.activator.slideNumber + 1
