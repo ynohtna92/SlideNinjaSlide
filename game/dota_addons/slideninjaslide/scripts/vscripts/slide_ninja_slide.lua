@@ -1,5 +1,5 @@
 --[[
-Last modified: 24/12/2015
+Last modified: 28/12/2015
 Author: A_Dizzle
 Co-Author: Myll
 ]]
@@ -329,6 +329,14 @@ function GameMode:InitGameMode()
 			[9] = "item_kamasutra",
 			[10] = "item_kamasutra_deluxe",
 		}
+
+		self.roundMessages = {
+			[1] = "",
+			[2] = "#slideninjaslide_round_message02_rgr",
+			[3] = "#slideninjaslide_round_message03_rgr",
+			[4] = "#slideninjaslide_round_message04_rgr",
+			[5] = "",
+		}
 	end
 
 	SpawnPoints = {}
@@ -635,7 +643,7 @@ function GameMode:OnHeroInGame( hero )
 	end
 
 	if not self.noReset then
-		ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", "#slideninjaslide_instructions_body", "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
+		ShowGenericPopupToPlayer(hero.player, "#slideninjaslide_instructions_title", (GetMapName() == "run_gay_run" and "#slideninjaslide_instructions_body_rgr" or "#slideninjaslide_instructions_body"), "", "", DOTA_SHOWGENERICPOPUP_TINT_SCREEN )
 	end
 
 	if DEBUG then
