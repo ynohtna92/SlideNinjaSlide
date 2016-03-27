@@ -672,6 +672,12 @@ function GameMode:PlayerSay(keys)
 	local hero = self.vPlayerIDToHero[plyID]
 	local txt = keys.text
 	local args = split(txt, " ")
+	local host = GameRules:PlayerHasCustomGameHostPrivileges(ply)
+	local server = GetListenServerHost()
+	local localID = -1
+	if server ~= nil then
+		localID = server:GetPlayerID()
+	end
 
 	if keys.teamOnly then
 		-- This text was team-only
@@ -747,11 +753,11 @@ function GameMode:PlayerSay(keys)
 		EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", hero)
 	end
 
-	if string.find(keys.text, "^-players$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-players$") and ( plyID == localID or host ) then
 		GameRules:SendCustomMessage("Players: " .. #self.vUserIds .. "/10", 0, 0)
 		for i,v  in ipairs(self.vUserIds) do
 			local phero = v:GetAssignedHero()
-			GameRules:SendCustomMessage("PID: " .. v:GetPlayerID() .. " " .. tostring(phero:HasOwnerAbandoned()) .. " " .. phero:GetClassname(), 0, 0)
+			GameRules:SendCustomMessage("PID: " .. v:GetPlayerID() .. " host:" .. tostring(GameRules:PlayerHasCustomGameHostPrivileges(v)) .. " abandoned:" .. tostring(phero:HasOwnerAbandoned()) .. " " .. phero:GetClassname(), 0, 0)
 		end
 	end
 
@@ -809,7 +815,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-reset$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-reset$") and ( plyID == localID or host ) then
 		if self.canReset then
 			self.noReset = true
 			self.resetting = true
@@ -818,7 +824,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-nochance$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-nochance$") and ( plyID == localID or host ) then
 		if self.noChance then
 			GameRules:SendCustomMessage("#slideninjaslide_command_nochance_on", 0, 0)
 			self.noChance = false
@@ -828,14 +834,14 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text, "^-end$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text, "^-end$") and ( plyID == localID or host ) then
 		GameRules:SendCustomMessage("#slideninjaslide_end_command", 0, 0)
 		Timers:CreateTimer(2, function()
 			self:ForceEnd()
 		end)
 	end
 
-	if string.find(keys.text:lower(), "^-tue$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text:lower(), "^-tue$") and ( plyID == localID or host ) then
 		if not self.bTue then
 			self.bTue = true
 			GameRules:SendCustomMessage("#slideninjaslide_command_tue", 0, 0)
@@ -854,7 +860,7 @@ function GameMode:PlayerSay(keys)
 		end
 	end
 
-	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and plyID == GetListenServerHost():GetPlayerID() then
+	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and ( plyID == localID or host ) then
 		if GetMapName() == "run_gay_run" then
 			GameRules:SendCustomMessage("This mode only works on the Slide Ninja Slide map.", 0, 0)
 			return
