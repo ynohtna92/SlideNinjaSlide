@@ -37,7 +37,6 @@ function NowPlaying( table )
 	$('#NowPlayingBox').AddClass('playing');
 	if (nowPlayingMsgSch != null) 
 	{
-		$.Msg("CancelScheduled");
 		$.CancelScheduled(nowPlayingMsgSch);
 		nowPlayingMsgSch = null;
 	}
