@@ -1586,6 +1586,13 @@ function GameMode:ResetGame()
 			v:RemoveSelf()
 		end
 	end
+
+	-- Remove items on the ground
+	while GameRules:NumDroppedItems() > 0 do
+		local item = GameRules:GetDroppedItem(0)
+		UTIL_RemoveImmediate( item )
+	end
+
 	-- Clear Item/Ability Entities
 	GayTrapDestroyAll()
 
