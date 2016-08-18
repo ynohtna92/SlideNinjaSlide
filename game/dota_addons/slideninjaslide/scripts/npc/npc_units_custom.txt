@@ -582,14 +582,14 @@
 	{
 		// General
 		//
-		"BaseClass" "npc_dota_base_additive" // Class of entity of link to.
+		"BaseClass" "npc_dota_creature" // Class of entity of link to.
 		"Model" "models/development/invisiblebox.vmdl" // Model.
 		"SoundSet" "Creep_Good_Range" // Name of sound set.
-		"Level" "0"
+		//"Level" "0"
 		"UnitLabel" "healing_ward"
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1" "" // Ability 1.
+		"Ability1" "dummy_passive" // Ability 1.
 		"Ability2" "" // Ability 2.
 		"Ability3" "" // Ability 3.
 		"Ability4" "" // Ability 4.

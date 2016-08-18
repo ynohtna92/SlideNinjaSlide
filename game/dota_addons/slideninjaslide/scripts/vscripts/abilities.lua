@@ -14,11 +14,15 @@ function LeapOfFaithStopSound ( keys )
 	local target = keys.target
 
 	StopSoundEvent(sound_name, target)
---	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport.vpcf")
-	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_bits.vpcf")
---	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_cast.vpcf")
---	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_cast_sparks.vpcf")
-	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_rings.vpcf")
+	if target.lofdummy ~= nil then
+	--	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport.vpcf")
+		StopEffect(target.lofdummy, "particles/units/heroes/hero_chen/chen_teleport_bits.vpcf")
+	--	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_cast.vpcf")
+	--	StopEffect(target, "particles/units/heroes/hero_chen/chen_teleport_cast_sparks.vpcf")
+		StopEffect(target.lofdummy, "particles/units/heroes/hero_chen/chen_teleport_rings.vpcf")
+		target.lofdummy:ForceKill( true )
+		target.lofdummy = nil
+	end
 end
 
 --[[
@@ -75,6 +79,7 @@ end
 	Moves the Hero forward a random distance
 ]]
 function LeapOfFaith ( keys )
+	local caster = keys.caster
 	local target = keys.target
 	local min = keys.min
 	local max = keys.max
@@ -109,11 +114,13 @@ function LeapOfFaith ( keys )
 
 	target:Stop()
 	FindClearSpaceForUnit(target, lastPoint, false)
+	local dummy = CreateUnitByName( "npc_dummy_unit", target:GetAbsOrigin(), false, caster, caster, caster:GetTeamNumber() )
+	target.lofdummy = dummy
 	--ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
-	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_bits.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
+	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_bits.vpcf", PATTACH_ABSORIGIN_FOLLOW, dummy)
 --	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_cast.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
 --	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_cast_sparks.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
-	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_rings.vpcf", PATTACH_ABSORIGIN_FOLLOW, target)
+	ParticleManager:CreateParticle("particles/units/heroes/hero_chen/chen_teleport_rings.vpcf", PATTACH_ABSORIGIN_FOLLOW, dummy)
 end
 
 function SpongeBobTokyoDrift( keys )
