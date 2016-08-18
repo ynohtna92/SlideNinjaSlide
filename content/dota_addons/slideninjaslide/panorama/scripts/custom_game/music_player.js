@@ -1,4 +1,6 @@
 
+var nowPlayingMsgSch = null;
+
 function OnButtonPressed( data ) {
 	var iPlayerID = Players.GetLocalPlayer();
 	var btnName = data;
@@ -33,7 +35,13 @@ function NowPlaying( table )
 	$.Msg(table.song);
 	$('#NowPlaying').text = table.song;
 	$('#NowPlayingBox').AddClass('playing');
-	$.Schedule(8, function(){$('#NowPlayingBox').RemoveClass('playing');});
+	if (nowPlayingMsgSch != null) 
+	{
+		$.Msg("CancelScheduled");
+		$.CancelScheduled(nowPlayingMsgSch);
+		nowPlayingMsgSch = null;
+	}
+	nowPlayingMsgSch = $.Schedule(8, function(){$('#NowPlayingBox').RemoveClass('playing'); nowPlayingMsgSch = null;});
 }
 
 (function () {
