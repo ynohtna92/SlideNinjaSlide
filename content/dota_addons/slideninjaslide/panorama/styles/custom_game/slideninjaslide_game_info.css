@@ -111,14 +111,13 @@ Label
 #TipsRow
 {
 	flow-children: down;
-	margin-right: 92px;
+    padding-right: 10px;
 	margin-top: 10px;
 }
 
 #AddRow
 {
     flow-children: down;
-    margin-right: 92px;
     margin-top: 10px;
 }
 
