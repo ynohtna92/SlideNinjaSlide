@@ -7,7 +7,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -17,19 +17,11 @@
                                                         "value0"                "sounds/04-jay-z_and_linkin_park-numb-encore-kzt.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -56,7 +48,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -66,19 +58,11 @@
                                                         "value0"                "sounds/faint.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.400000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.400000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -105,7 +89,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -115,19 +99,11 @@
                                                         "value0"                "sounds/the_hell_song.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -154,7 +130,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -164,19 +140,11 @@
                                                         "value0"                "sounds/numb.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -203,7 +171,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -213,19 +181,11 @@
                                                         "value0"                "sounds/in_the_end.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.200000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.200000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -252,7 +212,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -262,19 +222,11 @@
                                                         "value0"                "sounds/everytime_we_touch.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -301,7 +253,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -311,19 +263,11 @@
                                                         "value0"                "sounds/Captain Jack - Captain Jack (HQ).vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -350,7 +294,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -360,19 +304,11 @@
                                                         "value0"                "sounds/spongebob_dancetrack.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -399,7 +335,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -409,19 +345,11 @@
                                                         "value0"                "sounds/flashback_spongebob.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -448,7 +376,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -458,19 +386,11 @@
                                                         "value0"                "sounds/Electric_Six_Gay_Bar.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "1.000000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -497,7 +417,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_update_default"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -546,7 +466,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "src1_2d"
+                                "reference_stack"       "dota_src1_2d"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
@@ -556,19 +476,11 @@
                                                         "value0"                "sounds/artillerycorpseexplodedeath1.vsnd"
                                                 }
                                         }
-                                        "volume_min"
+                                        "volume"
                                         {
                                                 "value"         "0.800000"
                                         }
-                                        "volume_max"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_min"
-                                        {
-                                                "value"         "1.000000"
-                                        }
-                                        "pitch_max"
+                                        "pitch"
                                         {
                                                 "value"         "1.000000"
                                         }
@@ -595,7 +507,7 @@
                         "reference_operator"
                         {
                                 "operator"              "sos_reference_stack"
-                                "reference_stack"               "dota_update_default"
+                                "reference_stack"       "dota_update_default"
                                 "operator_variables"
                                 {
                                         "vsnd_files"
