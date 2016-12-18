@@ -6,10 +6,19 @@
 
 .MusicPlayer
 {
-    padding-top: 2px;
-    padding-left: 52px;
+    padding-top: 6px;
+    padding-left: 170px;
     flow-children: right;
 }
+
+.AspectRatio4x3 .MusicPlayer, .AspectRatio5x4 .MusicPlayer
+{
+    padding-bottom: 80px;
+    padding-right: 4px;
+    vertical-align: bottom;
+    horizontal-align: right;
+}
+
 
 #MusicPlayerText
 {
@@ -69,7 +78,14 @@
     clip: rect(44px, 300px, 110px,0px);
     height: 80px;
     width: 270px;
-    margin-left: 52px;
+    margin-left: 170px;
+}
+
+.AspectRatio4x3 .Clip, .AspectRatio5x4 .Clip
+{
+    vertical-align: bottom;
+    horizontal-align: right;
+    margin-bottom: 52px;
 }
 
 #NowPlayingBox
