@@ -3135,7 +3135,7 @@
 		{	
 			"FireSound"
 			{
-				"EffectName"	"Hero_Lion.Hex.Target"
+				"EffectName"	"Hero_Lion.Voodoo"
 				"Target"		"CASTER"
 			}
 
