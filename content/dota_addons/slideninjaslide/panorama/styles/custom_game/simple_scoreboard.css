@@ -5,6 +5,11 @@
     flow-children: down;
 }
 
+#SimpleScoreboard
+{
+    z-index: -10;
+}
+
 #Scoreboard
 {
     horizontal-align: right;

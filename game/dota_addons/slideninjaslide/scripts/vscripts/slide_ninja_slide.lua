@@ -1,7 +1,8 @@
 --[[
-Last modified: 28/12/2015
-Author: A_Dizzle
-Co-Author: Myll
+Last modified: 17/12/2016
+Website: http://steamcommunity.com/sharedfiles/filedetails/?id=401429935
+Author: A_Dizzle <anthony@hatinacat.com>
+Co-Author: Myll <stephennf@gmail.com>
 ]]
 
 print('[SNS] slide_ninja_slide.lua')
@@ -9,7 +10,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B180816"
+VERSION = "B171216"
 
 ROUNDS = 4
 LIVES = 3
@@ -95,7 +96,7 @@ function GameMode:InitGameMode()
 	GameRules:SetHideKillMessageHeaders(true)
 	GameRules:GetGameModeEntity():SetStashPurchasingDisabled(true)
 
-	-- REBORN (TESTING)
+	-- REBORN
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 10 )
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 0 )
 	GameRules:SetHeroMinimapIconScale(2)
@@ -122,9 +123,7 @@ function GameMode:InitGameMode()
 	ListenToGameEvent('dota_item_purchased', Dynamic_Wrap(GameMode, 'OnItemPurchased'), self)
 	ListenToGameEvent('dota_item_picked_up', Dynamic_Wrap(GameMode, 'OnItemPickedUp'), self)
 
--- Commands can be registered for debugging purposes or as functions that can be called by the custom Scaleform UI
-	Convars:RegisterCommand( "command_example", Dynamic_Wrap(GameMode, 'ExampleConsoleCommand'), "A console command example", 0 )
-
+	-- DEPRECIATED Scaleform UI
 	Convars:RegisterCommand('player_say', function(...)
 		local arg = {...}
 		table.remove(arg,1)
@@ -471,7 +470,7 @@ end
 function GameMode:OnGameRulesStateChange(keys)
 	print('[SNS] OnGameRulesStateChange')
 	local newState = GameRules:State_Get()
-	print('State: '..newState)
+	print('State: ' .. newState)
 	if newState == DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
 		self.bSeenWaitForPlayers = true
 	elseif newState == DOTA_GAMERULES_STATE_INIT then
@@ -489,7 +488,7 @@ function GameMode:OnAllPlayersLoaded()
 	if FORCE_PICKED_HERO == nil and not DEBUG then
 		for _,v in ipairs(self.vUserIds) do
 			PlayerResource:SetHasRandomed(v:GetPlayerID())
-			PlayerResource:SetHasRepicked(v:GetPlayerID())
+			PlayerResource:SetCanRepick(v:GetPlayerID(), false)
 			v:MakeRandomHeroSelection()
 		end
 	end
@@ -1544,10 +1543,13 @@ function GameMode:ResetGame()
 			newHero:SetAbsOrigin( SpawnPoints[ninja.id + 1] )
 
 			-- Remove items from inventory
-			for i=0,11 do
-				local item = newHero:GetItemInSlot(i)
-				if item then
-					newHero:RemoveItem(item)
+			for i=0,14 do
+				-- Leave backpack filler items intact
+				if i ~= 6 and i ~= 7 and i ~= 8 then
+					local item = newHero:GetItemInSlot(i)
+					if item then
+						newHero:RemoveItem(item)
+					end
 				end
 			end
 
@@ -1858,6 +1860,26 @@ function GameMode:InitialiseNinja(hero)
 					hero:GetPlayerOwner():PlayMusic()
 				end
 			end)
+
+			-- Remove items from inventory purchased during pregame
+			for i=0,14 do
+				local item = hero:GetItemInSlot(i)
+				if item then
+					hero:RemoveItem(item)
+				end
+			end
+
+			-- Workaround: Fill backpack with permanent items
+			for i=0,8 do
+				local newItem = CreateItem("item_faerie_fire", nil, nil)
+				hero:AddItem(newItem)
+			end
+			for i=0,5 do
+				local item = hero:GetItemInSlot(i)
+				if item then
+					hero:RemoveItem(item)
+				end
+			end
 		end
 		if self.bSlide then
 			-- Physics
@@ -1883,14 +1905,22 @@ function GameMode:InitialiseNinja(hero)
 
 		hero:FindAbilityByName("antimage_iceskates"):SetLevel(1)
 
+		-- Removed old hero abilities to make space for our added ones
+		for i=7,9 do
+			local ability = hero:GetAbilityByIndex(i)
+			if ability then
+				hero:RemoveAbility(ability:GetAbilityName())
+			end
+		end
+
 		if DEBUG then
 			hero:SetControllableByPlayer(0, true)
-			AddAbilityToUnit(hero, "tue_bubble_beam")
-			AddAbilityToUnit(hero, "debug_teleport")
+			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(7)
+			AddAbilityToUnit(hero, "debug_teleport"):SetAbilityIndex(8)
 		end
 
 		if self.bTue then
-			AddAbilityToUnit(hero, "tue_bubble_beam")
+			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(9)
 		end
 
 		hero.id = hero:GetPlayerID()
@@ -1996,7 +2026,6 @@ function GameMode:SetupGuards()
 	end
 end
 
-
 ORDERS = {
 	[0] = "DOTA_UNIT_ORDER_NONE",
 	[1] = "DOTA_UNIT_ORDER_MOVE_TO_POSITION",
@@ -2048,11 +2077,21 @@ function GameMode:FilterExecuteOrder( filterTable )
 	local z = tonumber(filterTable["position_z"])
 	local point = Vector(x,y,z)
 
+	if order_type == DOTA_UNIT_ORDER_PURCHASE_ITEM then
+		return true
+	end
+
 	-- Skip Prevents order loops
 	local unit = EntIndexToHScript(units["0"])
 	if unit and unit.skip then
 		unit.skip = false
 		return true
+	end
+
+	-- Prevent glyph and radar orders
+	if order_type == DOTA_UNIT_ORDER_GLYPH or order_type == DOTA_UNIT_ORDER_RADAR then
+		SendErrorMessage( issuer, "#error_order_blocked" )
+		return false
 	end
 
 	if order_type == DOTA_UNIT_ORDER_CAST_POSITION then

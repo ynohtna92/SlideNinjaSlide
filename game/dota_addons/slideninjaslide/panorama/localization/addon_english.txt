@@ -19,4 +19,5 @@
 
 	"error_syntax_give"						"Syntax Error: -give [0-9](Player) <gold>(optional)"
 	"error_not_enough_gold"					"Not Enough Gold"
+	"error_order_blocked"					"You Cannot Use That In This Gamemode"
 }

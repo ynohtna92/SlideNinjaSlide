@@ -89,6 +89,8 @@ function DisplayScoreboard() {
 }
 
 (function () {
+	//$.GetContextPanel().GetParent().GetParent().style.zIndex = "-10";
+	//$.GetContextPanel().GetParent().GetParent().GetParent().BLoadLayout( "file://{resource}/layout/custom_game/simple_scoreboard.xml", false, false );
 	$('#sbP').text = local.player_name;
 	$('#sbP').style['color'] = colors[local.player_id];
 	GameEvents.Subscribe( "update_user_scoreboard", OnUserUpdate );
