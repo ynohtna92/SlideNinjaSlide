@@ -12,6 +12,7 @@
 	newUI.FindChildTraverse("StatBranch").AddClass("NonHero");
 	//that bar that grows from level 1 to 25 is annoying
 	newUI.FindChildTraverse("StatBranch").FindChildTraverse("StatBranchGraphics").FindChildTraverse("StatBranchChannel").style.visibility = "collapse";
+	newUI.FindChildTraverse("StatBranch").FindChildTraverse("StatBranchBG").style.visibility = "collapse";
 	//you are not spawning the talent UI, fuck off
 	newUI.FindChildTraverse("StatBranch").SetPanelEvent("onmouseover", function(){});
 	newUI.FindChildTraverse("StatBranch").SetPanelEvent("onactivate", function(){});
