@@ -10,7 +10,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B171216"
+VERSION = "B240117"
 
 ROUNDS = 4
 LIVES = 3
@@ -170,6 +170,7 @@ function GameMode:InitGameMode()
 	self.tueSpawn = Entities:FindByName(nil, "tue_spawn")
 	self.tueTimerWaypoints = nil
 	self.bTueChasing = false
+	self.bBonusTue = true
 
 	self.vPlayers = {}
 	self.vRadiant = {}
@@ -841,22 +842,7 @@ function GameMode:PlayerSay(keys)
 	end
 
 	if string.find(keys.text:lower(), "^-tue$") and ( plyID == localID or host ) then
-		if not self.bTue then
-			self.bTue = true
-			GameRules:SendCustomMessage("#slideninjaslide_command_tue", 0, 0)
-			-- Reset Game into T.U.E mode
-			self.noReset = true
-			GameMode:ResetGame()
-			GameMode:TueMode()
-
-			Timers:CreateTimer(2, function()
-				MusicPlayer:ChangePlaylist("scripts/music_TUE.kv")
-				for i,v  in ipairs(self.vUserIds) do
-					print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
-					v:UpdateMusicPlaylist( )
-				end
-			end)
-		end
+		GameMode:TueModeStart()
 	end
 
 	if string.find(keys.text:lower(), "^who lives in a pineapple under the sea$") and ( plyID == localID or host ) then
@@ -1618,6 +1604,11 @@ function GameMode:CheckIfGameEnd()
 			gameEnd = false
 		end
 	end
+	
+	-- Set all lives used on bonus round
+	if not self.bBonusTue then
+		self.livesUsed = LIVES
+	end
 
 	-- allow extra trys after all ninjas have died
 	if gameEnd and not self.noChance and self.livesUsed < LIVES then
@@ -1625,6 +1616,14 @@ function GameMode:CheckIfGameEnd()
 		Timers:CreateTimer(4, function()
 			GameMode:ChanceRound()
 		end)
+	end
+
+	-- Bonus tue round
+	if gameEnd and RandomInt(1,4) == 1 and self.bBonusTue then
+		self.bBonusTue = false
+		GameRules:SendCustomMessage("#slideninjaslide_tue_bonus_round", 0, 0)
+		GameMode:TueModeStart()
+		return
 	end
 
 	if gameEnd then	-- Triple check
@@ -1664,6 +1663,25 @@ function GameMode:ForceEnd(  )
 		GameRules:SetGameWinner( DOTA_TEAM_BADGUYS )
 		GameRules:SetSafeToLeave( true )
 	end)
+end
+
+function GameMode:TueModeStart( )
+	if not self.bTue then
+		self.bTue = true
+		GameRules:SendCustomMessage("#slideninjaslide_command_tue", 0, 0)
+		-- Reset Game into T.U.E mode
+		self.noReset = true
+		GameMode:ResetGame()
+		GameMode:TueMode()
+
+		Timers:CreateTimer(2, function()
+			MusicPlayer:ChangePlaylist("scripts/music_TUE.kv")
+			for i,v  in ipairs(self.vUserIds) do
+				print('Updating Playlist for PlayerID: ' .. v:GetPlayerID())
+				v:UpdateMusicPlaylist( )
+			end
+		end)
+	end
 end
 
 function GameMode:TueMode(  )
@@ -1905,8 +1923,17 @@ function GameMode:InitialiseNinja(hero)
 
 		hero:FindAbilityByName("antimage_iceskates"):SetLevel(1)
 
-		-- Removed old hero abilities to make space for our added ones
-		for i=7,9 do
+		--[[
+		for i=0,15 do
+			local ability = hero:GetAbilityByIndex(i)
+			if ability then
+				print(ability:GetAbilityName())
+			end
+		end
+		]]
+
+		-- Removed old special hero abilities to make space for our added ones
+		for i=5,9 do
 			local ability = hero:GetAbilityByIndex(i)
 			if ability then
 				hero:RemoveAbility(ability:GetAbilityName())
@@ -1915,12 +1942,12 @@ function GameMode:InitialiseNinja(hero)
 
 		if DEBUG then
 			hero:SetControllableByPlayer(0, true)
-			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(7)
-			AddAbilityToUnit(hero, "debug_teleport"):SetAbilityIndex(8)
+			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(5)
+			AddAbilityToUnit(hero, "debug_teleport"):SetAbilityIndex(6)
 		end
 
 		if self.bTue then
-			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(9)
+			AddAbilityToUnit(hero, "tue_bubble_beam"):SetAbilityIndex(5)
 		end
 
 		hero.id = hero:GetPlayerID()
