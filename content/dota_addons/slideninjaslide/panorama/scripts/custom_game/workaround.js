@@ -9,10 +9,11 @@
 	// Remove talent tree and backpack
 	var newUI = hud.FindChildTraverse("HUDElements").FindChildTraverse("lower_hud").FindChildTraverse("center_with_stats").FindChildTraverse("center_block");
 	//try the neat way to remove the tree itself
-	newUI.FindChildTraverse("StatBranch").AddClass("NonHero");
+	//newUI.FindChildTraverse("StatBranch").AddClass("NonHero");
 	//that bar that grows from level 1 to 25 is annoying
 	newUI.FindChildTraverse("StatBranch").FindChildTraverse("StatBranchGraphics").FindChildTraverse("StatBranchChannel").style.visibility = "collapse";
 	newUI.FindChildTraverse("StatBranch").FindChildTraverse("StatBranchBG").style.visibility = "collapse";
+
 	//you are not spawning the talent UI, fuck off
 	newUI.FindChildTraverse("StatBranch").SetPanelEvent("onmouseover", function(){});
 	newUI.FindChildTraverse("StatBranch").SetPanelEvent("onactivate", function(){});
@@ -27,6 +28,9 @@
 	var gameinfo = hud.FindChildTraverse("CustomUIRoot").FindChildTraverse("CustomUIContainer_GameInfo");
 	gameinfo.FindChildTraverse("GameInfoPanel").style['margin-top'] = "0px";
 	gameinfo.FindChildTraverse("GameInfoButton").style.transform = "translateY(120px)";
+
+	// Fix gap next to abilities from ability tree
+	newUI.FindChildTraverse("StatBranch").style.visibility = "collapse";
 
 	$.Msg('Workarounds Loaded');
 })();
