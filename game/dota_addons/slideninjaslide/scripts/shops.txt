@@ -1,0 +1,68 @@
+"dota_shops"
+{
+	"consumables"
+	{
+		"item"		"item_potion_of_mana"
+		"item"		"item_potion_of_speed"
+		"item"		"item_pendant_of_energy"
+		"item"		"item_pendant_of_mana"
+		"item"		"item_sobi_mask2"
+		"item"		"item_ultra_sobi_mask"
+		"item"		"item_boots_of_speed"
+		"item"		"item_socks_of_ultra_speed"
+		"item"		"item_tome_of_power"
+	//	"item"		"item_tome_of_experience"
+	}
+
+	"attributes"
+	{
+	}
+
+	"weapons_armor"
+	{
+	}
+			
+	"misc"
+	{			
+	}	
+	
+	// Level 1 - Green Recipes
+	"basics"
+	{			
+	}
+
+	// Level 2 - Blue Recipes
+	"support"
+	{	
+	}
+				
+	"magics"			
+	{
+	}
+		
+	// Level 3 - Purple Recipes	
+	"defense"
+	{				
+	}
+			
+	"weapons"
+	{			
+	}
+		
+	// Level 4 - Orange / Orb / Artifacts				
+	"artifacts"
+	{	
+	}
+
+	"sideshop1"
+	{
+	}
+
+	"sideshop2"
+	{
+	}
+	
+	"secretshop"
+	{
+	}	
+}
