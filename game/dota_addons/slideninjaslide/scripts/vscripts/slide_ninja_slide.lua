@@ -10,7 +10,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B240117"
+VERSION = "B110317"
 
 ROUNDS = 4
 LIVES = 3
