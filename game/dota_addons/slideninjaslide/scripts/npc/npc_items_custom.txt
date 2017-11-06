@@ -177,8 +177,8 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen"			"50"
+				"var_type"					"FIELD_FLOAT"
+				"bonus_mana_regen"			"0.5"
 			}
 		}
 	}
@@ -214,7 +214,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen"			"100"
+				"bonus_mana_regen"			"1"
 			}
 		}
 	}
@@ -940,8 +940,8 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen"			"50"
+				"var_type"					"FIELD_FLOAT"
+				"bonus_mana_regen"			"0.5"
 			}
 		}
 	}
@@ -977,7 +977,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bonus_mana_regen"			"100"
+				"bonus_mana_regen"			"1"
 			}
 		}
 	}
