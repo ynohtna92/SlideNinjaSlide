@@ -1,5 +1,5 @@
 --[[
-Last modified: 17/12/2016
+Last modified: 06/11/2017
 Website: http://steamcommunity.com/sharedfiles/filedetails/?id=401429935
 Author: A_Dizzle <anthony@hatinacat.com>
 Co-Author: Myll <stephennf@gmail.com>
@@ -10,7 +10,7 @@ print('[SNS] slide_ninja_slide.lua')
 DEBUG = false
 THINK_TIME = 0.1
 
-VERSION = "B110317"
+VERSION = "B061117"
 
 ROUNDS = 4
 LIVES = 3
@@ -1066,7 +1066,7 @@ end
 function GameMode:HeroRevivied( hero , reviver)
 	-- respawn the ninja
 	hero:SetRespawnPosition(hero.deadPos)
-	hero:RespawnHero(false, false, false)
+	hero:RespawnHero(false, false)
 	--PlayerResource:SetCameraTarget(hero:GetPlayerID(), hero)
 
 	-- prevent hero from moving
@@ -1244,10 +1244,10 @@ function GameMode:LevelCompleted( hero )
 
 				-- revive dead ninjas
 				if not ninja:IsAlive() then
-					ninja:RespawnHero(false, false, false)
+					ninja:RespawnHero(false, false)
 				end
 				if not ninja:IsAlive() then
-					ninja:RespawnHero(false, false, false)
+					ninja:RespawnHero(false, false)
 				end
 
 				FindClearSpaceForUnit(ninja, v, true)
@@ -1435,7 +1435,7 @@ function GameMode:ChanceRound()
 					ParticleManager:DestroyParticle(ninja.halo, true)
 					ninja.halo = nil
 				end
-				ninja:RespawnHero(false, false, false)
+				ninja:RespawnHero(false, false)
 			end
 
 			FindClearSpaceForUnit(ninja, v, true)
