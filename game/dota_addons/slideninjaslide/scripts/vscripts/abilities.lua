@@ -921,7 +921,7 @@ function ghostship_start_traverse( keys )
 	local damageType = ability:GetAbilityDamageType()
 	local targetBuffTeam = DOTA_UNIT_TARGET_TEAM_FRIENDLY
 	local targetImpactTeam = DOTA_UNIT_TARGET_TEAM_ENEMY
-	local targetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC + DOTA_UNIT_TARGET_MECHANICAL
+	local targetType = DOTA_UNIT_TARGET_ALL
 	local targetFlag = DOTA_UNIT_TARGET_FLAG_NONE
 	
 	-- Get necessary vectors
