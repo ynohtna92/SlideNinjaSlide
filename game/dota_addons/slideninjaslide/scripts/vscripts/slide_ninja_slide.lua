@@ -94,7 +94,8 @@ function GameMode:InitGameMode()
 	GameRules:SetGoldPerTick( GOLD_PER_TICK )
 	GameRules:SetGoldTickTime( GOLD_TICK_TIME )
 	GameRules:SetHideKillMessageHeaders(true)
-	GameRules:GetGameModeEntity():SetStashPurchasingDisabled(true)
+	-- GameRules:GetGameModeEntity():SetStashPurchasingDisabled(true) -- Broken??
+	GameRules:GetGameModeEntity():SetWeatherEffectsDisabled(true)
 
 	-- REBORN
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 10 )
@@ -198,8 +199,7 @@ function GameMode:InitGameMode()
 
 	self.whitespace = {}
 
-	self.haloParticles = 
-	{
+	self.haloParticles = {
 		[1] = "particles/units/heroes/hero_silencer/silencer_last_word_status.vpcf",
 		[2] = "particles/silencer_last_word_status_teal/silencer_last_word_status_teal.vpcf",
 		[3] = "particles/silencer_last_word_status_purple/silencer_last_word_status_purple.vpcf",
@@ -785,7 +785,7 @@ function GameMode:PlayerSay(keys)
 					if gold > 0 and gold <= hero:GetGold() then
 						print('GIVE: '..args[2]..' '..gold)
 						hero:SpendGold( gold, DOTA_ModifyGold_Unspecified)
-						hero2:ModifyGold( gold , false, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( gold, false, DOTA_ModifyGold_Unspecified)
 						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
 						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
 					else
@@ -796,7 +796,7 @@ function GameMode:PlayerSay(keys)
 					if all > 0 then
 						print('GIVE: '..args[2])
 						hero:SpendGold( all, DOTA_ModifyGold_Unspecified)
-						hero2:ModifyGold( all , false, DOTA_ModifyGold_Unspecified)
+						hero2:ModifyGold( all, false, DOTA_ModifyGold_Unspecified)
 						Notifications:Bottom(hero:GetPlayerID() , {text="Gave ".. gold .. " gold to " .. PlayerResource:GetPlayerName(id2)..".", style={color='#FFFF00'}, duration=3})
 						Notifications:Bottom(hero2:GetPlayerID() , {text="Recieved ".. gold .. " gold from " .. PlayerResource:GetPlayerName(hero:GetPlayerID())..".", style={color='#FFFF00'}, duration=3})
 					else
@@ -819,6 +819,7 @@ function GameMode:PlayerSay(keys)
 		if self.canReset then
 			self.noReset = true
 			self.resetting = true
+			self.bBonusTue = true
 			GameMode:ResetGame()
 			self.canReset = false
 		end
@@ -1508,6 +1509,12 @@ function GameMode:ResetGame()
 		duration = 2.0
 	}
 	FireGameEvent("show_center_message",msg)
+
+	-- Check if TUE is still running
+	if self.bTue and self.bTueChasing then
+		self:TueEnd()
+		return
+	end
 
 	-- Reset all ninjas
 	local temp = self.ninjas

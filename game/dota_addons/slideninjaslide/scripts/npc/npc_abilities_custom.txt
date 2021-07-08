@@ -4187,7 +4187,7 @@
 			"particle"	"particles/units/heroes/hero_beastmaster/beastmaster_call_bird.vpcf"
 			"particle"	"particles/units/heroes/hero_lone_druid/lone_druid_spirit_bear_death.vpcf"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_beastmaster.vsndevts"
-			"model"		"models/heroes/beastmaster/beastmaster_bird.mdl"
+			"model"		"models/heroes/beastmaster/beastmaster_bird.vmdl"
 
 			// Sub Abilities
 			"particle"  "particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"

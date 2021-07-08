@@ -233,7 +233,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_potion_of_speed"
-		"Model"							"models/props_gameplay/salve_red.mdl"
+		"Model"							"models/props_gameplay/salve_red.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
@@ -335,7 +335,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_potion_of_mana"
-		"Model"							"models/props_gameplay/salve_blue.mdl"
+		"Model"							"models/props_gameplay/salve_blue.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
@@ -996,7 +996,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_potion_of_speed"
-		"Model"							"models/props_gameplay/salve_red.mdl"
+		"Model"							"models/props_gameplay/salve_red.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1098,7 +1098,7 @@
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
 		"BaseClass"						"item_datadriven"
 		"AbilityTextureName"			"item_potion_of_mana"
-		"Model"							"models/props_gameplay/salve_blue.mdl"
+		"Model"							"models/props_gameplay/salve_blue.vmdl"
 
 		// Stats		
 		//-------------------------------------------------------------------------------------------------------------
