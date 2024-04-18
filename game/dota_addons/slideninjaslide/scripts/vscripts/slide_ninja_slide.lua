@@ -443,10 +443,10 @@ end
 -- This function is called once when the player fully connects and becomes "Ready" during Loading
 function GameMode:OnConnectFull(keys)
 	print ('[SNS] OnConnectFull')
-	--PrintTable(keys)
+	-- PrintTable(keys)
 	GameMode:CaptureGameMode()
 
-	local entIndex = keys.index+1
+	local entIndex = keys.index
 	-- The Player entity of the joining user
 	local ply = EntIndexToHScript(entIndex)
 
@@ -676,7 +676,7 @@ function GameMode:PlayerSay(keys)
 	local server = GetListenServerHost()
 	local localID = -1
 	if server ~= nil then
-		localID = server:GetPlayerID()
+		localID = 0
 	end
 
 	if keys.teamOnly then

@@ -1,1014 +1,606 @@
-<!-- schema text {7e125a45-3d83-4043-b292-9e24f8ef27b4} generic {198980d8-3a93-4919-b4c6-dd1fb07a3a4b} -->
-CVModel CVModel_0
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc33:version{bed0390a-a564-41a6-9dc3-c9a293c8eea3} -->
 {
-	CVmeshList m_meshList = CVmeshList
+	rootNode = 
 	{
-		CVmesh[] m_meshList = 
+		_class = "RootNode"
+		children = 
 		[
-			CVmesh
 			{
-				string m_meshName = "spongebob"
-				string m_meshFile = "models/spongebob/spongebob.fbx"
-				string m_materialSearchPath = ""
-				bool m_bSkinParentedObjects = true
-				bool m_bLegacySkinParentedTransforms = false
-				bool m_bExpensiveTangents = false
-				bool m_bExpensiveVertices = false
-				bool m_bIgnoreCloth = false
-				bool m_bGetSkinningFromLod0 = false
-				CVmorphInfo* m_pMorphInfo = NULL
-			}
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "spongebobsquarepants1.vmat"
+								to = "materials/spongebob/spongebob.vmat"
+							},
+							{
+								from = "spongebobsquarepants2.vmat"
+								to = "materials/spongebob/spongebob.vmat"
+							},
+							{
+								from = "spongebobsquarepants3.vmat"
+								to = "materials/spongebob/spongebob.vmat"
+							},
+							{
+								from = "spongebobsquarepants4.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+							{
+								from = "spongebobsquarepants5.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+							{
+								from = "spongebobsquarepants6.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+							{
+								from = "spongebobsquarepants7.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+							{
+								from = "spongebobsquarepants8.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+							{
+								from = "spongebobsquarepants9.vmat"
+								to = "materials/models/development/invisibletexture.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Attachment"
+						name = "attach_origin"
+						parent_bone = ""
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "attach_hitloc"
+						parent_bone = "m3bone_root"
+						relative_origin = [ 0.0, 0.0, 50.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "attach_attack1"
+						parent_bone = "Object26"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "attach_attack2"
+						parent_bone = "Object27"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+				]
+			},
+			{
+				_class = "HitboxSetList"
+				children = 
+				[
+					{
+						_class = "HitboxSet"
+						name = "default"
+						children = 
+						[
+							{
+								_class = "Hitbox"
+								parent_bone = "m3bone_root"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.0, -2.0, -2.0 ]
+								hitbox_maxs = [ 2.0, 2.0, 2.0 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object07"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -21.633797, -9.508832, -6.151598 ]
+								hitbox_maxs = [ 21.775391, 8.937718, 7.783606 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "SpongebobSquarepants1"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -25.990797, -24.628901, -0.168503 ]
+								hitbox_maxs = [ 26.123297, 9.650572, 40.099106 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object03"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -8.588596, -3.790894, -10.864506 ]
+								hitbox_maxs = [ 1.896702, 3.790894, 5.583595 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object04"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.176401, -3.790901, -11.141197 ]
+								hitbox_maxs = [ 9.309097, 3.790888, 5.311901 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object05"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -5.51171, -3.917772, -8.920302 ]
+								hitbox_maxs = [ 4.237697, 3.664017, 5.460299 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object06"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -4.002796, -3.917769, -10.154201 ]
+								hitbox_maxs = [ 5.74669, 3.664019, 4.2264 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object24"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -5.51171, -3.917772, -8.920297 ]
+								hitbox_maxs = [ 4.237697, 3.664017, 5.460304 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object21"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -4.002796, -3.917769, -10.154197 ]
+								hitbox_maxs = [ 5.74669, 3.664019, 4.226404 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object09"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -5.550093, -3.067461, -10.168297 ]
+								hitbox_maxs = [ 1.342003, 3.046938, 0.919704 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object10"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.431404, -3.067521, -9.080696 ]
+								hitbox_maxs = [ 5.470093, 3.046888, 2.011604 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object12"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.313201, -1.837292, -10.054633 ]
+								hitbox_maxs = [ 2.052099, 1.583549, 1.460498 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object13"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.795197, -1.81902, -10.936732 ]
+								hitbox_maxs = [ 1.515382, 1.565281, 0.578399 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object22"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.313201, -1.837292, -10.054631 ]
+								hitbox_maxs = [ 2.052099, 1.583549, 1.4605 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object16"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.176401, -3.790899, -11.14119 ]
+								hitbox_maxs = [ 9.309097, 3.79089, 5.311909 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object18"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -8.588596, -3.790883, -10.864494 ]
+								hitbox_maxs = [ 1.896702, 3.790905, 5.583607 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object19"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.795197, -1.81902, -10.936732 ]
+								hitbox_maxs = [ 1.515382, 1.565281, 0.578399 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object01"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -9.641898, -1.343045, -2.518898 ]
+								hitbox_maxs = [ 9.827006, -0.017703, 2.277203 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object02"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -7.120289, -2.147806, -4.563496 ]
+								hitbox_maxs = [ 7.938017, -0.074005, 1.065704 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object26"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.945496, -5.778617, -9.886605 ]
+								hitbox_maxs = [ 5.973299, 5.778933, -0.181204 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object27"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -5.752604, -5.778778, -8.051606 ]
+								hitbox_maxs = [ 2.165794, 5.778769, 1.653597 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object11"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.114942, -16.056196, -4.802752 ]
+								hitbox_maxs = [ 2.971897, 3.075089, 7.702351 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object14"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.1186, -16.056192, -4.536175 ]
+								hitbox_maxs = [ 2.96841, 3.07509, 1.515856 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object23"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.114942, -16.056196, -4.802752 ]
+								hitbox_maxs = [ 2.971897, 3.075098, 7.702351 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object15"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.431404, -5.606409, -18.7076 ]
+								hitbox_maxs = [ 7.757591, 5.940948, 2.011604 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object17"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -7.321493, -5.778672, -19.846905 ]
+								hitbox_maxs = [ 1.342003, 5.778878, 0.919701 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "Object20"
+								surface_property = ""
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.1185, -16.056192, -4.535854 ]
+								hitbox_maxs = [ 2.96843, 3.075101, 1.515856 ]
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "spongebob"
+						filename = "models/spongebob/spongebob.fbx"
+						import_scale = 1.0
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "Folder"
+						name = "spongebob"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "spongebob_animation"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = true
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 0
+								end_frame = 794
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_walk"
+								children = 
+								[
+									{
+										_class = "AnimSmoothLoop"
+										frames_from_start = 20
+										frames_from_end = 60
+									},
+								]
+								activity_name = "ACT_DOTA_RUN"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.5
+								fade_out_time = 0.2
+								looping = true
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 574
+								end_frame = 610
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_attack"
+								activity_name = "ACT_DOTA_ATTACK"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 250
+								end_frame = 437
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_die"
+								activity_name = "ACT_DOTA_DIE"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 625
+								end_frame = 670
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_stand"
+								children = 
+								[
+									{
+										_class = "AnimSmoothLoop"
+										frames_from_start = 5
+										frames_from_end = 0
+									},
+									{
+										_class = "AnimOffset"
+										translation = [ 0.0, 0.0, 0.0 ]
+										rotation_xyz = [ 0.0, 0.0, 2.0 ]
+									},
+								]
+								activity_name = "ACT_DOTA_IDLE"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.4
+								looping = true
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 10
+								end_frame = 90
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_jump"
+								activity_name = "ACT_DOTA_IDLE_RARE"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 437
+								end_frame = 489
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_cheer"
+								children = 
+								[
+									{
+										_class = "AnimSmoothLoop"
+										frames_from_start = 0
+										frames_from_end = 63
+									},
+								]
+								activity_name = "ACT_DOTA_SPAWN"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 490
+								end_frame = 580
+								framerate = 30.0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "spongebob_wave"
+								children = 
+								[
+									{
+										_class = "AnimSmoothLoop"
+										frames_from_start = 0
+										frames_from_end = 32
+									},
+								]
+								activity_name = "ACT_DOTA_FLAIL"
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = true
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								animgraph_additive = false
+								source_filename = "models/spongebob/spongebob_animation.FBX"
+								import_bone_scales = false
+								start_frame = 760
+								end_frame = 792
+								framerate = 30.0
+								reverse = false
+							},
+						]
+					},
+				]
+				default_root_bone_name = ""
+			},
 		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		importer_notes = "Imported from VMDL"
 	}
-	CVClothProxyMeshList m_clothProxyMeshList = CVClothProxyMeshList
-	{
-		CVClothProxyMesh[] m_clothProxyMeshList = 
-		[
-			
-		]
-		float m_flClothEnableThreshold = 0.050000
-		bool m_bCreateStaticBone = false
-		int m_nMaxBonesPerVertex = 4
-		bool m_bRemoveUnusedBonesEnabled = false
-		bool m_bDriveMeshesWithBacksolvedJointsOnly = true
-		float m_flMatchProxiesToMeshes = 1.000000
-		float m_flReservedFloat = 0.000000
-		int m_nReservedInt = 0
-		bool m_bReservedBool1 = false
-		bool m_bReservedBool2 = false
-		bool m_bReservedBool3 = false
-		bool m_bReservedBool4 = false
-	}
-	CVphysicsMeshList m_physicsMeshList = CVphysicsMeshList
-	{
-		CVphysicsMesh[] m_meshList = 
-		[
-			
-		]
-	}
-	CVmodelInfo* m_pModelInfo = NULL
-	CVBoneFlagListReference m_pBoneFlagList = CVBoneFlagListReference
-	{
-		CVBoneFlagList* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVhitBoxSetListReference[] m_pHitBoxSetLists = 
-	[
-		CVhitBoxSetListReference
-		{
-			CVhitBoxSetList* m_pObject = &CVhitBoxSetList_0
-			string m_sFileName = ""
-		}
-	]
-	CVattachmentListReference[] m_pAttachmentLists = 
-	[
-		CVattachmentListReference
-		{
-			CVattachmentList* m_pObject = &CVattachmentList_0
-			string m_sFileName = ""
-		}
-	]
-	CVanimGroupReference[] m_pAnimGroups = 
-	[
-		CVanimGroupReference
-		{
-			CVanimGroup* m_pObject = &CVanimGroup_0
-			string m_sFileName = ""
-		}
-	]
-	CVNodeMaterialGroupListReference m_pMaterialGroupList = CVNodeMaterialGroupListReference
-	{
-		NodeMaterialGroupList_t* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVMeshGroupListReference m_pMeshGroupList = CVMeshGroupListReference
-	{
-		MeshGroupList_t* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVLODGroupListReference m_pLodGroupList = CVLODGroupListReference
-	{
-		LODGroupList_t* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVpropBreakableListReference m_pPropBreakableList = CVpropBreakableListReference
-	{
-		CVpropBreakableList* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVpropDataListReference m_pPropDataList = CVpropDataListReference
-	{
-		CVpropDataList* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVConstraintListReference[] m_pConstraintLists = 
-	[
-		
-	]
-	string m_collision = ""
-	string m_softbody = ""
-	string m_sMDLFilename = ""
-	string[] m_sOffsetHitboxSets = 
-	[
-		
-	]
-	float(3) m_vHitboxSetOffset = ( 0.000000, 0.000000, 0.000000 )
-	string[] m_scriptFiles = 
-	[
-		
-	]
-	CVMaterialRemapList* m_pMaterialRemapList = &CVMaterialRemapList_0
-	float m_flFbxScale = 1.000000
-	float m_flQCScale = 1.000000
-	float(3) m_vOrigin = ( 0.000000, 0.000000, 0.000000 )
-	CVPsf* m_pvPsf = NULL
-	string m_keyValueText = ""
-	bool m_bStaticProp = false
-	bool m_bEnableClothProcessing = true
-	float m_flClothEnableThreshold = 0.050000
-	int m_nMaxClothVertsPerMesh = 2048
-	bool m_bBuildClothBoneHierarchy = false
-	symbol m_nNavType = AUTH_NAV_MESH
-	bool m_bMakeUniqueVMeshes = false
-	bool m_bMakeImplicitBindPoseSequence = false
-	bool m_bAdjustSkeletonFromBoneFlags = false
-}
-
-CVhitBoxSetList CVhitBoxSetList_0
-{
-	CVhitBoxSet[] m_HitBoxSets = 
-	[
-		CVhitBoxSet
-		{
-			string m_name = "default"
-			CVhitBox[] m_HitBoxes = 
-			[
-				CVhitBox
-				{
-					string m_name = "m3bone_root"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "m3bone_root"
-					float(3) m_vMinBounds = ( -2.000000, -2.000000, -2.000000 )
-					float(3) m_vMaxBounds = ( 2.000000, 2.000000, 2.000000 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object07"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object07"
-					float(3) m_vMinBounds = ( -21.633797, -9.508832, -6.151598 )
-					float(3) m_vMaxBounds = ( 21.775391, 8.937718, 7.783606 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "SpongebobSquarepants1"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "SpongebobSquarepants1"
-					float(3) m_vMinBounds = ( -25.990797, -24.628901, -0.168503 )
-					float(3) m_vMaxBounds = ( 26.123297, 9.650572, 40.099106 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object03"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object03"
-					float(3) m_vMinBounds = ( -8.588596, -3.790894, -10.864506 )
-					float(3) m_vMaxBounds = ( 1.896702, 3.790894, 5.583595 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object04"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object04"
-					float(3) m_vMinBounds = ( -1.176401, -3.790901, -11.141197 )
-					float(3) m_vMaxBounds = ( 9.309097, 3.790888, 5.311901 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object05"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object05"
-					float(3) m_vMinBounds = ( -5.511710, -3.917772, -8.920302 )
-					float(3) m_vMaxBounds = ( 4.237697, 3.664017, 5.460299 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object06"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object06"
-					float(3) m_vMinBounds = ( -4.002796, -3.917769, -10.154201 )
-					float(3) m_vMaxBounds = ( 5.746690, 3.664019, 4.226400 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object24"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object24"
-					float(3) m_vMinBounds = ( -5.511710, -3.917772, -8.920297 )
-					float(3) m_vMaxBounds = ( 4.237697, 3.664017, 5.460304 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object21"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object21"
-					float(3) m_vMinBounds = ( -4.002796, -3.917769, -10.154197 )
-					float(3) m_vMaxBounds = ( 5.746690, 3.664019, 4.226404 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object09"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object09"
-					float(3) m_vMinBounds = ( -5.550093, -3.067461, -10.168297 )
-					float(3) m_vMaxBounds = ( 1.342003, 3.046938, 0.919704 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object10"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object10"
-					float(3) m_vMinBounds = ( -1.431404, -3.067521, -9.080696 )
-					float(3) m_vMaxBounds = ( 5.470093, 3.046888, 2.011604 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object12"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object12"
-					float(3) m_vMinBounds = ( -1.313201, -1.837292, -10.054633 )
-					float(3) m_vMaxBounds = ( 2.052099, 1.583549, 1.460498 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object13"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object13"
-					float(3) m_vMinBounds = ( -1.795197, -1.819020, -10.936732 )
-					float(3) m_vMaxBounds = ( 1.515382, 1.565281, 0.578399 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object22"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object22"
-					float(3) m_vMinBounds = ( -1.313201, -1.837292, -10.054631 )
-					float(3) m_vMaxBounds = ( 2.052099, 1.583549, 1.460500 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object16"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object16"
-					float(3) m_vMinBounds = ( -1.176401, -3.790899, -11.141190 )
-					float(3) m_vMaxBounds = ( 9.309097, 3.790890, 5.311909 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object18"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object18"
-					float(3) m_vMinBounds = ( -8.588596, -3.790883, -10.864494 )
-					float(3) m_vMaxBounds = ( 1.896702, 3.790905, 5.583607 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object19"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object19"
-					float(3) m_vMinBounds = ( -1.795197, -1.819020, -10.936732 )
-					float(3) m_vMaxBounds = ( 1.515382, 1.565281, 0.578399 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object01"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object01"
-					float(3) m_vMinBounds = ( -9.641898, -1.343045, -2.518898 )
-					float(3) m_vMaxBounds = ( 9.827006, -0.017703, 2.277203 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object02"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object02"
-					float(3) m_vMinBounds = ( -7.120289, -2.147806, -4.563496 )
-					float(3) m_vMaxBounds = ( 7.938017, -0.074005, 1.065704 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object26"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object26"
-					float(3) m_vMinBounds = ( -1.945496, -5.778617, -9.886605 )
-					float(3) m_vMaxBounds = ( 5.973299, 5.778933, -0.181204 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object27"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object27"
-					float(3) m_vMinBounds = ( -5.752604, -5.778778, -8.051606 )
-					float(3) m_vMaxBounds = ( 2.165794, 5.778769, 1.653597 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object11"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object11"
-					float(3) m_vMinBounds = ( -3.114942, -16.056196, -4.802752 )
-					float(3) m_vMaxBounds = ( 2.971897, 3.075089, 7.702351 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object14"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object14"
-					float(3) m_vMinBounds = ( -3.118600, -16.056192, -4.536175 )
-					float(3) m_vMaxBounds = ( 2.968410, 3.075090, 1.515856 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object23"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object23"
-					float(3) m_vMinBounds = ( -3.114942, -16.056196, -4.802752 )
-					float(3) m_vMaxBounds = ( 2.971897, 3.075098, 7.702351 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object15"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object15"
-					float(3) m_vMinBounds = ( -1.431404, -5.606409, -18.707600 )
-					float(3) m_vMaxBounds = ( 7.757591, 5.940948, 2.011604 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object17"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object17"
-					float(3) m_vMinBounds = ( -7.321493, -5.778672, -19.846905 )
-					float(3) m_vMaxBounds = ( 1.342003, 5.778878, 0.919701 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				},
-				CVhitBox
-				{
-					string m_name = "Object20"
-					string m_sSurfaceProperty = ""
-					int m_nGroupId = 0
-					string m_sBoneName = "Object20"
-					float(3) m_vMinBounds = ( -3.118500, -16.056192, -4.535854 )
-					float(3) m_vMaxBounds = ( 2.968430, 3.075101, 1.515856 )
-					uint(4) m_cRenderColor = ( 0, 0, 0, 0 )
-				}
-			]
-		}
-	]
-}
-
-CVattachmentList CVattachmentList_0
-{
-	string m_name = ""
-	CVattachment[] m_attachments = 
-	[
-		CVattachment
-		{
-			string m_name = "attach_origin"
-			CVattachmentInfluence[] m_influences = 
-			[
-				CVattachmentInfluence
-				{
-					string m_influenceName = "m3bone_root"
-					float(3) m_vTranslationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float(3) m_vRotationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float m_flWeight = 1.000000
-					bool m_bRoot = true
-				}
-			]
-		},
-		CVattachment
-		{
-			string m_name = "attach_hitloc"
-			CVattachmentInfluence[] m_influences = 
-			[
-				CVattachmentInfluence
-				{
-					string m_influenceName = "m3bone_root"
-					float(3) m_vTranslationOffset = ( 0.000000, 0.000000, 50.000000 )
-					float(3) m_vRotationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float m_flWeight = 1.000000
-					bool m_bRoot = false
-				}
-			]
-		},
-		CVattachment
-		{
-			string m_name = "attach_attack1"
-			CVattachmentInfluence[] m_influences = 
-			[
-				CVattachmentInfluence
-				{
-					string m_influenceName = "Object26"
-					float(3) m_vTranslationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float(3) m_vRotationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float m_flWeight = 1.000000
-					bool m_bRoot = false
-				}
-			]
-		},
-		CVattachment
-		{
-			string m_name = "attach_attack2"
-			CVattachmentInfluence[] m_influences = 
-			[
-				CVattachmentInfluence
-				{
-					string m_influenceName = "Object27"
-					float(3) m_vTranslationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float(3) m_vRotationOffset = ( 0.000000, 0.000000, 0.000000 )
-					float m_flWeight = 1.000000
-					bool m_bRoot = false
-				}
-			]
-		}
-	]
-}
-
-CVanimGroup CVanimGroup_0
-{
-	string m_Name = ""
-	CVReferenceSkeletonReference m_pReferenceSkeleton = CVReferenceSkeletonReference
-	{
-		CVReferenceSkeleton* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVBoneFlagListReference m_pBoneFlagList = CVBoneFlagListReference
-	{
-		CVBoneFlagList* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVseqGroupReference m_pSeqGroup = CVseqGroupReference
-	{
-		CVseqGroup* m_pObject = NULL
-		string m_sFileName = ""
-	}
-	CVanimGroupReference[] m_pAnimGroups = 
-	[
-		
-	]
-	CVanim[] m_Vanim = 
-	[
-		CVanim
-		{
-			string m_Animationname = "spongebob_animation"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 0
-			int m_nEndframe = 794
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = true
-				bool m_bSmoothLoop = false
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 0
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_walk"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 574
-			int m_nEndframe = 610
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = true
-				bool m_bSmoothLoop = true
-				int m_nSmoothLoopStart = 20
-				int m_nSmoothLoopEnd = 60
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_RUN"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.500000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_attack"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 250
-			int m_nEndframe = 437
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = false
-				bool m_bSmoothLoop = false
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 0
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_ATTACK"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_die"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 625
-			int m_nEndframe = 670
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = false
-				bool m_bSmoothLoop = false
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 0
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_DIE"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_stand"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 10
-			int m_nEndframe = 90
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = true
-				bool m_bSmoothLoop = true
-				int m_nSmoothLoopStart = 5
-				int m_nSmoothLoopEnd = 0
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_IDLE"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 2.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.400000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_jump"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 437
-			int m_nEndframe = 489
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = false
-				bool m_bSmoothLoop = false
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 0
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_IDLE_RARE"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_cheer"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 490
-			int m_nEndframe = 580
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = false
-				bool m_bSmoothLoop = true
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 63
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_SPAWN"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		},
-		CVanim
-		{
-			string m_Animationname = "spongebob_wave"
-			string m_Filepath = "models/spongebob/spongebob_animation.FBX"
-			int m_nStartframe = 760
-			int m_nEndframe = 792
-			float m_flFps = 30.000000
-			CAnimationLoop m_Loop = CAnimationLoop
-			{
-				bool m_bLoop = true
-				bool m_bSmoothLoop = true
-				int m_nSmoothLoopStart = 0
-				int m_nSmoothLoopEnd = 32
-				CVAnimCmdStartLoop m_StartLoop = CVAnimCmdStartLoop
-				{
-					bool m_bEnabled = false
-					int m_nLoopRestart = 0
-				}
-			}
-			bool m_bHidden = false
-			CActivity[] m_Activities = 
-			[
-				CActivity
-				{
-					string m_Name = "ACT_DOTA_FLAIL"
-					int m_nWeight = 1
-				}
-			]
-			CAnimationEvent[] m_AnimationEvents = 
-			[
-				
-			]
-			CMotionFrame[] m_MotionFrames = 
-			[
-				
-			]
-			CIKrule*[] m_pIkRules = 
-			[
-				
-			]
-			CAlignAnimation* m_pAlignAnimation = NULL
-			CAdjustAnimation m_adjustAnimation = CAdjustAnimation
-			{
-				float(3) m_translation = ( 0.000000, 0.000000, 0.000000 )
-				float(3) m_rotation = ( 0.000000, 0.000000, 0.000000 )
-			}
-			string[] m_Keywords = 
-			[
-				
-			]
-			CVAnimResourceSequenceParams m_sequenceParams = CVAnimResourceSequenceParams
-			{
-				float m_flFadeInTime = 0.200000
-				float m_flFadeOutTime = 0.200000
-			}
-		}
-	]
-	string[] m_sScripts = 
-	[
-		
-	]
-}
-
-CVMaterialRemapList CVMaterialRemapList_0
-{
-	CVMaterialRemap[] m_vMaterialRemapList = 
-	[
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants1.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants2.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants3.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants4.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants5.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants6.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants7.vmat"
-			string m_sReplaceMaterial = "materials/spongebob/spongebob.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants8.vmat"
-			string m_sReplaceMaterial = "materials/models/development/invisibletexture.vmat"
-		},
-		CVMaterialRemap
-		{
-			string m_sSearchMaterial = "spongebobsquarepants9.vmat"
-			string m_sReplaceMaterial = "materials/models/development/invisibletexture.vmat"
-		}
-	]
 }
