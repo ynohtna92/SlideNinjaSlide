@@ -4,8 +4,8 @@ var nowPlayingMsgSch = null;
 function OnButtonPressed( data ) {
 	var iPlayerID = Players.GetLocalPlayer();
 	var btnName = data;
-	//$.Msg( data );
-	Game.ServerCmd("MusicPlayerButtonClicked " + btnName.substring(0,btnName.length-3));
+	// $.Msg( data );
+	GameEvents.SendCustomGameEventToServer( "MusicPlayerButtonClicked", { "PlayerID" : iPlayerID, "btnName": btnName.substring(0,btnName.length-3) } );
 	if (btnName == "stopBtn")
 	{
 		$('#stopBtn').visible = false;

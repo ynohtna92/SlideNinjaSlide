@@ -7,7 +7,7 @@
 MusicPlayer = {}
 
 function MusicPlayer:Init(musicKV)
-	self.DEBUG = false
+	self.DEBUG = true
 	self.musicKV = LoadKeyValues(musicKV)
 
 	local index = 1
@@ -22,27 +22,31 @@ function MusicPlayer:Init(musicKV)
 		index = index + 1
 	end
 	self.totalSongs = index
-	Convars:RegisterCommand( "MusicPlayerButtonClicked", function(name, btnName)
-		--get the player that sent the command
-		local cmdPlayer = Convars:GetCommandClient()
-		if cmdPlayer and cmdPlayer.musicPlayer ~= nil then
-			if MusicPlayer.DEBUG then
-				print("btnName: " .. btnName)
-			end
-			if btnName == "loop" then
-				cmdPlayer:LoopSong()
-			elseif btnName == "play" then
-				cmdPlayer:PlayMusic()
-			elseif btnName == "stop" then
-				cmdPlayer:StopMusic()
-			elseif btnName == "forward" then
-				cmdPlayer:ForwardMusic()
-			elseif btnName == "rewind" then
-				cmdPlayer:RewindMusic()
-			end
-			
+
+    CustomGameEventManager:RegisterListener( "MusicPlayerButtonClicked", Dynamic_Wrap(MusicPlayer, "OnMusicButton"))
+end
+
+function MusicPlayer:OnMusicButton( keys )
+    local cmdPlayer = PlayerResource:GetPlayer(keys.PlayerID)
+	local btnName = keys.btnName
+
+	if cmdPlayer and cmdPlayer.musicPlayer ~= nil then
+		if MusicPlayer.DEBUG then
+			print("btnName: " .. btnName)
 		end
-	end, "", 0 )
+		if btnName == "loop" then
+			cmdPlayer:LoopSong()
+		elseif btnName == "play" then
+			cmdPlayer:PlayMusic()
+		elseif btnName == "stop" then
+			cmdPlayer:StopMusic()
+		elseif btnName == "forward" then
+			cmdPlayer:ForwardMusic()
+		elseif btnName == "rewind" then
+			cmdPlayer:RewindMusic()
+		end
+		
+	end
 end
 
 function MusicPlayer:ChangePlaylist( musicKV )
