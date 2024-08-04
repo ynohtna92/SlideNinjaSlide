@@ -405,7 +405,7 @@ function GameMode:CaptureGameMode()
 	if mode == nil then
 		print("[SNS] CaptureGameMode")
 		mode = GameRules:GetGameModeEntity()
-	--	mode:SetFogOfWarDisabled( true ) BROKEN-not working on particles -> using ent_fov_revealer in hammer
+		mode:SetFogOfWarDisabled( true ) -- BROKEN? not working on particles -> using ent_fov_revealer in hammer
 
 		-- Hide some HUD elements
 		--mode:SetHUDVisible(DOTA_HUD_VISIBILITY_TOP_HEROES, false)
