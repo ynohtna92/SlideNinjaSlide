@@ -47,7 +47,9 @@ function Precache( context )
 	PrecacheResource("particle", "particles/units/heroes/hero_silencer/silencer_last_word_status.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_beastmaster/beastmaster_primal_target_flash.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_puck/puck_illusory_orb.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_puck/puck_illusory_orb_blink_out.vpcf", context)
 	PrecacheResource("particle", "particles/units/heroes/hero_medusa/medusa_mana_shield.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_kunkka/kunkka_ghost_ship.vpcf", context)
 
 	PrecacheResource("particle", "particles/silencer_last_word_status_blue/silencer_last_word_status_blue.vpcf", context)
 	PrecacheResource("particle", "particles/silencer_last_word_status_teal/silencer_last_word_status_teal.vpcf", context)
@@ -88,6 +90,7 @@ function Precache( context )
 	PrecacheModel("models/spongebob/spongebob.vmdl", context)
 	PrecacheModel("models/courier/smeevil_crab/smeevil_crab.vmdl", context)
 	PrecacheModel("models/development/invisiblebox.vmdl", context)
+	PrecacheModel("models/heroes/techies/fx_techiesfx_mine.vmdl", context)
 
 	-- Sounds
 	PrecacheResource("soundfile", "soundevents/slideninjaslide_sounds_custom.vsndevts", context )
@@ -97,7 +100,7 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_puck.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_roshan_halloween.vsndevts", context)
-	--PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
+	PrecacheResource("soundfile", "soundevents/game_sounds_techies.vsndevts", context) -- Broken???
 
 	-- RGR
 	PrecacheResource("particle", "particles/generic_gameplay/generic_hit_blood_flash.vpcf", context)

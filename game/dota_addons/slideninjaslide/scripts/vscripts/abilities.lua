@@ -911,7 +911,7 @@ function ghostship_start_traverse( keys )
 	local caster = keys.caster
 	local ability = keys.ability
 	local casterPoint = caster:GetAbsOrigin()
-	local targetPoint = keys.target_points[1]
+	local targetPoint = ability:GetCursorPosition()
 	local spawnDistance = ability:GetLevelSpecialValueFor( "ghostship_distance", ability:GetLevel() - 1 )
 	local projectileSpeed = ability:GetLevelSpecialValueFor( "ghostship_speed", ability:GetLevel() - 1 )
 	local radius = ability:GetLevelSpecialValueFor( "ghostship_width", ability:GetLevel() - 1 )
@@ -1069,7 +1069,12 @@ function reflection( normal, ray )
 	return reflection
 end
 
-function debug_teleport( keys )
-	print(keys.target_points[1])
-	FindClearSpaceForUnit(keys.caster, keys.target_points[1], true)
+function debug_teleport(keys)
+	local caster = keys.caster
+	local ability = keys.ability
+
+	local point = ability:GetCursorPosition()
+
+	print(point)
+	FindClearSpaceForUnit(caster, point, true)
 end

@@ -1263,7 +1263,7 @@
 		{
 			"FireSound"
 			{
-				"EffectName"	"Hero_Techies.LandMine.Plant"
+				"EffectName"	"Hero_Techies.RemoteMine.Plant"
 				"Target" 		"CASTER"
 			}
 			"RunScript"
@@ -1285,53 +1285,6 @@
 				"IsHidden"		"1"
 				"IsPurgable"	"0"
 
-				"OnDeath"
-				{
-					"FireSound"
-					{
-						"EffectName"	"Hero_Techies.LandMine.Detonate"
-						"Target"
-						{
-							"Center"	"UNIT"
-							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
-						}
-					}
-					"FireEffect"
-					{
-						"EffectName"		"particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf"
-						"EffectAttachType"	"follow_hitloc"
-						"Target"
-						{
-							"Center"	"UNIT"
-							"Flags"		"DOTA_UNIT_TARGET_FLAG_DEAD"
-						}
-					}
-
-					"ActOnTargets"
-					{
-						"Target"
-						{
-							"Center"	"UNIT"
-							"Radius"	"%radius"
-							"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
-							"Types"		"DOTA_UNIT_TARGET_ALL"
-							"Flags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
-						}
-						"Action"
-						{
-							"Damage"
-							{
-								"Target"
-								{
-									"Center"	"TARGET"
-									"Flags"		"DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
-								}
-								"Type"			"DAMAGE_TYPE_PHYSICAL"
-								"Damage"		"%damage"
-							}
-						}
-					}
-				}
 				"States"
 				{
 					"MODIFIER_STATE_NO_UNIT_COLLISION"		"MODIFIER_STATE_VALUE_ENABLED"

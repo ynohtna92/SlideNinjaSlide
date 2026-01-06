@@ -80,8 +80,8 @@ end
 
 function GayTrapPlant( event )
 	local caster = event.caster
-	local target_point = event.target_points[1]
 	local ability = event.ability
+	local target_point = ability:GetCursorPosition()
 
 	local modifier_gay_trap = event.modifier_gay_trap
 	local modifier_gay_trap_thinker = event.modifier_gay_trap_thinker
@@ -95,7 +95,8 @@ function GayTrapPlant( event )
 end
 
 function GayTrapTracker( event )
-	local target = event.target
+	local trap = event.target
+	local ability = event.ability
 
 	local trigger_radius = event.radius
 	local explode_delay = event.activation_time
@@ -104,15 +105,63 @@ function GayTrapTracker( event )
 	local target_type = DOTA_UNIT_TARGET_ALL
 	local target_flag = DOTA_UNIT_TARGET_FLAG_INVULNERABLE
 
-	local units = FindUnitsInRadius(target:GetTeamNumber(), target:GetAbsOrigin(), nil, trigger_radius, target_team, target_type, target_flag, FIND_CLOSEST, false)
+	local enemies = FindUnitsInRadius(
+		trap:GetTeamNumber(),
+		trap:GetAbsOrigin(),
+		nil,
+		trigger_radius,
+		target_team,
+		target_type,
+		target_flag,
+		FIND_ANY_ORDER,
+		false
+	)
 
-	if #units > 0 then
+	if #enemies > 0 then
 		Timers:CreateTimer(explode_delay, function()
-			if target:IsAlive() then
-				target:ForceKill(true)
-			end
+			if not IsValidEntity(trap) or not trap:IsAlive() then return end
+			GayTrapExplode(trap, ability)
 		end)
 	end
+end
+
+function GayTrapExplode(trap, ability)
+	local radius = ability:GetSpecialValueFor("radius")
+	local damage = ability:GetSpecialValueFor("damage")
+
+	EmitSoundOn("Hero_Techies.RemoteMine.Detonate", trap)
+
+	local pfx = ParticleManager:CreateParticle(
+		"particles/units/heroes/hero_techies/techies_land_mine_explode.vpcf",
+		PATTACH_WORLDORIGIN,
+		nil
+	)
+	ParticleManager:SetParticleControl(pfx, 0, trap:GetAbsOrigin())
+	ParticleManager:ReleaseParticleIndex(pfx)
+
+	local enemies = FindUnitsInRadius(
+		trap:GetTeamNumber(),
+		trap:GetAbsOrigin(),
+		nil,
+		radius,
+		DOTA_UNIT_TARGET_TEAM_ENEMY,
+		DOTA_UNIT_TARGET_ALL,
+		DOTA_UNIT_TARGET_FLAG_INVULNERABLE,
+		FIND_ANY_ORDER,
+		false
+	)
+
+	for _, enemy in pairs(enemies) do
+		ApplyDamage({
+			victim = enemy,
+			attacker = trap,
+			damage = damage,
+			damage_type = DAMAGE_TYPE_PHYSICAL,
+			ability = ability
+		})
+	end
+
+	trap:ForceKill(false)
 end
 
 function GayTrapDestroyAll()

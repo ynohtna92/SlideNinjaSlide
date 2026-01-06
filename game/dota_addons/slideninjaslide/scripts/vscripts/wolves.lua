@@ -74,7 +74,8 @@ function GameMode:MoveWolf( wolf )
 	end
 	for i=1,10 do        -- try x times to get a proper move location.
 		local posToMove = wolf:GetAbsOrigin() + RandomVector(math.random(100,600))
-		if self:IsPointWithinZone(posToMove, Entities:FindByName(nil, "trigger_ice_slide_" .. wolf.zone)) then
+		local zone = Entities:FindByName(nil, "trigger_ice_slide_" .. wolf.zone)
+		if self:IsPointWithinZone(posToMove, zone) then
 			wolf:MoveToPosition(posToMove)
 			return true
 		end

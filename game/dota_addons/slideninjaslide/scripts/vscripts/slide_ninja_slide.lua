@@ -750,7 +750,7 @@ function GameMode:PlayerSay(keys)
 
 	if DEBUG and string.find(keys.text, "^-test3$") then
 		print("firesound")
-		EmitSoundOn("SlideNinjaSlide.LandMine.Detonate", hero)
+		EmitSoundOn("Hero_Techies.RemoteMine.Detonate", hero)
 	end
 
 	if string.find(keys.text, "^-players$") and ( plyID == localID or host ) then
